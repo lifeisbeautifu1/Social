@@ -1,0 +1,30 @@
+{
+  "name": "social",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "social media app mern stack",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index"
+  },
+  "keywords": [
+    "social-media",
+    "mern",
+    "react",
+    "typescript",
+    "node.js"
+  ],
+  "author": "lifeisbeautiful",
+  "license": "MIT",
+  "dependencies": {
+    "colors": "^1.4.0",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "express-async-errors": "^3.1.1",
+    "http-status-codes": "^2.2.0",
+    "mongoose": "^6.4.6"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  }
+}
