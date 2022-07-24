@@ -9,6 +9,8 @@ import notFound from './middleware/notFound.js';
 import errorHandler from './middleware/error.js';
 
 import auth from './routes/auth.js';
+import user from './routes/users.js';
+import post from './routes/posts.js';
 
 const app = express();
 
@@ -16,6 +18,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/auth', auth);
+app.use('/api/users', user);
+app.use('/api/posts', post);
 
 app.use(errorHandler);
 app.use(notFound);
