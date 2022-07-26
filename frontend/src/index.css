@@ -22,6 +22,10 @@ ul {
   list-style: none;
 }
 
+a {
+  text-decoration: none;
+}
+
 
 /* Navbar */
 
@@ -81,6 +85,7 @@ ul {
 }
 
 .navbar__link {
+  color: #fff;
   cursor: pointer;
   font-size: 0.875rem;
   margin-right: .625rem;
@@ -219,7 +224,6 @@ ul {
 
 .share {
   width: 100%;
-  height: 170px;
   border-radius: .3125rem;
   box-shadow: 0 0 16px -8px rgba(0, 0, 0, 0.68);
 }
@@ -292,6 +296,27 @@ ul {
   margin-right: 1.25rem;
 }
 
+.share__container {
+  padding: 0 1.25rem 0.625rem 1.25rem;
+  position: relative;
+}
+
+.share__image--input {
+  width: 100%;
+  object-fit: cover;
+}
+
+.share__cancel {
+  position: absolute;
+  top: 0;
+  right: 1.25rem;
+  cursor: pointer;
+}
+
+.share__cancel:hover {
+  transform: scale(.95);
+}
+
 
 /* Post */
 
@@ -321,6 +346,10 @@ ul {
   height: 2rem;
   border-radius: 50%;
   object-fit: cover;
+}
+
+.post__top--right {
+  cursor:  pointer;
 }
 
 .post__name {
@@ -480,8 +509,28 @@ ul {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 0.625rem;
   margin-bottom: 1.25rem;
   cursor: pointer;
+}
+
+.rightbar__button--follow {
+  border: none;
+  background-color: #1877f2;
+  color: #fff;
+  margin: 1.875rem 0 0.625rem 0;
+  cursor: pointer;
+  padding: 0.3125rem 0.625rem;
+  display: flex;
+  align-items: center;
+  border-radius: 0.3125rem;
+  transition: all 0.5s;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.rightbar__button--follow:hover {
+  transform: scale(0.95)
 }
 
 /* Profile */

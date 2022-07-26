@@ -2,7 +2,11 @@ import React from 'react';
 import { IUser } from '../interfaces';
 
 type FriendProps = {
-  user: IUser;
+  user: {
+    id: string;
+    username: string;
+    profilePicture: string;
+  };
 };
 
 const Friend: React.FC<FriendProps> = ({ user }) => {
@@ -10,7 +14,7 @@ const Friend: React.FC<FriendProps> = ({ user }) => {
     <li className="sidebar__item--friend">
       <img
         className="sidebar__image--friend"
-        src={user?.profilePicture}
+        src={'http://localhost:3000/' + user?.profilePicture}
         alt="friend"
       />
       <span className="sidebar__name--friend">{user?.username}</span>

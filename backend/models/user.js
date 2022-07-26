@@ -40,7 +40,7 @@ const UserSchema = new mongoose.Schema(
     },
     relationship: {
       type: Number,
-      enum: [1, 2, 3],
+      default: 1,
     },
     isAdmin: {
       type: Boolean,

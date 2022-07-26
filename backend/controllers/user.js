@@ -70,3 +70,11 @@ export const unfollowUser = async (req, res) => {
     throw new BadRequestError('You cant unfollow yourself');
   }
 };
+
+export const getFriends = async (req, res) => {
+  const user = await User.findById(req.params.id).populate(
+    'following',
+    '_id username profilePicture'
+  );
+  res.status(StatusCodes.OK).json(user.following);
+};

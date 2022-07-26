@@ -4,12 +4,13 @@ import { BadRequestError } from '../errors/index.js';
 import { StatusCodes } from 'http-status-codes';
 
 export const updatePost = async (req, res) => {
-  const post = await Post.findById(req.params.id);
+  let post = await Post.findById(req.params.id);
   if (post.userId === req.body.userId) {
-    await post.updateOne(req.body);
-    return res
-      .status(StatusCodes.OK)
-      .json({ message: 'The post has been updated' });
+    post = await post.updateOne(req.body, {
+      new: true,
+      runValidators: true,
+    });
+    return res.status(StatusCodes.OK).json(post);
   } else {
     throw new BadRequestError('You can only update your posts');
   }
@@ -36,7 +37,6 @@ export const deletePost = async (req, res) => {
 
 export const likePost = async (req, res) => {
   const post = await Post.findById(req.params.id);
-  console.log(post._doc);
   if (!post.likes.includes(req.body.userId)) {
     await post.updateOne({ $push: { likes: req.body.userId } });
     res.status(StatusCodes.OK).json({ message: 'The post has been liked!' });
@@ -52,17 +52,24 @@ export const getPost = async (req, res) => {
 };
 
 export const getPosts = async (req, res) => {
-  const currentUser = await User.findById(req.body.userId);
-  const userPosts = await Post.find({ userId: req.body.userId });
-  //   const friendPosts = await Promise.all(
-  //     currentUser.following.map((friendId) => {
-  //       return Post.find({ userId: friendId });
-  //     })
-  //   );
+  const currentUser = await User.findById(req.params.userId);
+  const userPosts = await Post.find({ userId: req.params.userId });
   const friendPosts = await Post.find({
     userId: {
       $in: currentUser.following,
     },
   });
-  res.status(StatusCodes.OK).json(userPosts.concat(...friendPosts));
+  const allPosts = userPosts.concat(...friendPosts).sort((p1, p2) => {
+    return new Date(p2.createdAt).getTime() - new Date(p1.createdAt).getTime();
+  });
+  res.status(StatusCodes.OK).json(allPosts);
 };
+
+export const getUsersPosts = async (req, res) => {
+  const posts = await Post.find({ userId: req.params.userId }).sort({
+    createdAt: -1,
+  });
+  res.status(StatusCodes.OK).json(posts);
+};
+
+

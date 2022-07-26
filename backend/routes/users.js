@@ -5,6 +5,7 @@ const router = express.Router();
 import {
   updateUser,
   getUser,
+  getFriends,
   deleteUser,
   followUser,
   unfollowUser,
@@ -12,12 +13,14 @@ import {
 
 router.get('/:id', getUser);
 
+router.get('/friends/:id', getFriends);
+
 router.patch('/:id', updateUser);
 
 router.delete('/:id', deleteUser);
 
-router.post('/:id/follow', followUser);
+router.patch('/:id/follow', followUser);
 
-router.post('/:id/unfollow', unfollowUser);
+router.patch('/:id/unfollow', unfollowUser);
 
 export default router;

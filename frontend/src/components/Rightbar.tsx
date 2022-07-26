@@ -1,14 +1,58 @@
 import GiftImage from '../assets/gift.png';
 import AdImage from '../assets/ad.png';
-import { Online } from './';
 import { Users } from '../data';
-import React from 'react';
+import { Online, RightbarFriend } from './';
+import { IUser } from '../interfaces';
+import { useAppSelector } from '../hooks';
+import { useDispatch } from 'react-redux';
+import { follow, unfollow } from '../features/user/userSlice';
+import { Add, Remove } from '@material-ui/icons';
+import axios from 'axios';
+import React, { useState, useEffect } from 'react';
 
 type RightbarProps = {
-  profile?: boolean;
+  user?: IUser;
 };
 
-const Rightbar: React.FC<RightbarProps> = ({ profile }) => {
+const Rightbar: React.FC<RightbarProps> = ({ user }) => {
+  const [friends, setFriends] = useState<IUser[]>([]);
+  const { user: currentUser } = useAppSelector((state) => state.user);
+
+  const dispatch = useDispatch();
+
+  const [isFollowing, setIsFollowing] = useState(
+    currentUser.following.includes(user?._id)
+  );
+
+  const handleClick = async () => {
+    try {
+      await axios.patch(
+        '/users/' + user?._id + (isFollowing ? '/unfollow' : '/follow'),
+        {
+          userId: currentUser._id,
+        }
+      );
+      isFollowing ? dispatch(unfollow(user?._id)) : dispatch(follow(user?._id));
+      setIsFollowing(!isFollowing);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    const fetchFriends = async () => {
+      try {
+        if (user?._id) {
+          const { data } = await axios.get('/users/friends/' + user?._id);
+          setFriends(data);
+          setIsFollowing(currentUser.following.includes(user._id));
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchFriends();
+  }, [user?._id]);
   const RightbarHome = () => {
     return (
       <>
@@ -36,71 +80,45 @@ const Rightbar: React.FC<RightbarProps> = ({ profile }) => {
   const RightbarProfile = () => {
     return (
       <>
+        {currentUser._id !== user?._id && (
+          <button className="rightbar__button--follow" onClick={handleClick}>
+            {isFollowing ? (
+              <>
+                Unfollow <Remove />
+              </>
+            ) : (
+              <>
+                Follow <Add />
+              </>
+            )}
+          </button>
+        )}
         <h4 className="rightbar__title">User information</h4>
         <div className="rightbar__info">
           <div className="rightbar__item">
             <span className="rightbar__key">City: </span>
-            <span className="rightbar__value">New York</span>
+            <span className="rightbar__value">{user?.city}</span>
           </div>
           <div className="rightbar__item">
             <span className="rightbar__key">From: </span>
-            <span className="rightbar__value">Madrid</span>
+            <span className="rightbar__value">{user?.from}</span>
           </div>
           <div className="rightbar__item">
             <span className="rightbar__key">Relationship: </span>
-            <span className="rightbar__value">Single</span>
+            <span className="rightbar__value">
+              {user?.relationship === 1
+                ? 'Single'
+                : user?.relationship === 2
+                ? 'Married'
+                : 'Married with children'}
+            </span>
           </div>
         </div>
         <h4 className="rightbar__title">User friends</h4>
         <div className="rightbar__followings">
-          <div className="rightbar__following">
-            <img
-              src="./assets/person/1.jpeg"
-              alt="following user"
-              className="rightbar__image--following"
-            />
-            <span className="rightbar__name--following">John Carter</span>
-          </div>
-          <div className="rightbar__following">
-            <img
-              src="./assets/person/2.jpeg"
-              alt="following user"
-              className="rightbar__image--following"
-            />
-            <span className="rightbar__name--following">John Carter</span>
-          </div>
-          <div className="rightbar__following">
-            <img
-              src="./assets/person/3.jpeg"
-              alt="following user"
-              className="rightbar__image--following"
-            />
-            <span className="rightbar__name--following">John Carter</span>
-          </div>
-          <div className="rightbar__following">
-            <img
-              src="./assets/person/4.jpeg"
-              alt="following user"
-              className="rightbar__image--following"
-            />
-            <span className="rightbar__name--following">John Carter</span>
-          </div>
-          <div className="rightbar__following">
-            <img
-              src="./assets/person/5.jpeg"
-              alt="following user"
-              className="rightbar__image--following"
-            />
-            <span className="rightbar__name--following">John Carter</span>
-          </div>
-          <div className="rightbar__following">
-            <img
-              src="./assets/person/6.jpeg"
-              alt="following user"
-              className="rightbar__image--following"
-            />
-            <span className="rightbar__name--following">John Carter</span>
-          </div>
+          {friends.map((friend) => (
+            <RightbarFriend key={friend._id} friend={friend} />
+          ))}
         </div>
       </>
     );
@@ -109,7 +127,7 @@ const Rightbar: React.FC<RightbarProps> = ({ profile }) => {
   return (
     <div className="rightbar">
       <div className="rightbar__wrapper">
-        {profile ? RightbarProfile() : RightbarHome()}
+        {user ? RightbarProfile() : RightbarHome()}
       </div>
     </div>
   );

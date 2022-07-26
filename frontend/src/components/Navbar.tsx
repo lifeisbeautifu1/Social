@@ -1,11 +1,15 @@
 import { Search, Person, Chat, Notifications } from '@material-ui/icons';
-import ProfileImage from '../assets/person/1.jpeg';
+import { Link } from 'react-router-dom';
+import { useAppSelector } from '../hooks';
 
 const Navbar = () => {
+  const { user } = useAppSelector((state) => state.user);
   return (
     <div className="navbar">
       <div className="navbar__left">
-        <span className="navbar__logo">Social</span>
+        <Link to="/">
+          <span className="navbar__logo">Social</span>
+        </Link>
       </div>
       <div className="navbar__center">
         <div className="navbar__searchBar">
@@ -19,8 +23,12 @@ const Navbar = () => {
       </div>
       <div className="navbar__right">
         <div className="navbar__links">
-          <span className="navbar__link">Home</span>
-          <span className="navbar__link">Timeline</span>
+          <Link to={`/profile/${user?._id}`}>
+            <span className="navbar__link">Home</span>
+          </Link>
+          <Link to="/">
+            <span className="navbar__link">Timeline</span>
+          </Link>
         </div>
         <div className="navbar__icons">
           <div className="navbar__icon">
@@ -37,7 +45,16 @@ const Navbar = () => {
           </div>
         </div>
         <div className="navbar__profile">
-          <img src={ProfileImage} alt="profile" />
+          <Link to={'/profile/' + user?._id}>
+            <img
+              src={
+                user?.profilePicture
+                  ? `http://localhost:5000/images/${user?.profilePicture}`
+                  : 'http://localhost:5000/images/person/noAvatar.png'
+              }
+              alt="profile"
+            />
+          </Link>
         </div>
       </div>
     </div>

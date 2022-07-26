@@ -5,6 +5,7 @@ const router = express.Router();
 import {
   getPost,
   getPosts,
+  getUsersPosts,
   createPost,
   updatePost,
   deletePost,
@@ -15,7 +16,9 @@ router.post('/', createPost);
 
 router.get('/:id', getPost);
 
-router.get('/timeline/all', getPosts);
+router.get('/timeline/:userId', getPosts);
+
+router.get('/all/:userId', getUsersPosts);
 
 router.patch('/:id', updatePost);
 

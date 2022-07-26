@@ -1,15 +1,23 @@
 export interface IUser {
-  id?: number;
+  _id: string;
   profilePicture?: string;
+  coverPicture?: string;
   username?: string;
+  desc?: string;
+  city?: string;
+  from?: string;
+  relationship?: 1 | 2 | 3;
+  following?: string[];
+  followers?: string[];
 }
 
 export interface IPost {
-  id?: number;
+  _id?: string;
   desc?: string;
-  photo?: string;
-  date?: string;
-  userId?: number;
-  like: number;
-  comment?: number;
+  img?: string;
+  updatedAt?: string;
+  createdAt?: string;
+  userId?: string;
+  likes?: string[];
+  // comment?: number;
 }
