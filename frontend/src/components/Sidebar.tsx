@@ -1,64 +1,65 @@
+import { MdRssFeed, MdOutlineWorkOutline, MdSchool } from 'react-icons/md';
 import {
-  RssFeed,
-  Chat,
-  PlayCircleFilledOutlined,
-  Group,
-  Bookmark,
-  HelpOutline,
-  WorkOutline,
-  Event,
-  School,
-} from '@material-ui/icons';
-import { Users } from '../data';
+  BsFillChatLeftTextFill,
+  BsFillBookmarkFill,
+  BsCalendarEvent,
+} from 'react-icons/bs';
+import { AiFillPlayCircle } from 'react-icons/ai';
+import { HiUserGroup } from 'react-icons/hi';
+import { FiHelpCircle } from 'react-icons/fi';
+import { useAppSelector } from '../hooks';
+
 import { Friend } from './';
 
 const Sidebar = () => {
+  const { user } = useAppSelector((state) => state.user);
   return (
     <div className="sidebar">
       <div className="sidebar__wrapper">
         <ul className="sidebar__list">
           <li className="sidebar__item">
-            <RssFeed className="sidebar__icon" />
+            <MdRssFeed className="sidebar__icon" />
             <span className="sidebar__text">Feed</span>
           </li>
           <li className="sidebar__item">
-            <Chat className="sidebar__icon" />
+            <BsFillChatLeftTextFill className="sidebar__icon" />
             <span className="sidebar__text">Chat</span>
           </li>
           <li className="sidebar__item">
-            <PlayCircleFilledOutlined className="sidebar__icon" />
+            <AiFillPlayCircle className="sidebar__icon" />
             <span className="sidebar__text">Videos</span>
           </li>
           <li className="sidebar__item">
-            <Group className="sidebar__icon" />
+            <HiUserGroup className="sidebar__icon" />
             <span className="sidebar__text">Groups</span>
           </li>
           <li className="sidebar__item">
-            <Bookmark className="sidebar__icon" />
+            <BsFillBookmarkFill className="sidebar__icon" />
             <span className="sidebar__text">Bookmarks</span>
           </li>
           <li className="sidebar__item">
-            <HelpOutline className="sidebar__icon" />
+            <FiHelpCircle className="sidebar__icon" />
             <span className="sidebar__text">Questions</span>
           </li>
           <li className="sidebar__item">
-            <WorkOutline className="sidebar__icon" />
+            <MdOutlineWorkOutline className="sidebar__icon" />
             <span className="sidebar__text">Jobs</span>
           </li>
           <li className="sidebar__item">
-            <Event className="sidebar__icon" />
+            <BsCalendarEvent className="sidebar__icon" />
             <span className="sidebar__text">Events</span>
           </li>
           <li className="sidebar__item">
-            <School className="sidebar__icon" />
+            <MdSchool className="sidebar__icon" />
             <span className="sidebar__text">Courses</span>
           </li>
         </ul>
         <button className="sidebar__button">Show More</button>
         <hr className="sidebar__hr" />
         <ul className="sidebar__list--friend">
-          {Users.map((u) => (
-            <Friend key={u?.id} user={u} />
+          {/* @ts-ignore */}
+          {user.following.map((u) => (
+            <Friend key={u?._id} user={u} />
           ))}
         </ul>
       </div>

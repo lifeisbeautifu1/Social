@@ -13,7 +13,11 @@ const Friend: React.FC<FriendProps> = ({ user }) => {
     <li className="sidebar__item--friend">
       <img
         className="sidebar__image--friend"
-        src={'http://localhost:3000/' + user?.profilePicture}
+        src={
+          user.profilePicture
+            ? `http://localhost:5000/images/${user.profilePicture}`
+            : 'http://localhost:5000/images/person/noAvatar.png'
+        }
         alt="friend"
       />
       <span className="sidebar__name--friend">{user?.username}</span>

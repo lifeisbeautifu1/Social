@@ -17,7 +17,7 @@ const ChatOnline: React.FC<ChatOnlineProps> = ({ onlineUsers }) => {
       // @ts-ignore
       user.following.filter((friend) => onlineUsersId.includes(friend._id))
     );
-  }, [onlineUsers]);
+  }, [onlineUsers, user.following]);
 
   return (
     <div className="chat-online">

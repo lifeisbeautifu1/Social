@@ -1,14 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { IUser } from '../../interfaces';
-
-type initialStateType = {
-  user: IUser | null;
-};
 
 const initialState = {
   user: localStorage.getItem('user')
     ? JSON.parse(localStorage.getItem('user')!)
     : null,
+  onlineUsers: [],
 };
 
 export const userSlice = createSlice({
@@ -33,9 +29,13 @@ export const userSlice = createSlice({
       );
       localStorage.setItem('user', JSON.stringify(state.user));
     },
+    setOnlineUsers: (state, action) => {
+      state.onlineUsers = action.payload;
+    },
   },
 });
 
-export const { login, logout, follow, unfollow } = userSlice.actions;
+export const { login, logout, follow, unfollow, setOnlineUsers } =
+  userSlice.actions;
 
 export default userSlice.reducer;

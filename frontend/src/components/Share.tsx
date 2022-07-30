@@ -1,8 +1,9 @@
-import { PermMedia, Label, Room, EmojiEmotions } from '@material-ui/icons';
+import { GoFileMedia } from 'react-icons/go';
+import { MdLabelImportant, MdRoom, MdCancel } from 'react-icons/md';
+import { BsFillEmojiHeartEyesFill } from 'react-icons/bs';
 import { useAppSelector } from '../hooks';
 import { useDispatch } from 'react-redux';
 import { addPost } from '../features/posts/postsSlice';
-import { Cancel } from '@material-ui/icons';
 import React, { useState } from 'react';
 import axios from 'axios';
 
@@ -71,13 +72,16 @@ const Share = () => {
               src={URL.createObjectURL(file)}
               alt="upload"
             />
-            <Cancel className="share__cancel" onClick={() => setFile(null)} />
+            <MdCancel className="share__cancel" onClick={() => setFile(null)} />
           </div>
         )}
         <form className="share__bottom" onSubmit={handleSubmit}>
           <div className="share__options">
             <label htmlFor="file" className="share__option">
-              <PermMedia htmlColor="tomato" className="share__icon" />
+              <GoFileMedia
+                style={{ color: 'tomato' }}
+                className="share__icon"
+              />
               <span className="share__text">Photo or Video</span>
               <input
                 type="file"
@@ -89,15 +93,21 @@ const Share = () => {
               />
             </label>
             <div className="share__option">
-              <Label htmlColor="blue" className="share__icon" />
+              <MdLabelImportant
+                style={{ color: 'blue' }}
+                className="share__icon"
+              />
               <span className="share__text">Tag</span>
             </div>
             <div className="share__option">
-              <Room htmlColor="green" className="share__icon" />
+              <MdRoom style={{ color: 'green' }} className="share__icon" />
               <span className="share__text">Locations</span>
             </div>
             <div className="share__option">
-              <EmojiEmotions htmlColor="goldenrod" className="share__icon" />
+              <BsFillEmojiHeartEyesFill
+                style={{ color: 'goldenrod' }}
+                className="share__icon"
+              />
               <span className="share__text">Feelings</span>
             </div>
           </div>

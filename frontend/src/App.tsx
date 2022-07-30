@@ -1,15 +1,38 @@
 import { Home, Profile, Login, Messanger } from './pages';
 import { ProtectedRoute } from './components';
 import { Routes, Route } from 'react-router-dom';
+import { io, Socket } from 'socket.io-client';
+import { useRef, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { setOnlineUsers } from './features/user/userSlice';
+import { useAppSelector } from './hooks';
+import { ServerToClientEvents, ClientToServerEvents } from './interfaces';
 
 const App = () => {
+  const dispatch = useDispatch();
+  const socket = useRef<Socket<
+    ServerToClientEvents,
+    ClientToServerEvents
+  > | null>(null);
+  const { user } = useAppSelector((state) => state.user);
+  useEffect(() => {
+    if (user) {
+      socket.current = io('http://localhost:8900');
+      socket?.current?.emit('addUser', user._id);
+      socket?.current?.on('getUsers', (users) => {
+        dispatch(setOnlineUsers(users));
+      });
+    } else {
+      socket?.current?.disconnect();
+    }
+  }, [user, dispatch]);
   return (
     <Routes>
       <Route
         path="/"
         element={
           <ProtectedRoute>
-            <Home />
+            <Home socket={socket} />
           </ProtectedRoute>
         }
       />
@@ -25,7 +48,7 @@ const App = () => {
         path="/messanger"
         element={
           <ProtectedRoute>
-            <Messanger />
+            <Messanger socket={socket} />
           </ProtectedRoute>
         }
       />

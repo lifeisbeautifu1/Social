@@ -1,28 +1,49 @@
 import GiftImage from '../assets/gift.png';
 import AdImage from '../assets/ad.png';
-import { Users } from '../data';
 import { Online, RightbarFriend } from './';
 import { IUser } from '../interfaces';
 import { useAppSelector } from '../hooks';
 import { useDispatch } from 'react-redux';
 import { follow, unfollow } from '../features/user/userSlice';
-import { Add, Remove } from '@material-ui/icons';
+import { IoMdAdd, IoIosRemove } from 'react-icons/io';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
+import { Socket } from 'socket.io-client';
+import { ServerToClientEvents, ClientToServerEvents } from '../interfaces';
 
 type RightbarProps = {
   user?: IUser;
+  socket?: React.MutableRefObject<Socket<
+    ServerToClientEvents,
+    ClientToServerEvents
+  > | null>;
 };
 
-const Rightbar: React.FC<RightbarProps> = ({ user }) => {
+const Rightbar: React.FC<RightbarProps> = ({ user, socket }) => {
   const [friends, setFriends] = useState<IUser[]>([]);
-  const { user: currentUser } = useAppSelector((state) => state.user);
+  const { user: currentUser, onlineUsers } = useAppSelector(
+    (state) => state.user
+  );
 
   const dispatch = useDispatch();
 
   const [isFollowing, setIsFollowing] = useState(
     currentUser.following.includes(user?._id)
   );
+
+  const [onlineFriends, setOnlineFriends] = useState<IUser[]>([]);
+
+  useEffect(() => {
+    // @ts-ignore
+    const onlineUsersId = onlineUsers.map((onlineUser) => onlineUser.userId);
+
+    setOnlineFriends(
+      // @ts-ignore
+      currentUser?.following.filter((friend) =>
+        onlineUsersId.includes(friend._id)
+      )
+    );
+  }, [onlineUsers, currentUser.following]);
 
   const handleClick = async () => {
     try {
@@ -45,14 +66,18 @@ const Rightbar: React.FC<RightbarProps> = ({ user }) => {
         if (user?._id) {
           const { data } = await axios.get('/users/friends/' + user?._id);
           setFriends(data);
-          setIsFollowing(currentUser.following.includes(user._id));
+          const followingId = currentUser.following.map(
+            // @ts-ignore
+            (following) => following._id
+          );
+          setIsFollowing(followingId.includes(user._id));
         }
       } catch (error) {
         console.log(error);
       }
     };
     fetchFriends();
-  }, [user?._id, currentUser.following]);
+  }, [user?._id, currentUser?.following]);
   const RightbarHome = () => {
     return (
       <>
@@ -69,8 +94,8 @@ const Rightbar: React.FC<RightbarProps> = ({ user }) => {
         <img src={AdImage} alt="ad" className="rightbar__ad" />
         <h4 className="rightbar__title">Online Friends</h4>
         <ul className="rightbar__list--friends">
-          {Users.map((u) => (
-            <Online key={u?.id} user={u} />
+          {onlineFriends.map((u) => (
+            <Online key={u?._id} user={u} />
           ))}
         </ul>
       </>
@@ -84,11 +109,11 @@ const Rightbar: React.FC<RightbarProps> = ({ user }) => {
           <button className="rightbar__button--follow" onClick={handleClick}>
             {isFollowing ? (
               <>
-                Unfollow <Remove />
+                Unfollow <IoIosRemove />
               </>
             ) : (
               <>
-                Follow <Add />
+                Follow <IoMdAdd />
               </>
             )}
           </button>

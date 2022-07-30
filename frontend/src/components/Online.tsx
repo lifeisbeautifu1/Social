@@ -1,11 +1,8 @@
 import React from 'react';
+import { IUser } from '../interfaces';
 
 type OnlineProps = {
-  user: {
-    id: string;
-    username: string;
-    profilePicture: string;
-  };
+  user: IUser;
 };
 
 const Online: React.FC<OnlineProps> = ({ user }) => {
@@ -13,7 +10,11 @@ const Online: React.FC<OnlineProps> = ({ user }) => {
     <li className="rightbar__item--friend">
       <div className="rightbar__imageContainer">
         <img
-          src={'http://localhost:3000/' + user?.profilePicture}
+          src={
+            user.profilePicture
+              ? `http://localhost:5000/images/${user.profilePicture}`
+              : 'http://localhost:5000/images/person/noAvatar.png'
+          }
           alt="friend"
           className="rightbar__image--friend"
         />

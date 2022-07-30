@@ -2,45 +2,60 @@ import { Navbar, Conversation, Message, ChatOnline } from '../components';
 import { useAppSelector } from '../hooks';
 import { useDispatch } from 'react-redux';
 import React, { useEffect, useState, useRef } from 'react';
-import { ServerToClientEvents, ClientToServerEvents } from '../interfaces';
+import {
+  ServerToClientEvents,
+  ClientToServerEvents,
+  IUser,
+} from '../interfaces';
+import { setOnlineUsers } from '../features/user/userSlice';
 import {
   setConversations,
   setMessages,
   addMessage,
 } from '../features/conversations/conversationsSlice';
 import axios from 'axios';
-import { IOnlineUser } from '../interfaces';
-import { io, Socket } from 'socket.io-client';
+import { Socket } from 'socket.io-client';
 
-const Messanger = () => {
+type MessagerProps = {
+  socket: React.MutableRefObject<Socket<
+    ServerToClientEvents,
+    ClientToServerEvents
+  > | null>;
+};
+
+const Messanger: React.FC<MessagerProps> = ({ socket }) => {
   const dispatch = useDispatch();
-  const { user } = useAppSelector((state) => state.user);
+  const { user, onlineUsers } = useAppSelector((state) => state.user);
   const { conversations, selectedConversation, messages } = useAppSelector(
     (state) => state.conversations
   );
   const scrollRef = useRef<HTMLDivElement>(null);
   const [newMessage, setNewMessage] = useState('');
+  const [receiver, setReceiver] = useState<IUser | null>(null);
   const [refetchMessages, setRefetchMessages] = useState(false);
-  const [onlineUsers, setOnlineUsers] = useState<IOnlineUser[]>([]);
-  const socket = useRef<Socket<
-    ServerToClientEvents,
-    ClientToServerEvents
-  > | null>(null);
-  useEffect(() => {
-    socket?.current?.on('getMessage', () => {
-      setRefetchMessages(!refetchMessages);
-    });
-  });
-  useEffect(() => {
-    socket.current = io('http://localhost:8900');
-  }, []);
+  // const [onlineUsers, setOnlineUsers] = useState<IOnlineUser[]>([]);
+  // const socket = useRef<Socket<
+  //   ServerToClientEvents,
+  //   ClientToServerEvents
+  // > | null>(null);
+  // useEffect(() => {
+  //   socket?.current?.on('getMessage', () => {
+  //     setRefetchMessages(!refetchMessages);
+  //   });
+  // });
+  // useEffect(() => {
+  //   socket.current = io('http://localhost:8900');
+  // }, []);
 
   useEffect(() => {
     socket?.current?.emit('addUser', user._id);
     socket?.current?.on('getUsers', (users) => {
-      setOnlineUsers(users);
+      dispatch(setOnlineUsers(users));
     });
-  }, [user]);
+    socket?.current?.on('getMessage', () => {
+      setRefetchMessages(!refetchMessages);
+    });
+  }, [user, socket, dispatch]);
 
   useEffect(() => {
     const fetchConversations = async () => {
@@ -62,13 +77,16 @@ const Messanger = () => {
             '/messages/' + selectedConversation?._id
           );
           dispatch(setMessages(data));
+          setReceiver(
+            selectedConversation?.members.find((m) => user._id !== m._id)!
+          );
         }
       } catch (error) {
         console.log(error);
       }
     };
     fetchMessages();
-  }, [selectedConversation, dispatch, refetchMessages]);
+  }, [selectedConversation, dispatch, refetchMessages, user._id]);
 
   useEffect(() => {
     scrollRef?.current?.scrollIntoView({ behavior: 'smooth' });
@@ -82,9 +100,7 @@ const Messanger = () => {
         conversationId: selectedConversation?._id,
       });
       dispatch(addMessage(data));
-      const receiver = selectedConversation?.members.find(
-        (m) => user._id !== m._id
-      );
+
       socket?.current?.emit('sendMessage', receiver?._id!);
     } catch (error) {
       console.log(error);
@@ -155,6 +171,6 @@ const Messanger = () => {
       </div>
     </>
   );
-};
+};;;
 
 export default Messanger;

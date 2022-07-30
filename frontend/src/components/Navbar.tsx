@@ -1,8 +1,10 @@
-import { Search, Person, Chat, Notifications } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logout } from '../features/user/userSlice';
 import { useAppSelector } from '../hooks';
+import { AiOutlineSearch } from 'react-icons/ai';
+import { BsFillPersonFill, BsFillChatLeftTextFill } from 'react-icons/bs';
+import { IoIosNotifications } from 'react-icons/io';
 
 const Navbar = () => {
   const { user } = useAppSelector((state) => state.user);
@@ -16,7 +18,7 @@ const Navbar = () => {
       </div>
       <div className="navbar__center">
         <div className="navbar__searchBar">
-          <Search className="navbar__searchIcon" />
+          <AiOutlineSearch className="navbar__searchIcon" />
           <input
             type="text"
             placeholder="Search for friends, post or video"
@@ -40,17 +42,17 @@ const Navbar = () => {
         </div>
         <div className="navbar__icons">
           <div className="navbar__icon">
-            <Person />
+            <BsFillPersonFill />
             <span className="navbar__badge">1</span>
           </div>
           <Link to="/messanger">
             <div className="navbar__icon">
-              <Chat />
+              <BsFillChatLeftTextFill />
               <span className="navbar__badge">1</span>
             </div>
           </Link>
           <div className="navbar__icon">
-            <Notifications />
+            <IoIosNotifications />
             <span className="navbar__badge">1</span>
           </div>
         </div>

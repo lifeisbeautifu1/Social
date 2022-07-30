@@ -1,6 +1,6 @@
 import LikeImage from '../assets/like.png';
 import HeartImage from '../assets/heart.png';
-import { MoreVert } from '@material-ui/icons';
+import { BsThreeDotsVertical } from 'react-icons/bs';
 import React, { useState, useEffect } from 'react';
 import { useAppSelector } from '../hooks';
 import { IPost, IUser } from '../interfaces';
@@ -71,7 +71,7 @@ const Post: React.FC<PostProps> = ({ post }) => {
               </span>
             </div>
             <div className="post__top--right">
-              <MoreVert />
+              <BsThreeDotsVertical />
             </div>
           </div>
           <div className="post__center">
