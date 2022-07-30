@@ -1,9 +1,12 @@
 import { Search, Person, Chat, Notifications } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { logout } from '../features/user/userSlice';
 import { useAppSelector } from '../hooks';
 
 const Navbar = () => {
   const { user } = useAppSelector((state) => state.user);
+  const dispatch = useDispatch();
   return (
     <div className="navbar">
       <div className="navbar__left">
@@ -29,16 +32,23 @@ const Navbar = () => {
           <Link to="/">
             <span className="navbar__link">Timeline</span>
           </Link>
+          {
+            <span className="navbar__link" onClick={() => dispatch(logout())}>
+              Logout
+            </span>
+          }
         </div>
         <div className="navbar__icons">
           <div className="navbar__icon">
             <Person />
             <span className="navbar__badge">1</span>
           </div>
-          <div className="navbar__icon">
-            <Chat />
-            <span className="navbar__badge">1</span>
-          </div>
+          <Link to="/messanger">
+            <div className="navbar__icon">
+              <Chat />
+              <span className="navbar__badge">1</span>
+            </div>
+          </Link>
           <div className="navbar__icon">
             <Notifications />
             <span className="navbar__badge">1</span>

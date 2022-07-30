@@ -14,6 +14,8 @@ import multer from 'multer';
 import auth from './routes/auth.js';
 import user from './routes/users.js';
 import post from './routes/posts.js';
+import conversation from './routes/conversation.js';
+import message from './routes/message.js';
 
 const app = express();
 
@@ -24,20 +26,20 @@ const __dirname = path.resolve(
 app.use('/images', express.static(path.join(__dirname + '/public/images')));
 
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 
 // File uploading part
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'public/images')
+    cb(null, 'public/images');
   },
   filename: (req, file, cb) => {
-    cb(null, req.body.name)
-  }
-})
+    cb(null, req.body.name);
+  },
+});
 
-const upload = multer({storage});
+const upload = multer({ storage });
 
 app.post('/api/upload', upload.single('file'), (req, res) => {
   try {
@@ -52,6 +54,8 @@ app.post('/api/upload', upload.single('file'), (req, res) => {
 app.use('/api/auth', auth);
 app.use('/api/users', user);
 app.use('/api/posts', post);
+app.use('/api/conversations', conversation);
+app.use('/api/messages', message);
 
 app.use(errorHandler);
 app.use(notFound);
@@ -62,7 +66,7 @@ const start = async () => {
   try {
     await connectDB();
     app.listen(PORT, () =>
-      console.log(`Server runnnig on port ${PORT}`.yellow.bold)
+      console.log(`Server runnnig on port ${PORT}`.bgGreen)
     );
   } catch (error) {
     console.log(`${error}`.red.bold);

@@ -52,7 +52,7 @@ const Rightbar: React.FC<RightbarProps> = ({ user }) => {
       }
     };
     fetchFriends();
-  }, [user?._id]);
+  }, [user?._id, currentUser.following]);
   const RightbarHome = () => {
     return (
       <>

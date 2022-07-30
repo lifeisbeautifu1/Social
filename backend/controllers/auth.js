@@ -29,7 +29,7 @@ export const login = async (req, res) => {
 
   const user = await User.findOne({
     email,
-  });
+  }).populate('following', 'username profilePicture');
 
   if (!user) {
     throw new NotFoundError(`User with ${email} doesn't exist`);

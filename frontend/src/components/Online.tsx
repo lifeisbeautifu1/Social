@@ -1,5 +1,4 @@
 import React from 'react';
-import { IUser } from '../interfaces';
 
 type OnlineProps = {
   user: {

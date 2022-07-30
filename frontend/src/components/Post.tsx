@@ -4,9 +4,9 @@ import { MoreVert } from '@material-ui/icons';
 import React, { useState, useEffect } from 'react';
 import { useAppSelector } from '../hooks';
 import { IPost, IUser } from '../interfaces';
-import { format } from 'timeago.js';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { formatDistanceToNow } from 'date-fns';
 import axios from 'axios';
 
 type PostProps = {
@@ -64,7 +64,11 @@ const Post: React.FC<PostProps> = ({ post }) => {
                 />
               </Link>
               <span className="post__name">{user?.username}</span>
-              <span className="post__date">{format(post?.createdAt!)}</span>
+              <span className="post__date">
+                {formatDistanceToNow(new Date(post?.createdAt!), {
+                  addSuffix: true,
+                })}
+              </span>
             </div>
             <div className="post__top--right">
               <MoreVert />

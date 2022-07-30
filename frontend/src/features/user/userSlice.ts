@@ -1,4 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { IUser } from '../../interfaces';
+
+type initialStateType = {
+  user: IUser | null;
+};
 
 const initialState = {
   user: localStorage.getItem('user')
@@ -19,7 +24,7 @@ export const userSlice = createSlice({
       localStorage.removeItem('user');
     },
     follow: (state, action) => {
-      state.user.following.push(action.payload);
+      state?.user?.following?.push(action.payload);
       localStorage.setItem('user', JSON.stringify(state.user));
     },
     unfollow: (state, action) => {

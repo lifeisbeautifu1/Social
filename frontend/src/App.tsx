@@ -1,4 +1,4 @@
-import { Home, Profile, Login } from './pages';
+import { Home, Profile, Login, Messanger } from './pages';
 import { ProtectedRoute } from './components';
 import { Routes, Route } from 'react-router-dom';
 
@@ -18,6 +18,14 @@ const App = () => {
         element={
           <ProtectedRoute>
             <Profile />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/messanger"
+        element={
+          <ProtectedRoute>
+            <Messanger />
           </ProtectedRoute>
         }
       />

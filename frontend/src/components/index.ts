@@ -6,5 +6,8 @@ export { default as Share } from './Share';
 export { default as Post } from './Post';
 export { default as Online } from './Online';
 export { default as Friend } from './Friend';
+export { default as Conversation } from './Conversation';
+export { default as Message } from './Message';
+export { default as ChatOnline } from './ChatOnline';
 export { default as RightbarFriend } from './RightbarFriend';
 export { default as ProtectedRoute } from './ProtectedRoute';

@@ -7,8 +7,8 @@ export interface IUser {
   city?: string;
   from?: string;
   relationship?: 1 | 2 | 3;
-  following?: string[];
-  followers?: string[];
+  following?: IUser[];
+  followers?: IUser[];
 }
 
 export interface IPost {
@@ -21,3 +21,32 @@ export interface IPost {
   likes?: string[];
   // comment?: number;
 }
+
+export interface IConversation {
+  _id: string;
+  members: IUser[];
+}
+
+export interface IMessage {
+  _id: string;
+  conversationId: string;
+  text: string;
+  sender: IUser;
+  createdAt: string;
+}
+
+export interface IOnlineUser {
+  userId: string;
+  socketId: string;
+}
+
+export interface ServerToClientEvents {
+  getUsers: (users: IOnlineUser[]) => void;
+  getMessage: () => void;
+}
+
+export interface ClientToServerEvents {
+  addUser: (userId: string) => void;
+  sendMessage: (receiverId: string) => void;
+}
+
