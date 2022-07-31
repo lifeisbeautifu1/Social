@@ -36,16 +36,16 @@ const Profile = () => {
                 alt="cover"
                 src={
                   user?.coverPicture
-                    ? 'http://localhost:5000/images/' + user?.coverPicture
-                    : 'http://localhost:5000/images/person/noCover.png'
+                    ? user?.coverPicture
+                    : 'https://res.cloudinary.com/dxf7urmsh/image/upload/v1659264833/16588370472353_vy1sjr.jpg'
                 }
               />
               <img
                 className="profile__cover--user"
                 src={
                   user?.profilePicture
-                    ? 'http://localhost:5000/images/' + user?.profilePicture
-                    : 'http://localhost:5000/images/person/noAvatar.png'
+                    ? user?.profilePicture
+                    : 'https://res.cloudinary.com/dxf7urmsh/image/upload/v1659264459/noAvatar_lyqqt7.png'
                 }
                 alt="user"
               />

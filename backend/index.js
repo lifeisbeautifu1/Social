@@ -9,45 +9,46 @@ import connectDB from './db/connectDB.js';
 
 import notFound from './middleware/notFound.js';
 import errorHandler from './middleware/error.js';
-import multer from 'multer';
+
 
 import auth from './routes/auth.js';
 import user from './routes/users.js';
 import post from './routes/posts.js';
 import conversation from './routes/conversation.js';
 import message from './routes/message.js';
+import upload from './routes/upload.js';
 
 const app = express();
 
-const __dirname = path.resolve(
-  path.dirname(decodeURI(new URL(import.meta.url).pathname))
-);
+// const __dirname = path.resolve(
+//   path.dirname(decodeURI(new URL(import.meta.url).pathname))
+// );
 
-app.use('/images', express.static(path.join(__dirname + '/public/images')));
+// app.use('/images', express.static(path.join(__dirname + '/public/images')));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // File uploading part
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'public/images');
-  },
-  filename: (req, file, cb) => {
-    cb(null, req.body.name);
-  },
-});
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, 'public/images');
+//   },
+//   filename: (req, file, cb) => {
+//     cb(null, req.body.name);
+//   },
+// });
 
-const upload = multer({ storage });
+// const upload = multer({ storage });
 
-app.post('/api/upload', upload.single('file'), (req, res) => {
-  try {
-    res.status(200).json({ message: 'File uploaded successfully' });
-  } catch (error) {
-    console.log(error);
-  }
-});
+// app.post('/api/upload', upload.single('file'), (req, res) => {
+//   try {
+//     res.status(200).json({ message: 'File uploaded successfully' });
+//   } catch (error) {
+//     console.log(error);
+//   }
+// });
 
 // File uploading part ended
 
@@ -56,6 +57,7 @@ app.use('/api/users', user);
 app.use('/api/posts', post);
 app.use('/api/conversations', conversation);
 app.use('/api/messages', message);
+app.use('/api/upload', upload);
 
 app.use(errorHandler);
 app.use(notFound);

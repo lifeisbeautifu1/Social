@@ -1,10 +1,8 @@
-import GiftImage from '../assets/gift.png';
-import AdImage from '../assets/ad.png';
 import { Online, RightbarFriend } from './';
 import { IUser } from '../interfaces';
 import { useAppSelector } from '../hooks';
 import { useDispatch } from 'react-redux';
-import { follow, unfollow } from '../features/user/userSlice';
+import { updateFollowing } from '../features/user/userSlice';
 import { IoMdAdd, IoIosRemove } from 'react-icons/io';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
@@ -28,7 +26,7 @@ const Rightbar: React.FC<RightbarProps> = ({ user, socket }) => {
   const dispatch = useDispatch();
 
   const [isFollowing, setIsFollowing] = useState(
-    currentUser.following.includes(user?._id)
+    currentUser.following.map((user: IUser) => user._id).includes(user?._id)
   );
 
   const [onlineFriends, setOnlineFriends] = useState<IUser[]>([]);
@@ -47,13 +45,13 @@ const Rightbar: React.FC<RightbarProps> = ({ user, socket }) => {
 
   const handleClick = async () => {
     try {
-      await axios.patch(
+      const { data } = await axios.patch(
         '/users/' + user?._id + (isFollowing ? '/unfollow' : '/follow'),
         {
           userId: currentUser._id,
         }
       );
-      isFollowing ? dispatch(unfollow(user?._id)) : dispatch(follow(user?._id));
+      dispatch(updateFollowing(data));
       setIsFollowing(!isFollowing);
     } catch (error) {
       console.log(error);
@@ -83,7 +81,7 @@ const Rightbar: React.FC<RightbarProps> = ({ user, socket }) => {
       <>
         <div className="rightbar__birthday">
           <img
-            src={GiftImage}
+            src="https://res.cloudinary.com/dxf7urmsh/image/upload/v1659268597/gift_cfrjp9.png"
             alt="birthday"
             className="rightbar__image--birthday"
           />
@@ -91,7 +89,11 @@ const Rightbar: React.FC<RightbarProps> = ({ user, socket }) => {
             <b>Pola Foster</b> and <b>3 others</b> have a birthday today.
           </span>
         </div>
-        <img src={AdImage} alt="ad" className="rightbar__ad" />
+        <img
+          src="https://res.cloudinary.com/dxf7urmsh/image/upload/v1659268597/ad_m6csgu.png"
+          alt="ad"
+          className="rightbar__ad"
+        />
         <h4 className="rightbar__title">Online Friends</h4>
         <ul className="rightbar__list--friends">
           {onlineFriends.map((u) => (

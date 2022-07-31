@@ -5,6 +5,7 @@ const initialState = {
     ? JSON.parse(localStorage.getItem('user')!)
     : null,
   onlineUsers: [],
+  refetchMessages: false,
 };
 
 export const userSlice = createSlice({
@@ -19,23 +20,25 @@ export const userSlice = createSlice({
       state.user = null;
       localStorage.removeItem('user');
     },
-    follow: (state, action) => {
-      state?.user?.following?.push(action.payload);
-      localStorage.setItem('user', JSON.stringify(state.user));
-    },
-    unfollow: (state, action) => {
-      state.user.following = state.user.following.filter(
-        (id: string) => id !== action.payload
-      );
+    updateFollowing: (state, action) => {
+      state.user.following = action.payload;
       localStorage.setItem('user', JSON.stringify(state.user));
     },
     setOnlineUsers: (state, action) => {
       state.onlineUsers = action.payload;
     },
+    setRefetchMessages: (state) => {
+      state.refetchMessages = !state.refetchMessages;
+    },
   },
 });
 
-export const { login, logout, follow, unfollow, setOnlineUsers } =
-  userSlice.actions;
+export const {
+  login,
+  logout,
+  updateFollowing,
+  setOnlineUsers,
+  setRefetchMessages,
+} = userSlice.actions;
 
 export default userSlice.reducer;

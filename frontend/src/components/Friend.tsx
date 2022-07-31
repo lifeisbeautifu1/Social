@@ -15,8 +15,8 @@ const Friend: React.FC<FriendProps> = ({ user }) => {
         className="sidebar__image--friend"
         src={
           user.profilePicture
-            ? `http://localhost:5000/images/${user.profilePicture}`
-            : 'http://localhost:5000/images/person/noAvatar.png'
+            ? user.profilePicture
+            : 'https://res.cloudinary.com/dxf7urmsh/image/upload/v1659264459/noAvatar_lyqqt7.png'
         }
         alt="friend"
       />

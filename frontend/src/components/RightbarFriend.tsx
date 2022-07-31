@@ -13,8 +13,8 @@ const RightbarFriend: React.FC<RightbarFriendProps> = ({ friend }) => {
         <img
           src={
             friend.profilePicture
-              ? `http://localhost:5000/images/${friend?.profilePicture}`
-              : 'http://localhost:5000/images/person/noAvatar.png'
+              ? friend?.profilePicture
+              : 'https://res.cloudinary.com/dxf7urmsh/image/upload/v1659264459/noAvatar_lyqqt7.png'
           }
           alt="following user"
           className="rightbar__image--following"

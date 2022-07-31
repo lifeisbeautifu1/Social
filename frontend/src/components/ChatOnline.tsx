@@ -29,8 +29,8 @@ const ChatOnline: React.FC<ChatOnlineProps> = ({ onlineUsers }) => {
                 className="chat-online__image"
                 src={
                   friend.profilePicture
-                    ? `http://localhost:5000/images/${friend.profilePicture}`
-                    : 'http://localhost:5000/images/person/noAvatar.png'
+                    ? friend.profilePicture
+                    : 'https://res.cloudinary.com/dxf7urmsh/image/upload/v1659264459/noAvatar_lyqqt7.png'
                 }
                 alt="friend online"
               />

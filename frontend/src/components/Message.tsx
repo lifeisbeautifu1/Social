@@ -14,8 +14,8 @@ const Message: React.FC<MessageProps> = ({ own, message }) => {
         <img
           src={
             message.sender.profilePicture
-              ? `http://localhost:5000/images/${message.sender.profilePicture}`
-              : 'http://localhost:5000/images/person/noAvatar.png'
+              ? message.sender.profilePicture
+              : 'https://res.cloudinary.com/dxf7urmsh/image/upload/v1659264459/noAvatar_lyqqt7.png'
           }
           alt="message"
           className="message__image"

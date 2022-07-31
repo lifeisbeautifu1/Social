@@ -22,14 +22,19 @@ const Share = () => {
       img: '',
     };
     if (file) {
-      const data = new FormData();
+      const formData = new FormData();
       // @ts-ignore
-      const fileName = Date.now() + file.name;
-      data.append('name', fileName);
-      data.append('file', file);
-      newPost.img = fileName;
+      // const fileName = Date.now() + file.name;
+      // data.append('name', fileName);
+      formData.append('file', file);
+      // newPost.img = fileName;
       try {
-        await axios.post('/upload', data);
+        const { data: imageData } = await axios.post('/upload', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        newPost.img = imageData.secure_url;
       } catch (error) {
         console.log(error);
       }
@@ -50,8 +55,8 @@ const Share = () => {
           <img
             src={
               user?.profilePicture
-                ? `http://localhost:5000/images/${user?.profilePicture}`
-                : 'http://localhost:5000/images/person/noAvatar.png'
+                ? user?.profilePicture
+                : 'https://res.cloudinary.com/dxf7urmsh/image/upload/v1659264459/noAvatar_lyqqt7.png'
             }
             alt="profile"
             className="share__image"

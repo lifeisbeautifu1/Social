@@ -4,7 +4,10 @@ import { StatusCodes } from 'http-status-codes';
 import bcrypt from 'bcryptjs';
 
 export const getUser = async (req, res) => {
-  const user = await User.findById(req.params.id);
+  const user = await User.findById(req.params.id).populate(
+    'following',
+    'username profilePicture'
+  );
   const { password, updatedAt, ...other } = user._doc;
   res.status(StatusCodes.OK).json(other);
 };
@@ -38,13 +41,20 @@ export const deleteUser = async (req, res) => {
 export const followUser = async (req, res) => {
   if (req.body.userId !== req.params.id) {
     const user = await User.findById(req.params.id);
-    const currentUser = await User.findById(req.body.userId);
+    let currentUser = await User.findById(req.body.userId);
     if (!user.followers.includes(req.body.userId)) {
       await user.updateOne({ $push: { followers: req.body.userId } });
-      await currentUser.updateOne({ $push: { following: req.params.id } });
-      return res
-        .status(StatusCodes.OK)
-        .json({ message: 'User has been followed' });
+      currentUser = await User.findByIdAndUpdate(
+        currentUser._id,
+        {
+          $push: { following: req.params.id },
+        },
+        {
+          new: true,
+          runValidators: true,
+        }
+      ).populate('following', 'username profilePicture');
+      return res.status(StatusCodes.OK).json(currentUser.following);
     } else {
       throw new BadRequestError('You already follow this user');
     }
@@ -56,13 +66,20 @@ export const followUser = async (req, res) => {
 export const unfollowUser = async (req, res) => {
   if (req.body.userId !== req.params.id) {
     const user = await User.findById(req.params.id);
-    const currentUser = await User.findById(req.body.userId);
+    let currentUser = await User.findById(req.body.userId);
     if (user.followers.includes(req.body.userId)) {
       await user.updateOne({ $pull: { followers: req.body.userId } });
-      await currentUser.updateOne({ $pull: { following: req.params.id } });
-      return res
-        .status(StatusCodes.OK)
-        .json({ message: 'User has been unfollowed' });
+      currentUser = await User.findByIdAndUpdate(
+        currentUser._id,
+        {
+          $pull: { following: req.params.id },
+        },
+        {
+          new: true,
+          runValidators: true,
+        }
+      ).populate('following', 'username profilePicture');
+      return res.status(StatusCodes.OK).json(currentUser.following);
     } else {
       throw new BadRequestError('You dont follow this user');
     }

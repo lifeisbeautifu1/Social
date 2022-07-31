@@ -354,6 +354,11 @@ a {
 
 .post__top--right {
   cursor:  pointer;
+  transition: all 0.5s;
+}
+
+.post__top--right:hover {
+  transform: scale(1.2);
 }
 
 .post__name {

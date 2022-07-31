@@ -4,7 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 import { io, Socket } from 'socket.io-client';
 import { useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { setOnlineUsers } from './features/user/userSlice';
+import { setOnlineUsers, setRefetchMessages } from './features/user/userSlice';
 import { useAppSelector } from './hooks';
 import { ServerToClientEvents, ClientToServerEvents } from './interfaces';
 
@@ -21,6 +21,9 @@ const App = () => {
       socket?.current?.emit('addUser', user._id);
       socket?.current?.on('getUsers', (users) => {
         dispatch(setOnlineUsers(users));
+      });
+      socket?.current?.on('getMessage', () => {
+        dispatch(setRefetchMessages());
       });
     } else {
       socket?.current?.disconnect();

@@ -21,8 +21,8 @@ const Conversation: React.FC<ConversationProps> = ({ conversation }) => {
       <img
         src={
           otherUser?.profilePicture
-            ? `http://localhost:5000/images/${otherUser?.profilePicture}`
-            : 'http://localhost:5000/images/person/noAvatar.png'
+            ? otherUser?.profilePicture
+            : 'https://res.cloudinary.com/dxf7urmsh/image/upload/v1659264459/noAvatar_lyqqt7.png'
         }
         alt="conversation"
         className="conversation__image"

@@ -36,8 +36,9 @@ io.on('connection', (socket) => {
   });
 
   socket.on('sendMessage', (receiverId) => {
+    console.log(users, receiverId);
     const receiver = getUser(receiverId);
-    // console.log('yoo bro you got message wake up', receiver);
+    console.log('yoo bro you got message wake up', receiver);
     socket.to(receiver?.socketId).emit('getMessage');
   });
 });

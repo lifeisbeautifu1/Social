@@ -25,35 +25,20 @@ type MessagerProps = {
 
 const Messanger: React.FC<MessagerProps> = ({ socket }) => {
   const dispatch = useDispatch();
-  const { user, onlineUsers } = useAppSelector((state) => state.user);
+  const { user, onlineUsers, refetchMessages } = useAppSelector(
+    (state) => state.user
+  );
   const { conversations, selectedConversation, messages } = useAppSelector(
     (state) => state.conversations
   );
   const scrollRef = useRef<HTMLDivElement>(null);
   const [newMessage, setNewMessage] = useState('');
   const [receiver, setReceiver] = useState<IUser | null>(null);
-  const [refetchMessages, setRefetchMessages] = useState(false);
-  // const [onlineUsers, setOnlineUsers] = useState<IOnlineUser[]>([]);
-  // const socket = useRef<Socket<
-  //   ServerToClientEvents,
-  //   ClientToServerEvents
-  // > | null>(null);
-  // useEffect(() => {
-  //   socket?.current?.on('getMessage', () => {
-  //     setRefetchMessages(!refetchMessages);
-  //   });
-  // });
-  // useEffect(() => {
-  //   socket.current = io('http://localhost:8900');
-  // }, []);
 
   useEffect(() => {
     socket?.current?.emit('addUser', user._id);
     socket?.current?.on('getUsers', (users) => {
       dispatch(setOnlineUsers(users));
-    });
-    socket?.current?.on('getMessage', () => {
-      setRefetchMessages(!refetchMessages);
     });
   }, [user, socket, dispatch]);
 

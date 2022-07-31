@@ -1,5 +1,3 @@
-import LikeImage from '../assets/like.png';
-import HeartImage from '../assets/heart.png';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import React, { useState, useEffect } from 'react';
 import { useAppSelector } from '../hooks';
@@ -56,8 +54,8 @@ const Post: React.FC<PostProps> = ({ post }) => {
                 <img
                   src={
                     user?.profilePicture
-                      ? 'http://localhost:5000/images/' + user?.profilePicture
-                      : 'http://localhost:5000/images/person/noAvatar.png'
+                      ? user?.profilePicture
+                      : 'https://res.cloudinary.com/dxf7urmsh/image/upload/v1659264459/noAvatar_lyqqt7.png'
                   }
                   alt="profile"
                   className="post__image--left"
@@ -70,30 +68,28 @@ const Post: React.FC<PostProps> = ({ post }) => {
                 })}
               </span>
             </div>
-            <div className="post__top--right">
-              <BsThreeDotsVertical />
-            </div>
+            {currentUser._id === post.userId && (
+              <div className="post__top--right">
+                <BsThreeDotsVertical />
+              </div>
+            )}
           </div>
           <div className="post__center">
             <span className="post__text">{post?.desc}</span>
             {post?.img && (
-              <img
-                src={'http://localhost:5000/images/' + post?.img}
-                alt="post"
-                className="post__image--center"
-              />
+              <img src={post?.img} alt="post" className="post__image--center" />
             )}
           </div>
           <div className="post__bottom">
             <div className="post__bottom--left">
               <img
-                src={LikeImage}
+                src="https://res.cloudinary.com/dxf7urmsh/image/upload/v1659268597/like_mjyy2f.png"
                 alt="like"
                 onClick={handleLike}
                 className="post__like"
               />
               <img
-                src={HeartImage}
+                src="https://res.cloudinary.com/dxf7urmsh/image/upload/v1659268597/heart_ghyyc6.png"
                 alt="heart"
                 onClick={handleLike}
                 className="post__like"
