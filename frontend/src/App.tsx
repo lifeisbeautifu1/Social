@@ -1,5 +1,5 @@
 import { Home, Profile, Login, Messanger } from './pages';
-import { ProtectedRoute } from './components';
+import { ProtectedRoute, SharedLayout } from './components';
 import { Routes, Route } from 'react-router-dom';
 import { io, Socket } from 'socket.io-client';
 import { useRef, useEffect } from 'react';
@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { setOnlineUsers, setRefetchMessages } from './features/user/userSlice';
 import { useAppSelector } from './hooks';
 import { ServerToClientEvents, ClientToServerEvents } from './interfaces';
+import { ProfileInfoContextProvider } from './context';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -31,30 +32,34 @@ const App = () => {
   }, [user, dispatch]);
   return (
     <Routes>
-      <Route
-        path="/"
-        element={
-          <ProtectedRoute>
-            <Home socket={socket} />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/profile/:userId"
-        element={
-          <ProtectedRoute>
-            <Profile />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/messanger"
-        element={
-          <ProtectedRoute>
-            <Messanger socket={socket} />
-          </ProtectedRoute>
-        }
-      />
+      <Route path="/" element={<SharedLayout />}>
+        <Route
+          index
+          element={
+            <ProtectedRoute>
+              <Home socket={socket} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile/:userId"
+          element={
+            <ProtectedRoute>
+              <ProfileInfoContextProvider>
+                <Profile />
+              </ProfileInfoContextProvider>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/messanger"
+          element={
+            <ProtectedRoute>
+              <Messanger socket={socket} />
+            </ProtectedRoute>
+          }
+        />
+      </Route>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Login />} />
     </Routes>

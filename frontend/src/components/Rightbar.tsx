@@ -8,6 +8,7 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { Socket } from 'socket.io-client';
 import { ServerToClientEvents, ClientToServerEvents } from '../interfaces';
+import { useProfileInfoContext } from '../context';
 
 type RightbarProps = {
   user?: IUser;
@@ -28,6 +29,18 @@ const Rightbar: React.FC<RightbarProps> = ({ user, socket }) => {
   const [isFollowing, setIsFollowing] = useState(
     currentUser.following.map((user: IUser) => user._id).includes(user?._id)
   );
+
+  const { isEdit, profileData, setProfileData, handleChange } =
+    useProfileInfoContext();
+
+  useEffect(() => {
+    setProfileData({
+      ...profileData,
+      city: user?.city!,
+      from: user?.from!,
+      relationship: user?.relationship!,
+    });
+  }, [user]);
 
   const [onlineFriends, setOnlineFriends] = useState<IUser[]>([]);
 
@@ -74,8 +87,10 @@ const Rightbar: React.FC<RightbarProps> = ({ user, socket }) => {
         console.log(error);
       }
     };
+
     fetchFriends();
   }, [user?._id, currentUser?.following]);
+
   const RightbarHome = () => {
     return (
       <>
@@ -120,27 +135,70 @@ const Rightbar: React.FC<RightbarProps> = ({ user, socket }) => {
             )}
           </button>
         )}
-        <h4 className="rightbar__title">User information</h4>
-        <div className="rightbar__info">
-          <div className="rightbar__item">
-            <span className="rightbar__key">City: </span>
-            <span className="rightbar__value">{user?.city}</span>
+        <h4 className="rightbar__title">
+          {isEdit ? 'Update user information' : 'User Information'}
+        </h4>
+        {!isEdit ? (
+          <div className="rightbar__info">
+            <div className="rightbar__item">
+              <span className="rightbar__key">City: </span>
+              <span className="rightbar__value">{user?.city}</span>
+            </div>
+            <div className="rightbar__item">
+              <span className="rightbar__key">From: </span>
+              <span className="rightbar__value">{user?.from}</span>
+            </div>
+            <div className="rightbar__item">
+              <span className="rightbar__key">Relationship: </span>
+              <span className="rightbar__value">
+                {user?.relationship === 1
+                  ? 'Single'
+                  : user?.relationship === 2
+                  ? 'Married'
+                  : 'Married with children'}
+              </span>
+            </div>
           </div>
-          <div className="rightbar__item">
-            <span className="rightbar__key">From: </span>
-            <span className="rightbar__value">{user?.from}</span>
+        ) : (
+          <div className="rightbar__edit-info">
+            <div className="rightbar__control">
+              <label htmlFor="city">City: </label>
+              <input
+                className="rightbar__edit-input"
+                type="text"
+                name="city"
+                id="city"
+                value={profileData.city}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="rightbar__control">
+              <label htmlFor="from">From: </label>
+              <input
+                className="rightbar__edit-input"
+                type="text"
+                name="from"
+                id="from"
+                value={profileData.from}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="rightbar__control">
+              <label htmlFor="relationship">Relationship: </label>
+              <select
+                className="rightbar__edit-input"
+                name="relationship"
+                id="relationship"
+                value={profileData.relationship}
+                onChange={handleChange}
+              >
+                <option value="1">Single</option>
+                <option value="2">Married</option>
+                <option value="3">Married with children</option>
+              </select>
+            </div>
           </div>
-          <div className="rightbar__item">
-            <span className="rightbar__key">Relationship: </span>
-            <span className="rightbar__value">
-              {user?.relationship === 1
-                ? 'Single'
-                : user?.relationship === 2
-                ? 'Married'
-                : 'Married with children'}
-            </span>
-          </div>
-        </div>
+        )}
         <h4 className="rightbar__title">User friends</h4>
         <div className="rightbar__followings">
           {friends.map((friend) => (

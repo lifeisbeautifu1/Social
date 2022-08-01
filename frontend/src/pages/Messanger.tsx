@@ -1,4 +1,4 @@
-import { Navbar, Conversation, Message, ChatOnline } from '../components';
+import { Conversation, Message, ChatOnline } from '../components';
 import { useAppSelector } from '../hooks';
 import { useDispatch } from 'react-redux';
 import React, { useEffect, useState, useRef } from 'react';
@@ -93,69 +93,66 @@ const Messanger: React.FC<MessagerProps> = ({ socket }) => {
     setNewMessage('');
   };
   return (
-    <>
-      <Navbar />
-      <div className="messanger">
-        <div className="messanger__menu">
-          <input
-            type="text"
-            placeholder="Search for friends"
-            className="messanger__input--menu"
-          />
-          {conversations &&
-            conversations.map((c) => (
-              <Conversation key={c._id} conversation={c} />
-            ))}
-        </div>
-        <div className="messanger__box">
-          {selectedConversation ? (
-            <>
-              <div className="messanger__box--top">
-                {messages &&
-                  messages.map((m) => (
-                    <Message
-                      key={m._id}
-                      message={m}
-                      own={m.sender._id === user._id}
-                    />
-                  ))}
-                <div ref={scrollRef}></div>
-              </div>
-              <form
-                className="messanger__box--bottom"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  handleSend();
-                }}
-              >
-                <textarea
-                  placeholder="Write something"
-                  value={newMessage}
-                  onChange={(e) => {
-                    setNewMessage(e.target.value);
-                  }}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') handleSend();
-                  }}
-                  className="messanger__input--message"
-                />
-                <button type="submit" className="messanger__btn--submit">
-                  Send
-                </button>
-              </form>{' '}
-            </>
-          ) : (
-            <span className="messanger__select-text">
-              Select chat to send messages
-            </span>
-          )}
-        </div>
-        <div className="messanger__online">
-          <ChatOnline onlineUsers={onlineUsers} />
-        </div>
+    <div className="messanger">
+      <div className="messanger__menu">
+        <input
+          type="text"
+          placeholder="Search for friends"
+          className="messanger__input--menu"
+        />
+        {conversations &&
+          conversations.map((c) => (
+            <Conversation key={c._id} conversation={c} />
+          ))}
       </div>
-    </>
+      <div className="messanger__box">
+        {selectedConversation ? (
+          <>
+            <div className="messanger__box--top">
+              {messages &&
+                messages.map((m) => (
+                  <Message
+                    key={m._id}
+                    message={m}
+                    own={m.sender._id === user._id}
+                  />
+                ))}
+              <div ref={scrollRef}></div>
+            </div>
+            <form
+              className="messanger__box--bottom"
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleSend();
+              }}
+            >
+              <textarea
+                placeholder="Write something"
+                value={newMessage}
+                onChange={(e) => {
+                  setNewMessage(e.target.value);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') handleSend();
+                }}
+                className="messanger__input--message"
+              />
+              <button type="submit" className="messanger__btn--submit">
+                Send
+              </button>
+            </form>{' '}
+          </>
+        ) : (
+          <span className="messanger__select-text">
+            Select chat to send messages
+          </span>
+        )}
+      </div>
+      <div className="messanger__online">
+        <ChatOnline onlineUsers={onlineUsers} />
+      </div>
+    </div>
   );
-};;;
+};
 
 export default Messanger;

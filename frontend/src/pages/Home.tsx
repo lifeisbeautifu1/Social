@@ -1,4 +1,4 @@
-import { Sidebar, Feed, Rightbar, Navbar } from '../components';
+import { Sidebar, Feed, Rightbar } from '../components';
 import { Socket } from 'socket.io-client';
 import { ServerToClientEvents, ClientToServerEvents } from '../interfaces';
 
@@ -11,14 +11,11 @@ type HomeProps = {
 
 const Home: React.FC<HomeProps> = ({ socket }) => {
   return (
-    <>
-      <Navbar />
-      <div className="home">
-        <Sidebar />
-        <Feed />
-        <Rightbar socket={socket} />
-      </div>
-    </>
+    <div className="home">
+      <Sidebar />
+      <Feed />
+      <Rightbar socket={socket} />
+    </div>
   );
 };
 

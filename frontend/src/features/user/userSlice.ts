@@ -30,6 +30,10 @@ export const userSlice = createSlice({
     setRefetchMessages: (state) => {
       state.refetchMessages = !state.refetchMessages;
     },
+    updateUser: (state, action) => {
+      state.user = action.payload;
+      localStorage.setItem('user', JSON.stringify(state.user));
+    },
   },
 });
 
@@ -39,6 +43,7 @@ export const {
   updateFollowing,
   setOnlineUsers,
   setRefetchMessages,
+  updateUser,
 } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -1,4 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
+
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+
+
 
 
 * {
@@ -8,7 +13,8 @@
 }
 
 body {
-  font-family: 'Roboto', sans-serif;
+  /* font-family: 'Nunito', sans-serif; */
+  font-family: 'Quicksand', sans-serif;
   line-height: 1.5;
 }
 
@@ -542,6 +548,29 @@ a {
   transform: scale(0.95)
 }
 
+.rightbar__edit-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  margin-bottom: 1.25rem;
+}
+
+.rightbar__control label {
+  font-weight: 500;
+  margin-right: 1rem;
+  color: #555;
+}
+
+.rightbar__edit-input {
+  border: none;
+  padding: 0.625rem;
+  border: 1px solid #ccc;
+  border-radius: 1.875rem;
+  font-family: inherit;
+  padding-right: 1rem;
+  outline: none;
+}
+
 /* Profile */
 
 .profile {
@@ -562,13 +591,13 @@ a {
   width: 100%;
 }
 
-.profile__cover--image {
+.profile__cover-wrapper {
+  position: relative;
   height: 250px;
   width: 100%;
-  object-fit: cover;
 }
-
-.profile__cover--user {
+.profile__cover-wrapper--secondary {
+  position: relative;
   width: 150px;
   height: 150px;
   border-radius: 50%;
@@ -578,7 +607,36 @@ a {
   right: 0;
   margin: auto;
   top: 150px;
-  border: 2px solid #fff;
+  overflow: hidden;
+   border: 2px solid #fff;
+}
+
+.profile__cover-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  cursor: pointer;
+}
+
+.profile__cover-label--secondary {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  cursor: pointer;
+}
+
+.profile__cover--image {
+  height: 250px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.profile__cover--user {
+  object-fit: cover;
 }
 
 .profile__info {
@@ -586,6 +644,35 @@ a {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  
+  position: relative;
+}
+
+.profile__info-edit {
+  display: block;
+  position: absolute;
+  cursor: pointer;
+  top: 0.625rem;
+  right: 1rem;
+  height: 1rem;
+  transition: all 0.3s;
+}
+
+.profile__info-edit:hover {
+  transform: scale(1.1);
+  color: blue;
+}
+
+.profile__tooltip {
+  position: absolute;
+  font-size: 0.75rem;
+  top : 2.5rem;
+  right: 0.625rem;
+  display: none;
+}
+
+.profile__info-edit:hover + div {
+  display: block;
 }
 
 .profile__name {
@@ -594,6 +681,33 @@ a {
 
 .profile__description {
   font-weight: 300;
+}
+
+.profile__info-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.profile__info-input {
+  width: 200px;
+  border: none;
+  outline: none;
+  padding: 0.625rem;
+  border-radius: 1.875rem;
+  border: 1px solid #ccc;
+}
+
+.profile__info-btn {
+  cursor: pointer;
+  padding: 0.625rem;
+  border: none;
+  border-radius: 0.3125rem;
+  font-family: inherit;
+  background-color: #1877f2;
+  font-weight: bold;
+  font-size: 1rem;
+  color: white;
 }
 
 /* Login */

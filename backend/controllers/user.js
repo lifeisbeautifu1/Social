@@ -1,7 +1,7 @@
 import User from '../models/user.js';
 import { BadRequestError } from '../errors/index.js';
 import { StatusCodes } from 'http-status-codes';
-import bcrypt from 'bcryptjs';
+// import bcrypt from 'bcryptjs';
 
 export const getUser = async (req, res) => {
   const user = await User.findById(req.params.id).populate(
@@ -13,18 +13,23 @@ export const getUser = async (req, res) => {
 };
 
 export const updateUser = async (req, res) => {
-  if (req.body.userId === req.params.id || req.body.isAdmin) {
-    if (req.body.password) {
-      const salt = await bcrypt.genSalt(10);
-      req.body.password = await bcrypt.hash(req.body.password, salt);
-    }
-    await User.findByIdAndUpdate(req.params.id, req.body);
-    return res
-      .status(StatusCodes.OK)
-      .json({ message: 'Account has been updated' });
-  } else {
-    throw new BadRequestError('You can only update your account');
-  }
+  // if (req.body.userId === req.params.id || req.body.isAdmin) {
+  //   if (req.body.password) {
+  //     const salt = await bcrypt.genSalt(10);
+  //     req.body.password = await bcrypt.hash(req.body.password, salt);
+  //   }
+  //   await User.findByIdAndUpdate(req.params.id, req.body);
+  //   return res
+  //     .status(StatusCodes.OK)
+  //     .json({ message: 'Account has been updated' });
+  // } else {
+  //   throw new BadRequestError('You can only update your account');
+  // }
+  const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  }).populate('following', 'profilePicture username');
+  res.status(StatusCodes.OK).json(updatedUser);
 };
 
 export const deleteUser = async (req, res) => {

@@ -32,7 +32,7 @@ const Navbar = () => {
             <span className="navbar__link">Home</span>
           </Link>
           <Link to="/">
-            <span className="navbar__link">Timeline</span>
+            <span className="navbar__link">Feed</span>
           </Link>
           {
             <span className="navbar__link" onClick={() => dispatch(logout())}>
