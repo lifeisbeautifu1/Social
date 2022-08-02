@@ -3,7 +3,6 @@ import { IUser } from '../interfaces';
 import { useAppSelector } from '../hooks';
 import { useDispatch } from 'react-redux';
 import { updateFollowing } from '../features/user/userSlice';
-import { IoMdAdd, IoIosRemove } from 'react-icons/io';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { Socket } from 'socket.io-client';
@@ -34,12 +33,14 @@ const Rightbar: React.FC<RightbarProps> = ({ user, socket }) => {
     useProfileInfoContext();
 
   useEffect(() => {
-    setProfileData({
-      ...profileData,
-      city: user?.city!,
-      from: user?.from!,
-      relationship: user?.relationship!,
-    });
+    if (setProfileData) {
+      setProfileData({
+        ...profileData,
+        city: user?.city!,
+        from: user?.from!,
+        relationship: user?.relationship!,
+      });
+    }
   }, [user]);
 
   const [onlineFriends, setOnlineFriends] = useState<IUser[]>([]);
@@ -123,17 +124,12 @@ const Rightbar: React.FC<RightbarProps> = ({ user, socket }) => {
     return (
       <>
         {currentUser._id !== user?._id && (
-          <button className="rightbar__button--follow" onClick={handleClick}>
-            {isFollowing ? (
-              <>
-                Unfollow <IoIosRemove />
-              </>
-            ) : (
-              <>
-                Follow <IoMdAdd />
-              </>
-            )}
-          </button>
+          <div className="rightbar__buttons">
+            <button className="rightbar__button" onClick={handleClick}>
+              {isFollowing ? <>Unfollow</> : <>Follow</>}
+            </button>
+            <button className="rightbar__button">Send Message</button>
+          </div>
         )}
         <h4 className="rightbar__title">
           {isEdit ? 'Update user information' : 'User Information'}

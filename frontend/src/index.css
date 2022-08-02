@@ -94,8 +94,15 @@ a {
 .navbar__link {
   color: #fff;
   cursor: pointer;
+  font-weight: 500;
   font-size: 0.875rem;
   margin-right: .625rem;
+  transition: all 0.3s;
+}
+
+
+.navbar__link.active {
+  font-weight: 700;
 }
 
 .navbar__profile {
@@ -119,6 +126,11 @@ a {
   align-items: center;
   position: relative;
   cursor: pointer;
+  transition: all 0.3s;
+}
+
+.navbar__icon:hover {
+  transform: translateY(-2px);
 }
 
 .navbar__badge {
@@ -191,7 +203,7 @@ a {
   width: 150px;
   border: none;
   outline: none;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   padding: 0.625rem;
   border-radius: 5px;
@@ -290,7 +302,7 @@ a {
 
 .share__text {
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .share__button {
@@ -368,7 +380,7 @@ a {
 }
 
 .post__name {
-  font-weight: 500;
+  font-weight: 600;
   font-size: 1rem;
   margin-inline: 0.625rem;
 }
@@ -451,7 +463,7 @@ a {
 
 .rightbar__title {
   font-size: 1.125rem;
-  font-weight: 500;
+  font-weight: 600;
   margin-bottom: 1.25rem;
 }
 
@@ -485,7 +497,7 @@ a {
 }
 
 .rightbar__name--friend {
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .rightbar__image--following {
@@ -504,7 +516,7 @@ a {
 }
 
 .rightbar__key {
-  font-weight: 500;
+  font-weight: 600;
   margin-right: 1rem;
   color: #555;
 }
@@ -529,22 +541,30 @@ a {
   cursor: pointer;
 }
 
-.rightbar__button--follow {
+.rightbar__buttons {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin: 1.875rem 0 0.625rem 0;
+}
+
+
+.rightbar__button {
   border: none;
   background-color: #1877f2;
   color: #fff;
-  margin: 1.875rem 0 0.625rem 0;
   cursor: pointer;
-  padding: 0.3125rem 0.625rem;
+  padding: 0.625rem 1rem;
   display: flex;
   align-items: center;
+  gap: 0.625rem;
   border-radius: 0.3125rem;
   transition: all 0.5s;
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: 600;
 }
 
-.rightbar__button--follow:hover {
+.rightbar__button:hover {
   transform: scale(0.95)
 }
 
@@ -556,7 +576,7 @@ a {
 }
 
 .rightbar__control label {
-  font-weight: 500;
+  font-weight: 600;
   margin-right: 1rem;
   color: #555;
 }
@@ -786,7 +806,7 @@ a {
 .login__button {
   color: #fff;
   background-color: #1775ee;
-  font-weight: 500;
+  font-weight: 600;
   border: none;
   font-size: 1.25rem;
   height: 50px;
@@ -956,7 +976,7 @@ a {
 .chat-online__friend {
   display: flex;
   align-items: center;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
 }
 

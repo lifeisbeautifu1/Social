@@ -25,12 +25,9 @@ type MessagerProps = {
 
 const Messanger: React.FC<MessagerProps> = ({ socket }) => {
   const dispatch = useDispatch();
-  const { user, onlineUsers, refetchMessages } = useAppSelector(
-    (state) => state.user
-  );
-  const { conversations, selectedConversation, messages } = useAppSelector(
-    (state) => state.conversations
-  );
+  const { user, onlineUsers } = useAppSelector((state) => state.user);
+  const { conversations, selectedConversation, messages, refetchMessages } =
+    useAppSelector((state) => state.conversations);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [newMessage, setNewMessage] = useState('');
   const [receiver, setReceiver] = useState<IUser | null>(null);

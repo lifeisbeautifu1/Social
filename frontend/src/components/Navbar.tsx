@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logout } from '../features/user/userSlice';
 import { useAppSelector } from '../hooks';
@@ -28,12 +28,12 @@ const Navbar = () => {
       </div>
       <div className="navbar__right">
         <div className="navbar__links">
-          <Link to={`/profile/${user?._id}`}>
-            <span className="navbar__link">Home</span>
-          </Link>
-          <Link to="/">
-            <span className="navbar__link">Feed</span>
-          </Link>
+          <NavLink to={`/profile/${user?._id}`} className="navbar__link">
+            Home
+          </NavLink>
+          <NavLink to="/" className="navbar__link">
+            Feed
+          </NavLink>
           {
             <span className="navbar__link" onClick={() => dispatch(logout())}>
               Logout

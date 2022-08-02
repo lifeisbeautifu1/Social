@@ -168,6 +168,7 @@ const Profile = () => {
                   />
                   <input
                     className="profile__info-input"
+                    name="desc"
                     type="text"
                     value={profileData.desc}
                     onChange={handleChange}
