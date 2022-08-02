@@ -9,6 +9,7 @@ export interface IUser {
   relationship?: 1 | 2 | 3;
   following?: IUser[];
   followers?: IUser[];
+  token: string;
 }
 
 export interface IPost {

@@ -40,13 +40,22 @@ const Profile = () => {
         const { data: imageData } = await axios.post('/upload', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${currentUser.token}`,
           },
         });
         const url = imageData.secure_url;
         try {
-          const { data } = await axios.patch('/users/' + currentUser._id, {
-            [photo]: url,
-          });
+          const { data } = await axios.patch(
+            '/users/' + currentUser._id,
+            {
+              [photo]: url,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${currentUser.token}`,
+              },
+            }
+          );
           dispatch(updateUser(data));
           setRefetch(!refetch);
         } catch (error) {
@@ -61,7 +70,11 @@ const Profile = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const { data } = await axios.get('/users/' + userId);
+        const { data } = await axios.get('/users/' + userId, {
+          headers: {
+            Authorization: `Bearer ${currentUser.token}`,
+          },
+        });
         setUser(data);
         setProfileData({
           ...profileData,
@@ -79,9 +92,17 @@ const Profile = () => {
   const handleUpdateSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const { data } = await axios.patch('/users/' + currentUser._id, {
-        ...profileData,
-      });
+      const { data } = await axios.patch(
+        '/users/' + currentUser._id,
+        {
+          ...profileData,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${currentUser.token}`,
+          },
+        }
+      );
       dispatch(updateUser(data));
       setIsEdit(false);
       setRefetch(!refetch);

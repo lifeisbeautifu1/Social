@@ -4,7 +4,7 @@ import { StatusCodes } from 'http-status-codes';
 
 export const createConversation = async (req, res) => {
   const conversation = await Conversation.create({
-    members: [req.body.senderId, req.body.receiverId],
+    members: [req.user.id, req.body.receiverId],
   }).populate('members', 'profilePicture username');
   res.status(StatusCodes.OK).json(conversation);
 };
@@ -12,7 +12,7 @@ export const createConversation = async (req, res) => {
 export const getConversations = async (req, res) => {
   const conversations = await Conversation.find({
     members: {
-      $in: [req.params.userId],
+      $in: [req.user.id],
     },
   }).populate('members', 'profilePicture username');
   res.status(StatusCodes.OK).json(conversations);

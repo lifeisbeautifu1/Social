@@ -61,8 +61,11 @@ const Rightbar: React.FC<RightbarProps> = ({ user, socket }) => {
     try {
       const { data } = await axios.patch(
         '/users/' + user?._id + (isFollowing ? '/unfollow' : '/follow'),
+        {},
         {
-          userId: currentUser._id,
+          headers: {
+            Authorization: `Bearer ${currentUser.token}`,
+          },
         }
       );
       dispatch(updateFollowing(data));
@@ -76,7 +79,11 @@ const Rightbar: React.FC<RightbarProps> = ({ user, socket }) => {
     const fetchFriends = async () => {
       try {
         if (user?._id) {
-          const { data } = await axios.get('/users/friends/' + user?._id);
+          const { data } = await axios.get('/users/friends/' + user?._id, {
+            headers: {
+              Authorization: `Bearer ${currentUser.token}`,
+            },
+          });
           setFriends(data);
           const followingId = currentUser.following.map(
             // @ts-ignore

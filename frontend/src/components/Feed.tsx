@@ -18,7 +18,12 @@ const Feed: React.FC<FeedProps> = ({ profile, userId }) => {
   useEffect(() => {
     const fetchPosts = async () => {
       const { data } = await axios.get(
-        profile ? `/posts/all/${userId}` : `/posts/timeline/${user?._id}`
+        profile ? `/posts/all/${userId}` : `/posts/timeline/${user?._id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       dispatch(init(data));
     };

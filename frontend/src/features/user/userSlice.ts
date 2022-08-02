@@ -27,7 +27,10 @@ export const userSlice = createSlice({
       state.onlineUsers = action.payload;
     },
     updateUser: (state, action) => {
-      state.user = action.payload;
+      state.user = {
+        ...action.payload,
+        token: state.user.token,
+      };
       localStorage.setItem('user', JSON.stringify(state.user));
     },
   },

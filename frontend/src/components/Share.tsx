@@ -40,7 +40,11 @@ const Share = () => {
       }
     }
     try {
-      const { data } = await axios.post('/posts', newPost);
+      const { data } = await axios.post('/posts', newPost, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
       setDesc('');
       setFile(null);
       dispatch(addPost(data));

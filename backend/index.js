@@ -9,7 +9,7 @@ import connectDB from './db/connectDB.js';
 
 import notFound from './middleware/notFound.js';
 import errorHandler from './middleware/error.js';
-
+import authMiddleware from './middleware/auth.js';
 
 import auth from './routes/auth.js';
 import user from './routes/users.js';
@@ -53,11 +53,11 @@ app.use(express.urlencoded({ extended: true }));
 // File uploading part ended
 
 app.use('/api/auth', auth);
-app.use('/api/users', user);
-app.use('/api/posts', post);
-app.use('/api/conversations', conversation);
-app.use('/api/messages', message);
-app.use('/api/upload', upload);
+app.use('/api/users', authMiddleware, user);
+app.use('/api/posts', authMiddleware, post);
+app.use('/api/conversations', authMiddleware, conversation);
+app.use('/api/messages', authMiddleware, message);
+app.use('/api/upload', authMiddleware, upload);
 
 app.use(errorHandler);
 app.use(notFound);

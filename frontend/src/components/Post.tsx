@@ -23,7 +23,11 @@ const Post: React.FC<PostProps> = ({ post }) => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const { data } = await axios.get(`/users/${post?.userId}`);
+      const { data } = await axios.get(`/users/${post?.userId}`, {
+        headers: {
+          Authorization: `Bearer ${currentUser.token}`,
+        },
+      });
       setUser(data);
     };
     fetchUser();
@@ -33,9 +37,15 @@ const Post: React.FC<PostProps> = ({ post }) => {
     setLikes(isLiked ? likes - 1 : likes + 1);
     setIsLiked((prevState) => !prevState);
     try {
-      axios.post(`/posts/${post._id}/like`, {
-        userId: currentUser._id,
-      });
+      axios.post(
+        `/posts/${post._id}/like`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${currentUser.token}`,
+          },
+        }
+      );
     } catch (error) {
       console.log(error);
     }

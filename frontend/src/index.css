@@ -416,7 +416,14 @@ a {
   height: 1.5rem;
   margin-right: 0.3125rem;
   cursor: pointer;
+  transition: all 0.3s;
 }
+
+.post__like:hover {
+  transform: scale(1.1);
+}
+
+
 
 .post__counter {
   font-size: .9375rem;

@@ -42,7 +42,11 @@ const Messanger: React.FC<MessagerProps> = ({ socket }) => {
   useEffect(() => {
     const fetchConversations = async () => {
       try {
-        const { data } = await axios.get('/conversations/' + user?._id);
+        const { data } = await axios.get('/conversations', {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        });
         dispatch(setConversations(data));
       } catch (error) {
         console.log(error);
@@ -56,7 +60,12 @@ const Messanger: React.FC<MessagerProps> = ({ socket }) => {
       try {
         if (selectedConversation) {
           const { data } = await axios.get(
-            '/messages/' + selectedConversation?._id
+            '/messages/' + selectedConversation?._id,
+            {
+              headers: {
+                Authorization: `Bearer ${user.token}`,
+              },
+            }
           );
           dispatch(setMessages(data));
           setReceiver(
@@ -76,11 +85,19 @@ const Messanger: React.FC<MessagerProps> = ({ socket }) => {
 
   const handleSend = async () => {
     try {
-      const { data } = await axios.post('/messages/', {
-        sender: user._id,
-        text: newMessage,
-        conversationId: selectedConversation?._id,
-      });
+      const { data } = await axios.post(
+        '/messages/',
+        {
+          sender: user._id,
+          text: newMessage,
+          conversationId: selectedConversation?._id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
       dispatch(addMessage(data));
 
       socket?.current?.emit('sendMessage', receiver?._id!);

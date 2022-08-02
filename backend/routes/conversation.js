@@ -9,6 +9,6 @@ import {
 
 router.post('/', createConversation);
 
-router.get('/:userId', getConversations);
+router.get('/', getConversations);
 
 export default router;

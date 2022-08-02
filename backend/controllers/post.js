@@ -5,7 +5,7 @@ import { StatusCodes } from 'http-status-codes';
 
 export const updatePost = async (req, res) => {
   let post = await Post.findById(req.params.id);
-  if (post.userId === req.body.userId) {
+  if (post.userId === req.user.id) {
     post = await post.updateOne(req.body, {
       new: true,
       runValidators: true,
@@ -25,7 +25,7 @@ export const createPost = async (req, res) => {
 
 export const deletePost = async (req, res) => {
   const post = await Post.findById(req.params.id);
-  if (post.userId === req.body.userId) {
+  if (post.userId === req.user.id) {
     await post.deleteOne();
     return res
       .status(StatusCodes.OK)
@@ -37,11 +37,11 @@ export const deletePost = async (req, res) => {
 
 export const likePost = async (req, res) => {
   const post = await Post.findById(req.params.id);
-  if (!post.likes.includes(req.body.userId)) {
-    await post.updateOne({ $push: { likes: req.body.userId } });
+  if (!post.likes.includes(req.user.id)) {
+    await post.updateOne({ $push: { likes: req.user.id } });
     res.status(StatusCodes.OK).json({ message: 'The post has been liked!' });
   } else {
-    await post.updateOne({ $pull: { likes: req.body.userId } });
+    await post.updateOne({ $pull: { likes: req.user.id } });
     res.status(StatusCodes.OK).json({ message: 'The post has been disliked!' });
   }
 };

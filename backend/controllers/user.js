@@ -33,7 +33,7 @@ export const updateUser = async (req, res) => {
 };
 
 export const deleteUser = async (req, res) => {
-  if (req.body.userId === req.params.id || req.body.isAdmin) {
+  if (req.user.id === req.params.id || req.body.isAdmin) {
     await User.findByIdAndDelete(req.params.id);
     return res
       .status(StatusCodes.OK)
@@ -44,11 +44,11 @@ export const deleteUser = async (req, res) => {
 };
 
 export const followUser = async (req, res) => {
-  if (req.body.userId !== req.params.id) {
+  if (req.user.id !== req.params.id) {
     const user = await User.findById(req.params.id);
-    let currentUser = await User.findById(req.body.userId);
-    if (!user.followers.includes(req.body.userId)) {
-      await user.updateOne({ $push: { followers: req.body.userId } });
+    let currentUser = await User.findById(req.user.id);
+    if (!user.followers.includes(req.user.id)) {
+      await user.updateOne({ $push: { followers: req.user.id } });
       currentUser = await User.findByIdAndUpdate(
         currentUser._id,
         {
@@ -69,11 +69,11 @@ export const followUser = async (req, res) => {
 };
 
 export const unfollowUser = async (req, res) => {
-  if (req.body.userId !== req.params.id) {
+  if (req.user.id !== req.params.id) {
     const user = await User.findById(req.params.id);
-    let currentUser = await User.findById(req.body.userId);
-    if (user.followers.includes(req.body.userId)) {
-      await user.updateOne({ $pull: { followers: req.body.userId } });
+    let currentUser = await User.findById(req.user.id);
+    if (user.followers.includes(req.user.id)) {
+      await user.updateOne({ $pull: { followers: req.user.id } });
       currentUser = await User.findByIdAndUpdate(
         currentUser._id,
         {

@@ -17,7 +17,12 @@ export const register = async (req, res) => {
 
   const user = await User.create(req.body);
 
-  res.status(StatusCodes.OK).json(user);
+  const token = user.createJWT();
+
+  res.status(StatusCodes.OK).json({
+    ...user._doc,
+    token,
+  });
 };
 
 export const login = async (req, res) => {
@@ -39,5 +44,10 @@ export const login = async (req, res) => {
 
   if (!isPasswordMatch) throw new BadRequestError('Incorrect password');
 
-  res.status(StatusCodes.OK).json(user);
+  const token = user.createJWT();
+
+  res.status(StatusCodes.OK).json({
+    ...user._doc,
+    token,
+  });
 };
