@@ -695,11 +695,60 @@ a {
   font-size: 0.75rem;
   top : 2.5rem;
   right: 0.625rem;
-  display: none;
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  background-color: rgb(242,242,232);
+  visibility: hidden;
 }
 
-.profile__info-edit:hover + div {
-  display: block;
+.navbar__icon--messages:hover .tooltip--messages,
+.navbar__icon--notifications:hover .tooltip--messages {
+  visibility: visible;
+}
+
+.navbar__icon--notifications:hover .tooltip--messages::after {
+  left: 60%;
+}
+
+.tooltip--messages {
+  position: absolute;
+  font-size: 0.75rem;
+  bottom: -2.5rem;
+  right: -1.5rem;
+  color: #555;
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  background-color: rgb(242,242,232);
+  visibility: hidden;
+}
+
+.tooltip--messages::after {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  margin-left: -5px;
+  border-bottom: 5px solid rgb(242 242 232 / 1);
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+}
+
+.profile__tooltip::after {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: 70%;
+  margin-left: -5px;
+  /* border-width: 5px;
+  border-style: solid; */
+  border-left: 5px solid transparent;
+	border-right: 5px solid transparent;
+	border-bottom: 5px solid rgb(243 244 246 / 1);
+
+}
+
+.profile__info-edit:hover + span {
+  visibility: visible;
 }
 
 .profile__name {

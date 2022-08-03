@@ -46,13 +46,15 @@ const Navbar = () => {
             <span className="navbar__badge">1</span>
           </div>
           <Link to="/messanger">
-            <div className="navbar__icon">
+            <div className="navbar__icon navbar__icon--messages">
               <BsFillChatLeftTextFill />
+              <span className="tooltip--messages">Messages</span>
               <span className="navbar__badge">1</span>
             </div>
           </Link>
-          <div className="navbar__icon">
+          <div className="navbar__icon navbar__icon--notifications">
             <IoIosNotifications />
+            <span className="tooltip--messages">Notifications</span>
             <span className="navbar__badge">1</span>
           </div>
         </div>

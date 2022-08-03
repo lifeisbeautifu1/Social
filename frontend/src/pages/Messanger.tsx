@@ -53,7 +53,7 @@ const Messanger: React.FC<MessagerProps> = ({ socket }) => {
       }
     };
     fetchConversations();
-  }, [dispatch, user._id]);
+  }, [dispatch, user._id, user.token]);
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -77,7 +77,7 @@ const Messanger: React.FC<MessagerProps> = ({ socket }) => {
       }
     };
     fetchMessages();
-  }, [selectedConversation, dispatch, refetchMessages, user._id]);
+  }, [selectedConversation, dispatch, refetchMessages, user._id, user.token]);
 
   useEffect(() => {
     scrollRef?.current?.scrollIntoView({ behavior: 'smooth' });

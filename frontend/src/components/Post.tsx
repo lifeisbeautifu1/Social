@@ -31,7 +31,7 @@ const Post: React.FC<PostProps> = ({ post }) => {
       setUser(data);
     };
     fetchUser();
-  }, [post.userId]);
+  }, [post.userId, currentUser.token]);
 
   const handleLike = () => {
     setLikes(isLiked ? likes - 1 : likes + 1);

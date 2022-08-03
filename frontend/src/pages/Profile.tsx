@@ -87,7 +87,7 @@ const Profile = () => {
       }
     };
     fetchUser();
-  }, [userId, navigate, refetch]);
+  }, [userId, navigate, refetch, currentUser.token]);
 
   const handleUpdateSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -203,7 +203,7 @@ const Profile = () => {
                     className="profile__info-edit"
                     onClick={() => setIsEdit(true)}
                   />
-                  <div className="profile__tooltip">Edit Profile</div>
+                  <span className="profile__tooltip">Edit Profile</span>
                 </>
               )}
             </div>

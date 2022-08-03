@@ -1,9 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
+import jwtDecode from 'jwt-decode';
+
+let user = null;
+
+if (localStorage.getItem('user')) {
+  user = JSON.parse(localStorage.getItem('user')!);
+  // @ts-ignore
+  if (jwtDecode(user.token).exp * 1000 < Date.now()) {
+    user = null;
+  }
+}
 
 const initialState = {
-  user: localStorage.getItem('user')
-    ? JSON.parse(localStorage.getItem('user')!)
-    : null,
+  user,
   onlineUsers: [],
 };
 
