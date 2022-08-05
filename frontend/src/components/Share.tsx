@@ -17,7 +17,7 @@ const Share = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const newPost = {
-      userId: user._id,
+      author: user._id,
       desc,
       img: '',
     };
@@ -32,6 +32,7 @@ const Share = () => {
         const { data: imageData } = await axios.post('/upload', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
+            authorization: `Bearer ${user?.token}`,
           },
         });
         newPost.img = imageData.secure_url;
@@ -86,7 +87,7 @@ const Share = () => {
         )}
         <form className="share__bottom" onSubmit={handleSubmit}>
           <div className="share__options">
-            <label htmlFor="file" className="share__option">
+            <label htmlFor="post" className="share__option">
               <GoFileMedia
                 style={{ color: 'tomato' }}
                 className="share__icon"
@@ -94,7 +95,7 @@ const Share = () => {
               <span className="share__text">Photo or Video</span>
               <input
                 type="file"
-                id="file"
+                id="post"
                 style={{ display: 'none' }}
                 accept=".png,.jpeg,.jpg"
                 // @ts-ignore
@@ -120,7 +121,9 @@ const Share = () => {
               <span className="share__text">Feelings</span>
             </div>
           </div>
-          <button className="share__button">Share</button>
+          <button type="submit" className="share__button">
+            Share
+          </button>
         </form>
       </div>
     </div>

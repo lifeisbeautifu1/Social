@@ -36,9 +36,11 @@ const Feed: React.FC<FeedProps> = ({ profile, userId }) => {
         {!profile && <Share />}
         {user._id === userId && <Share />}
 
-        {posts.map((p) => (
-          <Post key={p?._id} post={p} />
-        ))}
+        <div className="posts__container">
+          {posts.map((p) => (
+            <Post key={p?._id} post={p} />
+          ))}
+        </div>
       </div>
     </div>
   );

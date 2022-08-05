@@ -8,6 +8,7 @@ export { default as Online } from './Online';
 export { default as Friend } from './Friend';
 export { default as Conversation } from './Conversation';
 export { default as Message } from './Message';
+export { default as Comment } from './Comment';
 export { default as ChatOnline } from './ChatOnline';
 export { default as SharedLayout } from './SharedLayout';
 export { default as RightbarFriend } from './RightbarFriend';

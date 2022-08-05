@@ -1,7 +1,9 @@
-import { BsThreeDotsVertical } from 'react-icons/bs';
-import React, { useState, useEffect } from 'react';
+import { FaTrash } from 'react-icons/fa';
+import React, { useState } from 'react';
 import { useAppSelector } from '../hooks';
-import { IPost, IUser } from '../interfaces';
+import { IPost } from '../interfaces';
+import { useDispatch } from 'react-redux';
+import { deletePost, updatePost } from '../features/posts/postsSlice';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { formatDistanceToNow } from 'date-fns';
@@ -9,11 +11,12 @@ import axios from 'axios';
 
 type PostProps = {
   post: IPost;
+  callback?: () => void;
 };
 
-const Post: React.FC<PostProps> = ({ post }) => {
+const Post: React.FC<PostProps> = ({ post, callback }) => {
   const [likes, setLikes] = useState(post.likes?.length!);
-  const [user, setUser] = useState({} as IUser);
+  const dispatch = useDispatch();
 
   const { user: currentUser } = useAppSelector((state) => state.user);
 
@@ -21,23 +24,11 @@ const Post: React.FC<PostProps> = ({ post }) => {
     post?.likes?.includes(currentUser._id)
   );
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const { data } = await axios.get(`/users/${post?.userId}`, {
-        headers: {
-          Authorization: `Bearer ${currentUser.token}`,
-        },
-      });
-      setUser(data);
-    };
-    fetchUser();
-  }, [post.userId, currentUser.token]);
-
-  const handleLike = () => {
+  const handleLike = async () => {
     setLikes(isLiked ? likes - 1 : likes + 1);
     setIsLiked((prevState) => !prevState);
     try {
-      axios.post(
+      const { data } = await axios.post(
         `/posts/${post._id}/like`,
         {},
         {
@@ -46,10 +37,12 @@ const Post: React.FC<PostProps> = ({ post }) => {
           },
         }
       );
+      dispatch(updatePost(data));
     } catch (error) {
       console.log(error);
     }
   };
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.5 }}
@@ -60,27 +53,34 @@ const Post: React.FC<PostProps> = ({ post }) => {
         <div className="post__wrapper">
           <div className="post__top">
             <div className="post__top--left">
-              <Link to={`/profile/${user?._id}`}>
+              <Link to={`/profile/${post?.author?._id}`}>
                 <img
                   src={
-                    user?.profilePicture
-                      ? user?.profilePicture
+                    post.author?.profilePicture
+                      ? post.author?.profilePicture
                       : 'https://res.cloudinary.com/dxf7urmsh/image/upload/v1659264459/noAvatar_lyqqt7.png'
                   }
                   alt="profile"
                   className="post__image--left"
                 />
               </Link>
-              <span className="post__name">{user?.username}</span>
+              <span className="post__name">{post.author?.username}</span>
               <span className="post__date">
                 {formatDistanceToNow(new Date(post?.createdAt!), {
                   addSuffix: true,
                 })}
               </span>
             </div>
-            {currentUser._id === post.userId && (
-              <div className="post__top--right">
-                <BsThreeDotsVertical />
+            {currentUser._id === post.author._id && (
+              <div
+                className="post__top--right"
+                onClick={() => {
+                  // @ts-ignore
+                  dispatch(deletePost(post));
+                  callback && callback();
+                }}
+              >
+                <FaTrash />
               </div>
             )}
           </div>
@@ -107,7 +107,10 @@ const Post: React.FC<PostProps> = ({ post }) => {
               <span className="post__counter">{likes} people like it</span>
             </div>
             <div className="post__bottom--right">
-              <span className="post__comment"> comments</span>
+              <Link to={`/post/${post._id}`} className="post__comment">
+                {' '}
+                {post.comments.length} comments
+              </Link>
             </div>
           </div>
         </div>

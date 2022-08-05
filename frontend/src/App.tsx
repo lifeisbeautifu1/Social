@@ -1,4 +1,4 @@
-import { Home, Profile, Login, Messanger } from './pages';
+import { Home, Profile, Login, Messanger, SinglePost } from './pages';
 import { ProtectedRoute, SharedLayout } from './components';
 import { Routes, Route } from 'react-router-dom';
 import { io, Socket } from 'socket.io-client';
@@ -39,6 +39,14 @@ const App = () => {
           element={
             <ProtectedRoute>
               <Home socket={socket} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/post/:id"
+          element={
+            <ProtectedRoute>
+              <SinglePost socket={socket} />
             </ProtectedRoute>
           }
         />

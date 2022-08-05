@@ -1,36 +1,31 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { login } from '../features/user/userSlice';
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
+import { IError } from '../interfaces';
 import axios from 'axios';
 
 const Login = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const passwordRef = useRef({} as HTMLInputElement);
+  const [error, setError] = useState<IError>({} as IError);
   const [formState, setFormState] = useState({
     username: '',
     password: '',
-    password2: '',
+    confirmPassword: '',
     email: '',
   });
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (
-      pathname === '/register' &&
-      formState.password !== formState.password2
-    ) {
-      passwordRef.current.setCustomValidity('Passwords do not match!');
-      return;
-    }
+
     try {
       const { data } = await axios.post('/auth' + pathname, formState);
       dispatch(login(data));
       navigate('/');
-    } catch (error) {
-      // @ts-ignore
-      console.log(error.message);
+      setError({});
+    } catch (error: any) {
+      setError(error?.response?.data?.errors);
     }
   };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,22 +48,27 @@ const Login = () => {
             <div className="login__right">
               <form className="login__box" onSubmit={handleSubmit}>
                 <input
-                  type="email"
-                  name="email"
-                  placeholder="Email"
+                  type="text"
+                  name="username"
+                  placeholder="Username"
                   required
-                  value={formState.email}
+                  value={formState.username}
                   onChange={handleChange}
-                  className="login__input"
+                  className={`login__input ${
+                    error?.username && 'login__input--invalid'
+                  }`}
                 />
                 <input
                   type="password"
                   name="password"
                   placeholder="Password"
+                  minLength={8}
                   value={formState.password}
                   onChange={handleChange}
                   required
-                  className="login__input"
+                  className={`login__input ${
+                    error?.password && 'login__input--invalid'
+                  }`}
                 />
                 <button className="login__button">Login</button>
                 <span className="login__forgot">Forgot password?</span>
@@ -78,6 +78,15 @@ const Login = () => {
                 >
                   Register Account
                 </button>
+                <div>
+                  <ul className="login__errors">
+                    {error &&
+                      Object.keys(error).length > 0 &&
+                      Object.values(error).map((msg) => (
+                        <li key={msg}>{msg}</li>
+                      ))}
+                  </ul>
+                </div>
               </form>
             </div>
           </div>
@@ -104,7 +113,9 @@ const Login = () => {
                   placeholder="Name"
                   value={formState.username}
                   onChange={handleChange}
-                  className="login__input"
+                  className={`login__input ${
+                    error.username && 'login__input--invalid'
+                  }`}
                 />
                 <input
                   type="email"
@@ -113,28 +124,33 @@ const Login = () => {
                   placeholder="Email"
                   value={formState.email}
                   onChange={handleChange}
-                  className="login__input"
+                  className={`login__input ${
+                    error.email && 'login__input--invalid'
+                  }`}
                 />
                 <input
                   type="password"
                   name="password"
                   required
-                  ref={passwordRef}
                   placeholder="Password"
                   minLength={8}
                   value={formState.password}
                   onChange={handleChange}
-                  className="login__input"
+                  className={`login__input ${
+                    error.password && 'login__input--invalid'
+                  }`}
                 />
                 <input
                   type="password"
-                  name="password2"
+                  name="confirmPassword"
                   required
                   placeholder="Password again"
                   minLength={8}
-                  value={formState.password2}
+                  value={formState.confirmPassword}
                   onChange={handleChange}
-                  className="login__input"
+                  className={`login__input ${
+                    error.confirmPassword && 'login__input--invalid'
+                  }`}
                 />
                 <button className="login__button">Sign Up</button>
                 <button
@@ -143,6 +159,15 @@ const Login = () => {
                 >
                   Log into account
                 </button>
+                <div>
+                  <ul className="login__errors">
+                    {error &&
+                      Object.keys(error).length > 0 &&
+                      Object.values(error).map((msg) => (
+                        <li key={msg}>{msg}</li>
+                      ))}
+                  </ul>
+                </div>
               </div>
             </form>
           </div>

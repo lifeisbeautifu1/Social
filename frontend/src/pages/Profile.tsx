@@ -129,10 +129,10 @@ const Profile = () => {
                   }
                 />
                 {currentUser._id === userId && (
-                  <label htmlFor="file" className="profile__cover-label">
+                  <label htmlFor="cover" className="profile__cover-label">
                     <input
                       type="file"
-                      id="file"
+                      id="cover"
                       style={{ display: 'none' }}
                       accept=".png,.jpeg,.jpg"
                       // @ts-ignore
@@ -153,12 +153,12 @@ const Profile = () => {
                 />
                 {currentUser._id === userId && (
                   <label
-                    htmlFor="file2"
+                    htmlFor="profile"
                     className="profile__cover-label--secondary"
                   >
                     <input
                       type="file"
-                      id="file2"
+                      id="profile"
                       style={{ display: 'none' }}
                       accept=".png,.jpeg,.jpg"
                       // @ts-ignore
