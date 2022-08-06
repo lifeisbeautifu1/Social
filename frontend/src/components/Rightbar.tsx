@@ -170,6 +170,7 @@ const Rightbar: React.FC<RightbarProps> = ({ user, socket }) => {
                 className="rightbar__edit-input"
                 type="text"
                 name="city"
+                placeholder={'City ...'}
                 id="city"
                 value={profileData.city}
                 onChange={handleChange}
@@ -182,6 +183,7 @@ const Rightbar: React.FC<RightbarProps> = ({ user, socket }) => {
                 type="text"
                 name="from"
                 id="from"
+                placeholder={'Where from ...'}
                 value={profileData.from}
                 onChange={handleChange}
               />

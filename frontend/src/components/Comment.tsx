@@ -1,4 +1,5 @@
 import { IComment } from '../interfaces';
+import { Link } from 'react-router-dom';
 import { FaTrash } from 'react-icons/fa';
 import { formatDistanceToNow } from 'date-fns';
 import { updateSelectedPost } from '../features/posts/postsSlice';
@@ -30,11 +31,18 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
   return (
     <div className="comment">
       <div className="comment__top">
-        <div className="comment__info">
+        <Link className="comment__info" to={`/profile/${comment.author._id}`}>
           <div className="comment__image">
-            <img src={comment.author.profilePicture} alt="" />
+            <img
+              src={
+                comment.author.profilePicture
+                  ? comment.author.profilePicture
+                  : 'https://res.cloudinary.com/dxf7urmsh/image/upload/v1659264459/noAvatar_lyqqt7.png'
+              }
+              alt=""
+            />
           </div>
-          <div>
+          <div className="comment__info-author">
             <h1 className="comment__author">{comment.author.username}</h1>
             <h2 className="comment__time">
               {formatDistanceToNow(new Date(comment.createdAt), {
@@ -42,7 +50,7 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
               })}
             </h2>
           </div>
-        </div>
+        </Link>
         {user._id === comment.author._id && (
           <span className="comment__delete" onClick={handleDelete}>
             <FaTrash />

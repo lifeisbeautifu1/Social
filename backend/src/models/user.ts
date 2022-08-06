@@ -29,15 +29,15 @@ const UserSchema = new mongoose.Schema(
     },
     desc: {
       type: String,
-      default: 'About...',
+      default: '',
     },
     city: {
       type: String,
-      default: 'City Name...',
+      default: 'City ...',
     },
     from: {
       type: String,
-      default: 'Where from...',
+      default: 'From ...',
     },
     relationship: {
       type: Number,

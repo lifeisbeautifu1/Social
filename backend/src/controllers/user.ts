@@ -121,3 +121,12 @@ export const getFriends = async (req: Request, res: Response) => {
     res.status(StatusCodes.OK).json(user.following);
   }
 };
+
+export const searchUsers = async (req: Request, res: Response) => {
+  const { search } = req.query;
+  const username = new RegExp(search as string, 'i');
+  const users = await User.find({
+    username,
+  }).find({ _id: { $ne: req.user.id } });
+  res.status(StatusCodes.OK).json(users);
+};

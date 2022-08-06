@@ -9,11 +9,15 @@ import {
   deleteUser,
   followUser,
   unfollowUser,
+  searchUsers,
 } from '../controllers/user';
+
+router.get('/find', searchUsers);
 
 router.get('/:id', getUser);
 
 router.get('/friends/:id', getFriends);
+
 
 router.patch('/:id', updateUser);
 

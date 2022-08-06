@@ -7,6 +7,7 @@ import {
 import { AiFillPlayCircle } from 'react-icons/ai';
 import { HiUserGroup } from 'react-icons/hi';
 import { FiHelpCircle } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
 import { useAppSelector } from '../hooks';
 
 import { Friend } from './';
@@ -17,14 +18,18 @@ const Sidebar = () => {
     <div className="sidebar">
       <div className="sidebar__wrapper">
         <ul className="sidebar__list">
-          <li className="sidebar__item">
-            <MdRssFeed className="sidebar__icon" />
-            <span className="sidebar__text">Feed</span>
-          </li>
-          <li className="sidebar__item">
-            <BsFillChatLeftTextFill className="sidebar__icon" />
-            <span className="sidebar__text">Chat</span>
-          </li>
+          <Link to="/">
+            <li className="sidebar__item">
+              <MdRssFeed className="sidebar__icon" />
+              <span className="sidebar__text">Feed</span>
+            </li>
+          </Link>
+          <Link to="/messanger">
+            <li className="sidebar__item">
+              <BsFillChatLeftTextFill className="sidebar__icon" />
+              <span className="sidebar__text">Chat</span>
+            </li>
+          </Link>
           <li className="sidebar__item">
             <AiFillPlayCircle className="sidebar__icon" />
             <span className="sidebar__text">Videos</span>
