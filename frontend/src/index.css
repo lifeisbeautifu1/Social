@@ -202,6 +202,8 @@ a {
 }
 
 
+
+
 /* Home */
 
 .home {
@@ -300,11 +302,19 @@ a {
 
 .feed {
   flex: 5.25;
+  
+}
+
+.feed.scrollable {
+  height: calc(100vh - 50px);
+  overflow-y: scroll;
 }
 
 
+
+
 .feed__wrapper {
-  padding: 1.25rem;
+  padding: 1.25rem;  
 }
 
 
@@ -529,7 +539,7 @@ a {
 }
 
 .rightbar__wrapper {
-  padding: 1.25rem 1.25rem 0 0;
+  padding: 1.25rem 1.25rem 0 1.25rem;
 }
 
 .rightbar__birthday {
@@ -788,8 +798,10 @@ a {
   visibility: hidden;
 }
 
+
 .navbar__icon--messages:hover .tooltip--messages,
-.navbar__icon--notifications:hover .tooltip--messages {
+.navbar__icon--notifications:hover .tooltip--messages,
+.navbar__icon--friends:hover .tooltip--messages {
   visibility: visible;
 }
 
@@ -797,10 +809,14 @@ a {
   left: 60%;
 }
 
+.navbar__icon--friends:hover .tooltip--messages::after {
+  left: 40%;
+}
+
 .tooltip--messages {
   position: absolute;
   font-size: 0.75rem;
-  bottom: -2.5rem;
+  bottom: -2.75rem;
   right: -1.5rem;
   color: #555;
   border-radius: 0.25rem;

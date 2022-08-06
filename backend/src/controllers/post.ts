@@ -82,8 +82,11 @@ export const getPost = async (req: Request, res: Response) => {
 };
 
 export const getPosts = async (req: Request, res: Response) => {
-  const currentUser = await User.findById(req.params.userId);
-  const userPosts = await Post.find({ author: req.params.userId }).populate(
+  const page = Number(req.query.page) || 1;
+  const limit = Number(req.query.limit) || 5;
+  const skip = (page - 1) * limit;
+  const currentUser = await User.findById(req.query.userId);
+  const userPosts = await Post.find({ author: req.query.userId }).populate(
     'author',
     'username profilePicture'
   );
@@ -93,11 +96,19 @@ export const getPosts = async (req: Request, res: Response) => {
     },
   }).populate('author', 'username profilePicture');
   // @ts-ignore
-  const allPosts = userPosts.concat(...friendPosts).sort((p1, p2) => {
-    // @ts-ignore
-    return new Date(p2.createdAt).getTime() - new Date(p1.createdAt).getTime();
+  let allPosts = userPosts.concat(...friendPosts).sort((p1, p2) => {
+    return (
+      // @ts-ignore
+      new Date(p2.createdAt).getTime() - new Date(p1.createdAt).getTime()
+    );
   });
-  res.status(StatusCodes.OK).json(allPosts);
+  const numberOfPages = Math.ceil(allPosts.length / limit);
+  allPosts = allPosts.slice(skip).slice(0, limit);
+
+  res.status(StatusCodes.OK).json({
+    posts: allPosts,
+    numberOfPages,
+  });
 };
 
 export const getUsersPosts = async (req: Request, res: Response) => {

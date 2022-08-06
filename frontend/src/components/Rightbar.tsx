@@ -2,6 +2,7 @@ import { Online, RightbarFriend } from './';
 import { IUser } from '../interfaces';
 import { useAppSelector } from '../hooks';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { updateFollowing } from '../features/user/userSlice';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
@@ -22,8 +23,26 @@ const Rightbar: React.FC<RightbarProps> = ({ user, socket }) => {
   const { user: currentUser, onlineUsers } = useAppSelector(
     (state) => state.user
   );
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
+
+  const createConversation = async () => {
+    try {
+      await axios.post(
+        '/conversations/' + user?._id,
+        {},
+        {
+          headers: {
+            authorization: `Bearer ${currentUser.token}`,
+          },
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+    navigate('/messanger');
+  };
 
   const [isFollowing, setIsFollowing] = useState(
     currentUser.following.map((user: IUser) => user._id).includes(user?._id)
@@ -97,7 +116,7 @@ const Rightbar: React.FC<RightbarProps> = ({ user, socket }) => {
     };
 
     fetchFriends();
-  }, [user?._id, currentUser?.following]);
+  }, [user?._id, currentUser?.following, currentUser.token]);
 
   const RightbarHome = () => {
     return (
@@ -135,7 +154,9 @@ const Rightbar: React.FC<RightbarProps> = ({ user, socket }) => {
             <button className="rightbar__button" onClick={handleClick}>
               {isFollowing ? <>Unfollow</> : <>Follow</>}
             </button>
-            <button className="rightbar__button">Send Message</button>
+            <button className="rightbar__button" onClick={createConversation}>
+              Send Message
+            </button>
           </div>
         )}
         <h4 className="rightbar__title">

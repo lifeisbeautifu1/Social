@@ -5,11 +5,13 @@ import { IPost } from '../../interfaces';
 type initialStateType = {
   posts: IPost[];
   selectedPost: IPost | null;
+  numberOfPages: number;
 };
 
 const initialState: initialStateType = {
   posts: [],
   selectedPost: null,
+  numberOfPages: 1,
 };
 
 export const deletePost = createAsyncThunk(
@@ -34,11 +36,17 @@ export const postsSlice = createSlice({
   name: 'posts',
   initialState,
   reducers: {
+    setNumberOfPages: (state, action: PayloadAction<number>) => {
+      state.numberOfPages = action.payload;
+    },
     init: (state, action: PayloadAction<IPost[]>) => {
       state.posts = action.payload;
     },
     addPost: (state, action: PayloadAction<IPost>) => {
       state.posts.unshift(action.payload);
+    },
+    addPosts: (state, action: PayloadAction<IPost[]>) => {
+      state.posts = [...state.posts, ...action.payload];
     },
     updatePost: (state, action: PayloadAction<IPost>) => {
       state.posts = state.posts.map((post) => {
@@ -67,7 +75,13 @@ export const postsSlice = createSlice({
   },
 });
 
-export const { init, addPost, updatePost, updateSelectedPost } =
-  postsSlice.actions;
+export const {
+  init,
+  addPost,
+  updatePost,
+  updateSelectedPost,
+  addPosts,
+  setNumberOfPages,
+} = postsSlice.actions;
 
 export default postsSlice.reducer;

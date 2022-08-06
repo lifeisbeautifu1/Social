@@ -6,6 +6,7 @@ import {
   ServerToClientEvents,
   ClientToServerEvents,
   IUser,
+  IConversation,
 } from '../interfaces';
 import { setOnlineUsers } from '../features/user/userSlice';
 import {
@@ -31,6 +32,11 @@ const Messanger: React.FC<MessagerProps> = ({ socket }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [newMessage, setNewMessage] = useState('');
   const [receiver, setReceiver] = useState<IUser | null>(null);
+  const [filter, setFilter] = useState('');
+
+  const [filteredConversations, setFilteredConversations] = useState<
+    IConversation[]
+  >([]);
 
   useEffect(() => {
     socket?.current?.emit('addUser', user._id);
@@ -48,6 +54,7 @@ const Messanger: React.FC<MessagerProps> = ({ socket }) => {
           },
         });
         dispatch(setConversations(data));
+        setFilteredConversations(data);
       } catch (error) {
         console.log(error);
       }
@@ -106,16 +113,41 @@ const Messanger: React.FC<MessagerProps> = ({ socket }) => {
     }
     setNewMessage('');
   };
+  const handleFilter = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (filter) {
+      setFilteredConversations(
+        conversations.filter((c) => {
+          const otherUser = c.members.find(
+            (member) => member.username !== user.username
+          );
+          console.log(otherUser);
+          if (otherUser) {
+            const exp = new RegExp(filter, 'i');
+
+            return otherUser.username.match(exp);
+          }
+          return true;
+        })
+      );
+    } else {
+      setFilteredConversations(conversations);
+    }
+  };
   return (
     <div className="messanger">
       <div className="messanger__menu">
-        <input
-          type="text"
-          placeholder="Search for friends"
-          className="messanger__input--menu"
-        />
-        {conversations &&
-          conversations.map((c) => (
+        <form onSubmit={handleFilter}>
+          <input
+            type="text"
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+            placeholder="Search for friends"
+            className="messanger__input--menu"
+          />
+        </form>
+        {filteredConversations &&
+          filteredConversations.map((c) => (
             <Conversation key={c._id} conversation={c} />
           ))}
       </div>

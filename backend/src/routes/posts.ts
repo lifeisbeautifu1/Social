@@ -16,9 +16,9 @@ import {
 
 router.post('/', createPost);
 
-router.get('/:id', getPost);
+router.get('/timeline', getPosts);
 
-router.get('/timeline/:userId', getPosts);
+router.get('/:id', getPost);
 
 router.get('/all/:userId', getUsersPosts);
 

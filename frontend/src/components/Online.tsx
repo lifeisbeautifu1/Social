@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { IUser } from '../interfaces';
 
 type OnlineProps = {
@@ -7,7 +8,7 @@ type OnlineProps = {
 
 const Online: React.FC<OnlineProps> = ({ user }) => {
   return (
-    <li className="rightbar__item--friend">
+    <Link to={`/profile/${user._id}`} className="rightbar__item--friend">
       <div className="rightbar__imageContainer">
         <img
           src={
@@ -21,7 +22,7 @@ const Online: React.FC<OnlineProps> = ({ user }) => {
         <span className="rightbar__online"></span>
       </div>
       <span className="rightbar__name--friend">{user?.username}</span>
-    </li>
+    </Link>
   );
 };
 

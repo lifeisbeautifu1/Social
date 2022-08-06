@@ -7,7 +7,7 @@ import {
   getConversations,
 } from '../controllers/conversation';
 
-router.post('/', createConversation);
+router.post('/:id', createConversation);
 
 router.get('/', getConversations);
 

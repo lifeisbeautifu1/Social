@@ -13,7 +13,7 @@ const Home: React.FC<HomeProps> = ({ socket }) => {
   return (
     <div className="home">
       <Sidebar />
-      <Feed />
+      <Feed scrollable />
       <Rightbar socket={socket} />
     </div>
   );

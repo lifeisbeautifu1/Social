@@ -65,6 +65,7 @@ const Navbar = () => {
                         ? user.profilePicture
                         : 'https://res.cloudinary.com/dxf7urmsh/image/upload/v1659264459/noAvatar_lyqqt7.png'
                     }
+                    alt="user"
                   />
                 </div>
                 <div className="navbar__user-info">
@@ -91,8 +92,9 @@ const Navbar = () => {
           }
         </div>
         <div className="navbar__icons">
-          <div className="navbar__icon">
+          <div className="navbar__icon navbar__icon--friends">
             <BsFillPersonFill />
+            <span className="tooltip--messages">Friends</span>
             <span className="navbar__badge">1</span>
           </div>
           <Link to="/messanger">
