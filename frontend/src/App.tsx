@@ -11,8 +11,9 @@ import { useAppSelector } from './hooks';
 import { ServerToClientEvents, ClientToServerEvents } from './interfaces';
 import { ProfileInfoContextProvider } from './context';
 import axios from 'axios';
-
+// import useSound from 'use-sound';
 // @ts-ignore
+import sound from './sounds/notification.mp3';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -33,7 +34,9 @@ const App = () => {
         dispatch(setRefetchMessages());
       });
       socket?.current?.on('getRequest', () => {
+        const audio = new Audio(sound);
         dispatch(setRefetch());
+        audio.play();
       });
     } else {
       socket?.current?.disconnect();

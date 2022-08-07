@@ -50,10 +50,10 @@ const Rightbar: React.FC<RightbarProps> = ({ user, socket }) => {
 
   const hide =
     currentUser?.friendRequests
-      .map((fr: IFriendRequest) => fr.from._id)
+      .map((fr: IFriendRequest) => fr.from?._id)
       .includes(user?._id) ||
     currentUser?.friendRequests
-      .map((fr: IFriendRequest) => fr.from._id)
+      .map((fr: IFriendRequest) => fr.from?._id)
       .includes(currentUser?._id);
 
   const { isEdit, profileData, setProfileData, handleChange } =
