@@ -3,7 +3,7 @@ import { ProtectedRoute, SharedLayout } from './components';
 import { Routes, Route } from 'react-router-dom';
 import { io, Socket } from 'socket.io-client';
 import { useRef, useEffect } from 'react';
-import { login } from './features/user/userSlice';
+import { login, setRefetch } from './features/user/userSlice';
 import { useDispatch } from 'react-redux';
 import { setOnlineUsers } from './features/user/userSlice';
 import { setRefetchMessages } from './features/conversations/conversationsSlice';
@@ -12,13 +12,15 @@ import { ServerToClientEvents, ClientToServerEvents } from './interfaces';
 import { ProfileInfoContextProvider } from './context';
 import axios from 'axios';
 
+// @ts-ignore
+
 const App = () => {
   const dispatch = useDispatch();
   const socket = useRef<Socket<
     ServerToClientEvents,
     ClientToServerEvents
   > | null>(null);
-  const { user } = useAppSelector((state) => state.user);
+  const { user, refetch } = useAppSelector((state) => state.user);
 
   useEffect(() => {
     if (user) {
@@ -29,6 +31,9 @@ const App = () => {
       });
       socket?.current?.on('getMessage', () => {
         dispatch(setRefetchMessages());
+      });
+      socket?.current?.on('getRequest', () => {
+        dispatch(setRefetch());
       });
     } else {
       socket?.current?.disconnect();
@@ -49,11 +54,11 @@ const App = () => {
       }
     };
     updateUser();
-  }, []);
+  }, [refetch]);
 
   return (
     <Routes>
-      <Route path="/" element={<SharedLayout />}>
+      <Route path="/" element={<SharedLayout socket={socket} />}>
         <Route
           index
           element={
@@ -75,7 +80,7 @@ const App = () => {
           element={
             <ProtectedRoute>
               <ProfileInfoContextProvider>
-                <Profile />
+                <Profile socket={socket} />
               </ProfileInfoContextProvider>
             </ProtectedRoute>
           }

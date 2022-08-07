@@ -68,10 +68,12 @@ export interface IError {
 export interface ServerToClientEvents {
   getUsers: (users: IOnlineUser[]) => void;
   getMessage: () => void;
+  getRequest: () => void;
 }
 
 export interface ClientToServerEvents {
   addUser: (userId: string) => void;
   sendMessage: (receiverId: string) => void;
+  sendRequest: (receiverId: string) => void;
 }
 

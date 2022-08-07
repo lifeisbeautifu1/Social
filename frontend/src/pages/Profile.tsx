@@ -8,8 +8,17 @@ import { FiEdit2 } from 'react-icons/fi';
 import axios from 'axios';
 import { updateUser } from '../features/user/userSlice';
 import { useProfileInfoContext } from '../context';
+import { Socket } from 'socket.io-client';
+import { ServerToClientEvents, ClientToServerEvents } from '../interfaces';
 
-const Profile = () => {
+type ProfileProps = {
+  socket: React.MutableRefObject<Socket<
+    ServerToClientEvents,
+    ClientToServerEvents
+  > | null>;
+};
+
+const Profile: React.FC<ProfileProps> = ({ socket }) => {
   const { userId } = useParams();
   const { user: currentUser } = useAppSelector((state) => state.user);
   const [user, setUser] = useState({} as IUser);
@@ -210,7 +219,7 @@ const Profile = () => {
           </div>
           <div className="profile__right--bottom">
             <Feed profile userId={userId} />
-            <Rightbar user={user} />
+            <Rightbar user={user} socket={socket} />
           </div>
         </div>
       </div>

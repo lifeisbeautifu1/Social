@@ -19,6 +19,7 @@ if (localStorage.getItem('user')) {
 
 const initialState = {
   user,
+  refetch: false,
   onlineUsers: [],
   friendRequests: [],
 };
@@ -41,6 +42,9 @@ export const userSlice = createSlice({
     },
     setOnlineUsers: (state, action) => {
       state.onlineUsers = action.payload;
+    },
+    setRefetch: (state) => {
+      state.refetch = !state.refetch;
     },
     updateUser: (state, action) => {
       state.user = {
@@ -79,6 +83,7 @@ export const {
   removeFriendRequest,
   removeFriend,
   addFriend,
+  setRefetch,
 } = userSlice.actions;
 
 export default userSlice.reducer;

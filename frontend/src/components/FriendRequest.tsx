@@ -6,12 +6,18 @@ import { MdOutlineCancel } from 'react-icons/md';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import axios from 'axios';
 import { addFriend, removeFriendRequest } from '../features/user/userSlice';
+import { Socket } from 'socket.io-client';
+import { ServerToClientEvents, ClientToServerEvents } from '../interfaces';
 
 interface FriendRequestProps {
   fr: IFriendRequest;
+  socket?: React.MutableRefObject<Socket<
+    ServerToClientEvents,
+    ClientToServerEvents
+  > | null>;
 }
 
-const FriendRequest: React.FC<FriendRequestProps> = ({ fr }) => {
+const FriendRequest: React.FC<FriendRequestProps> = ({ fr, socket }) => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.user);
   const closeFriendRequest = async (status: string) => {
@@ -44,6 +50,7 @@ const FriendRequest: React.FC<FriendRequestProps> = ({ fr }) => {
         );
         dispatch(removeFriendRequest(fr));
       }
+      socket?.current?.emit('sendRequest', fr.from._id);
     } catch (error) {
       console.log(error);
     }

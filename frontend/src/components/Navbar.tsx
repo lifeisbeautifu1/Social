@@ -8,8 +8,17 @@ import { IFriendRequest, IUser } from '../interfaces';
 import axios from 'axios';
 import { useState } from 'react';
 import { FriendRequest } from './';
+import { Socket } from 'socket.io-client';
+import { ServerToClientEvents, ClientToServerEvents } from '../interfaces';
 
-const Navbar = () => {
+type NavbarProps = {
+  socket?: React.MutableRefObject<Socket<
+    ServerToClientEvents,
+    ClientToServerEvents
+  > | null>;
+};
+
+const Navbar: React.FC<NavbarProps> = ({ socket }) => {
   const { user, friendRequests } = useAppSelector((state) => state.user);
   const [search, setSearch] = useState('');
   const [users, setUsers] = useState<IUser[]>([]);
@@ -102,7 +111,7 @@ const Navbar = () => {
                   Pending requests ({friendRequests?.length})
                 </div>
                 {friendRequests?.map((fr: IFriendRequest) => (
-                  <FriendRequest key={fr._id} fr={fr} />
+                  <FriendRequest socket={socket} key={fr._id} fr={fr} />
                 ))}
               </div>
             )}

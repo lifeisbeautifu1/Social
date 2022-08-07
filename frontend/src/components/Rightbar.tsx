@@ -108,6 +108,7 @@ const Rightbar: React.FC<RightbarProps> = ({ user, socket }) => {
         );
         dispatch(addFriendRequest(data));
       }
+      socket?.current?.emit('sendRequest', user?._id!);
     } catch (error) {
       console.log(error);
     }
