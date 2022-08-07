@@ -1,5 +1,5 @@
 import { Navigate } from 'react-router-dom';
-import { useAppSelector } from '../hooks';
+import { useAppSelector } from '../app/hooks';
 
 type ProtectedRouteProps = {
   children?: React.ReactNode;

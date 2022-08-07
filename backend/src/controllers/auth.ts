@@ -63,9 +63,19 @@ export const login = async (req: Request, res: Response) => {
   const { errors, valid } = validateLoginInput(username, password);
 
   if (valid) {
-    const user = await User.findOne({
+    let user = await User.findOne({
       username,
-    }).populate('following', 'username profilePicture');
+    })
+      .populate('friends', 'username profilePicture')
+      .populate('friendRequests', 'from to createdAt');
+    user = await User.populate(user, {
+      path: 'friendRequests.from',
+      select: 'username profilePicture',
+    });
+    user = await User.populate(user, {
+      path: 'friendRequests.to',
+      select: 'username profilePicture',
+    });
 
     if (!user) {
       return res.status(StatusCodes.BAD_REQUEST).json({

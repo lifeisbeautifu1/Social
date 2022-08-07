@@ -13,3 +13,4 @@ export { default as ChatOnline } from './ChatOnline';
 export { default as SharedLayout } from './SharedLayout';
 export { default as RightbarFriend } from './RightbarFriend';
 export { default as ProtectedRoute } from './ProtectedRoute';
+export { default as FriendRequest } from './FriendRequest';

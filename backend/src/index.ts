@@ -15,6 +15,7 @@ import post from './routes/posts';
 import conversation from './routes/conversation';
 import message from './routes/message';
 import upload from './routes/upload';
+import friendRequests from './routes/friendRequests';
 
 const app = express();
 
@@ -56,6 +57,7 @@ app.use('/api/posts', authMiddleware, post);
 app.use('/api/conversations', authMiddleware, conversation);
 app.use('/api/messages', authMiddleware, message);
 app.use('/api/upload', authMiddleware, upload);
+app.use('/api/friendRequests', authMiddleware, friendRequests);
 
 app.use(errorHandler);
 app.use(notFound);

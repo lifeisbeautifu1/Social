@@ -4,12 +4,13 @@ import { useAppSelector, useAppDispatch } from '../app/hooks';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { BsFillPersonFill, BsFillChatLeftTextFill } from 'react-icons/bs';
 import { IoIosNotifications } from 'react-icons/io';
-import { IUser } from '../interfaces';
+import { IFriendRequest, IUser } from '../interfaces';
 import axios from 'axios';
 import { useState } from 'react';
+import { FriendRequest } from './';
 
 const Navbar = () => {
-  const { user } = useAppSelector((state) => state.user);
+  const { user, friendRequests } = useAppSelector((state) => state.user);
   const [search, setSearch] = useState('');
   const [users, setUsers] = useState<IUser[]>([]);
   const dispatch = useAppDispatch();
@@ -31,6 +32,7 @@ const Navbar = () => {
     }
     setSearch('');
   };
+
   return (
     <div className="navbar">
       <div className="navbar__left">
@@ -94,8 +96,19 @@ const Navbar = () => {
         <div className="navbar__icons">
           <div className="navbar__icon navbar__icon--friends">
             <BsFillPersonFill />
-            <span className="tooltip--messages">Friends</span>
-            <span className="navbar__badge">1</span>
+            {friendRequests?.length > 0 && (
+              <div className="navbar__friend-requests">
+                <div className="navbar__friend-requests-header">
+                  Pending requests ({friendRequests?.length})
+                </div>
+                {friendRequests?.map((fr: IFriendRequest) => (
+                  <FriendRequest key={fr._id} fr={fr} />
+                ))}
+              </div>
+            )}
+            {friendRequests?.length > 0 && (
+              <span className="navbar__badge">{friendRequests?.length}</span>
+            )}
           </div>
           <Link to="/messanger">
             <div className="navbar__icon navbar__icon--messages">

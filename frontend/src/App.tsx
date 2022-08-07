@@ -3,12 +3,14 @@ import { ProtectedRoute, SharedLayout } from './components';
 import { Routes, Route } from 'react-router-dom';
 import { io, Socket } from 'socket.io-client';
 import { useRef, useEffect } from 'react';
+import { login } from './features/user/userSlice';
 import { useDispatch } from 'react-redux';
 import { setOnlineUsers } from './features/user/userSlice';
 import { setRefetchMessages } from './features/conversations/conversationsSlice';
 import { useAppSelector } from './hooks';
 import { ServerToClientEvents, ClientToServerEvents } from './interfaces';
 import { ProfileInfoContextProvider } from './context';
+import axios from 'axios';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -17,10 +19,11 @@ const App = () => {
     ClientToServerEvents
   > | null>(null);
   const { user } = useAppSelector((state) => state.user);
+
   useEffect(() => {
     if (user) {
       socket.current = io('http://localhost:8900');
-      socket?.current?.emit('addUser', user._id);
+      socket?.current?.emit('addUser', user?._id);
       socket?.current?.on('getUsers', (users) => {
         dispatch(setOnlineUsers(users));
       });
@@ -31,6 +34,23 @@ const App = () => {
       socket?.current?.disconnect();
     }
   }, [user, dispatch]);
+
+  useEffect(() => {
+    const updateUser = async () => {
+      try {
+        const { data } = await axios.get('/users/me', {
+          headers: {
+            authorization: `Bearer ${user.token}`,
+          },
+        });
+        dispatch(login({ ...data, token: user.token }));
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    updateUser();
+  }, []);
+
   return (
     <Routes>
       <Route path="/" element={<SharedLayout />}>

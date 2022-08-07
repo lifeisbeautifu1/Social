@@ -1,9 +1,9 @@
 import { Online, RightbarFriend } from './';
-import { IUser } from '../interfaces';
+import { IFriendRequest, IUser } from '../interfaces';
 import { useAppSelector } from '../hooks';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { updateFollowing } from '../features/user/userSlice';
+import { addFriendRequest, removeFriend } from '../features/user/userSlice';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { Socket } from 'socket.io-client';
@@ -34,7 +34,7 @@ const Rightbar: React.FC<RightbarProps> = ({ user, socket }) => {
         {},
         {
           headers: {
-            authorization: `Bearer ${currentUser.token}`,
+            authorization: `Bearer ${currentUser?.token}`,
           },
         }
       );
@@ -44,9 +44,17 @@ const Rightbar: React.FC<RightbarProps> = ({ user, socket }) => {
     navigate('/messanger');
   };
 
-  const [isFollowing, setIsFollowing] = useState(
-    currentUser.following.map((user: IUser) => user._id).includes(user?._id)
+  const [isFriend, setIsFriend] = useState(
+    currentUser?.friends?.map((user: IUser) => user._id).includes(user?._id)
   );
+
+  const hide =
+    currentUser?.friendRequests
+      .map((fr: IFriendRequest) => fr.from._id)
+      .includes(user?._id) ||
+    currentUser?.friendRequests
+      .map((fr: IFriendRequest) => fr.from._id)
+      .includes(currentUser?._id);
 
   const { isEdit, profileData, setProfileData, handleChange } =
     useProfileInfoContext();
@@ -66,29 +74,40 @@ const Rightbar: React.FC<RightbarProps> = ({ user, socket }) => {
 
   useEffect(() => {
     // @ts-ignore
-    const onlineUsersId = onlineUsers.map((onlineUser) => onlineUser.userId);
+    const onlineUsersId = onlineUsers?.map((onlineUser) => onlineUser.userId);
 
     setOnlineFriends(
       // @ts-ignore
-      currentUser?.following.filter((friend) =>
+      currentUser?.friends.filter((friend) =>
         onlineUsersId.includes(friend._id)
       )
     );
-  }, [onlineUsers, currentUser.following]);
+  }, [onlineUsers, currentUser?.friends]);
 
   const handleClick = async () => {
     try {
-      const { data } = await axios.patch(
-        '/users/' + user?._id + (isFollowing ? '/unfollow' : '/follow'),
-        {},
-        {
+      if (isFriend) {
+        await axios.delete(`/users/${user?._id}/friend`, {
           headers: {
-            Authorization: `Bearer ${currentUser.token}`,
+            Authorization: `Bearer ${currentUser?.token}`,
           },
-        }
-      );
-      dispatch(updateFollowing(data));
-      setIsFollowing(!isFollowing);
+        });
+        dispatch(removeFriend(user!));
+        setIsFriend(!isFriend);
+      } else {
+        const { data } = await axios.post(
+          '/friendRequests/',
+          {
+            to: user?._id,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${currentUser?.token}`,
+            },
+          }
+        );
+        dispatch(addFriendRequest(data));
+      }
     } catch (error) {
       console.log(error);
     }
@@ -100,15 +119,15 @@ const Rightbar: React.FC<RightbarProps> = ({ user, socket }) => {
         if (user?._id) {
           const { data } = await axios.get('/users/friends/' + user?._id, {
             headers: {
-              Authorization: `Bearer ${currentUser.token}`,
+              Authorization: `Bearer ${currentUser?.token}`,
             },
           });
           setFriends(data);
-          const followingId = currentUser.following.map(
+          const friendsId = currentUser?.friends?.map(
             // @ts-ignore
-            (following) => following._id
+            (friend) => friend._id
           );
-          setIsFollowing(followingId.includes(user._id));
+          setIsFriend(friendsId?.includes(user._id));
         }
       } catch (error) {
         console.log(error);
@@ -116,7 +135,7 @@ const Rightbar: React.FC<RightbarProps> = ({ user, socket }) => {
     };
 
     fetchFriends();
-  }, [user?._id, currentUser?.following, currentUser.token]);
+  }, [user?._id, currentUser?.friends, currentUser?.token]);
 
   const RightbarHome = () => {
     return (
@@ -138,7 +157,7 @@ const Rightbar: React.FC<RightbarProps> = ({ user, socket }) => {
         />
         <h4 className="rightbar__title">Online Friends</h4>
         <ul className="rightbar__list--friends">
-          {onlineFriends.map((u) => (
+          {onlineFriends?.map((u) => (
             <Online key={u?._id} user={u} />
           ))}
         </ul>
@@ -149,11 +168,13 @@ const Rightbar: React.FC<RightbarProps> = ({ user, socket }) => {
   const RightbarProfile = () => {
     return (
       <>
-        {currentUser._id !== user?._id && (
+        {currentUser?._id !== user?._id && (
           <div className="rightbar__buttons">
-            <button className="rightbar__button" onClick={handleClick}>
-              {isFollowing ? <>Unfollow</> : <>Follow</>}
-            </button>
+            {!hide && (
+              <button className="rightbar__button" onClick={handleClick}>
+                {isFriend ? 'Remove Friend' : 'Add Friend'}
+              </button>
+            )}
             <button className="rightbar__button" onClick={createConversation}>
               Send Message
             </button>
@@ -227,7 +248,7 @@ const Rightbar: React.FC<RightbarProps> = ({ user, socket }) => {
         )}
         <h4 className="rightbar__title">User friends</h4>
         <div className="rightbar__followings">
-          {friends.map((friend) => (
+          {friends?.map((friend) => (
             <RightbarFriend key={friend._id} friend={friend} />
           ))}
         </div>

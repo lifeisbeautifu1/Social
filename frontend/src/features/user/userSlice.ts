@@ -1,12 +1,18 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { IFriendRequest, IUser } from '../../interfaces';
 import jwtDecode from 'jwt-decode';
 
-let user = null;
+let user: any = null;
 
 if (localStorage.getItem('user')) {
-  user = JSON.parse(localStorage.getItem('user')!);
-  // @ts-ignore
-  if (jwtDecode(user.token).exp * 1000 < Date.now()) {
+  const userInfo = JSON.parse(localStorage.getItem('user')!);
+  // console.log(token);
+  const info: any = jwtDecode(userInfo.token);
+  // console.log(info);
+  // console.log(info.exp * 1000 > Date.now());
+  if (info.exp * 1000 > Date.now()) {
+    user = userInfo;
+  } else {
     user = null;
   }
 }
@@ -14,6 +20,7 @@ if (localStorage.getItem('user')) {
 const initialState = {
   user,
   onlineUsers: [],
+  friendRequests: [],
 };
 
 export const userSlice = createSlice({
@@ -22,15 +29,15 @@ export const userSlice = createSlice({
   reducers: {
     login: (state, action) => {
       state.user = action.payload;
+      state.friendRequests = action.payload.friendRequests?.filter(
+        (fr: IFriendRequest) => fr.from._id !== action.payload._id
+      );
       localStorage.setItem('user', JSON.stringify(action.payload));
     },
     logout: (state) => {
       state.user = null;
-      localStorage.removeItem('user');
-    },
-    updateFollowing: (state, action) => {
-      state.user.following = action.payload;
-      localStorage.setItem('user', JSON.stringify(state.user));
+      state.friendRequests = [];
+      localStorage.removeItem('token');
     },
     setOnlineUsers: (state, action) => {
       state.onlineUsers = action.payload;
@@ -38,14 +45,40 @@ export const userSlice = createSlice({
     updateUser: (state, action) => {
       state.user = {
         ...action.payload,
-        token: state.user.token,
+        token: state.user?.token,
       };
-      localStorage.setItem('user', JSON.stringify(state.user));
+    },
+    addFriendRequest: (state, action: PayloadAction<IFriendRequest>) => {
+      state.user?.friendRequests.push(action.payload);
+    },
+    removeFriendRequest: (state, action: PayloadAction<IFriendRequest>) => {
+      state.user.friendRequests = state.user?.friendRequests.filter(
+        (fr: IFriendRequest) => fr._id !== action.payload._id
+      );
+      state.friendRequests = state.friendRequests?.filter(
+        (fr: IFriendRequest) => fr._id !== action.payload._id
+      );
+    },
+    addFriend: (state, action: PayloadAction<IUser>) => {
+      state.user?.friends.push(action.payload);
+    },
+    removeFriend: (state, action: PayloadAction<IUser>) => {
+      state.user.friends = state.user?.friends.filter(
+        (user: IUser) => user._id !== action.payload._id
+      );
     },
   },
 });
 
-export const { login, logout, updateFollowing, setOnlineUsers, updateUser } =
-  userSlice.actions;
+export const {
+  login,
+  logout,
+  setOnlineUsers,
+  updateUser,
+  addFriendRequest,
+  removeFriendRequest,
+  removeFriend,
+  addFriend,
+} = userSlice.actions;
 
 export default userSlice.reducer;

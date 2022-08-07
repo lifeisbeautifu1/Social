@@ -92,7 +92,7 @@ export const getPosts = async (req: Request, res: Response) => {
   );
   const friendPosts = await Post.find({
     author: {
-      $in: currentUser?.following,
+      $in: currentUser?.friends,
     },
   }).populate('author', 'username profilePicture');
   // @ts-ignore

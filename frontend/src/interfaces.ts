@@ -9,7 +9,16 @@ export interface IUser {
   relationship: 1 | 2 | 3;
   following: IUser[];
   followers: IUser[];
+  friends: IUser[];
+  friendRequests: IFriendRequest[];
   token: string;
+}
+
+export interface IFriendRequest {
+  _id: string;
+  from: IUser;
+  to: IUser;
+  createdAt: string;
 }
 
 export interface IPost {
