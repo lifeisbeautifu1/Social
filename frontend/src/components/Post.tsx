@@ -43,6 +43,23 @@ const Post: React.FC<PostProps> = ({ post, callback }) => {
     }
   };
 
+  const handleDelete = async () => {
+    if (post) {
+      if (post.img) {
+        //@ts-ignore
+        const id = post.img.split('/').at(-1).split('.')[0];
+        await axios.delete('/upload/' + id, {
+          headers: {
+            Authorization: `Bearer ${currentUser.token}`,
+          },
+        });
+      }
+    }
+    // @ts-ignore
+    dispatch(deletePost(post));
+    callback && callback();
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.5 }}
@@ -72,14 +89,7 @@ const Post: React.FC<PostProps> = ({ post, callback }) => {
               </span>
             </div>
             {currentUser._id === post.author._id && (
-              <div
-                className="post__top--right"
-                onClick={() => {
-                  // @ts-ignore
-                  dispatch(deletePost(post));
-                  callback && callback();
-                }}
-              >
+              <div className="post__top--right" onClick={handleDelete}>
                 <FaTrash />
               </div>
             )}

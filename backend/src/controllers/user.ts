@@ -33,7 +33,7 @@ export const updateUser = async (req: Request, res: Response) => {
   const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
-  }).populate('following', 'profilePicture username');
+  }).populate('friends', 'profilePicture username');
   res.status(StatusCodes.OK).json(updatedUser);
 };
 

@@ -46,6 +46,14 @@ const Profile: React.FC<ProfileProps> = ({ socket }) => {
       const formData = new FormData();
       formData.append('file', file);
       try {
+        if (currentUser.profilePicture) {
+          const id = currentUser.profilePicture.split('/').at(-1).split('.')[0];
+          await axios.delete('/upload/' + id, {
+            headers: {
+              Authorization: `Bearer ${currentUser.token}`,
+            },
+          });
+        }
         const { data: imageData } = await axios.post('/upload', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
