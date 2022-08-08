@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IConversation, IMessage } from '../../interfaces';
 
 type initialStateType = {
@@ -6,6 +6,7 @@ type initialStateType = {
   selectedConversation: IConversation | null;
   messages: IMessage[];
   refetchMessages: boolean;
+  isTyping: boolean;
 };
 
 const initialState: initialStateType = {
@@ -13,6 +14,7 @@ const initialState: initialStateType = {
   selectedConversation: null,
   messages: [],
   refetchMessages: false,
+  isTyping: false,
 };
 
 export const conversationsSlice = createSlice({
@@ -21,6 +23,9 @@ export const conversationsSlice = createSlice({
   reducers: {
     setConversations: (state, action) => {
       state.conversations = action.payload;
+    },
+    setIsTyping: (state, action: PayloadAction<boolean>) => {
+      state.isTyping = action.payload;
     },
     selectConversation: (state, action) => {
       state.selectedConversation = action.payload;
@@ -43,6 +48,7 @@ export const {
   setMessages,
   addMessage,
   setRefetchMessages,
+  setIsTyping,
 } = conversationsSlice.actions;
 
 export default conversationsSlice.reducer;

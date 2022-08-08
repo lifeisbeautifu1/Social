@@ -6,7 +6,10 @@ import { useRef, useEffect } from 'react';
 import { login, setRefetch } from './features/user/userSlice';
 import { useDispatch } from 'react-redux';
 import { setOnlineUsers } from './features/user/userSlice';
-import { setRefetchMessages } from './features/conversations/conversationsSlice';
+import {
+  setRefetchMessages,
+  setIsTyping,
+} from './features/conversations/conversationsSlice';
 import { useAppSelector } from './hooks';
 import { ServerToClientEvents, ClientToServerEvents } from './interfaces';
 import { ProfileInfoContextProvider } from './context';
@@ -38,6 +41,8 @@ const App = () => {
         dispatch(setRefetch());
         audio.play();
       });
+      socket?.current?.on('typing', () => dispatch(setIsTyping(true)));
+      socket?.current?.on('stopTyping', () => dispatch(setIsTyping(false)));
     } else {
       socket?.current?.disconnect();
     }

@@ -16,6 +16,17 @@ import {
 } from '../features/conversations/conversationsSlice';
 import axios from 'axios';
 import { Socket } from 'socket.io-client';
+import animationData from '../animations/typing.json';
+import Lottie from 'react-lottie';
+
+const defaultOptions = {
+  loop: true,
+  autoplay: true,
+  animationData,
+  rendererSettings: {
+    preserveAspectRatio: 'xMidYMid slice',
+  },
+};
 
 type MessagerProps = {
   socket: React.MutableRefObject<Socket<
@@ -27,12 +38,20 @@ type MessagerProps = {
 const Messanger: React.FC<MessagerProps> = ({ socket }) => {
   const dispatch = useDispatch();
   const { user, onlineUsers } = useAppSelector((state) => state.user);
-  const { conversations, selectedConversation, messages, refetchMessages } =
-    useAppSelector((state) => state.conversations);
+  const {
+    conversations,
+    selectedConversation,
+    messages,
+    refetchMessages,
+    isTyping,
+  } = useAppSelector((state) => state.conversations);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [newMessage, setNewMessage] = useState('');
   const [receiver, setReceiver] = useState<IUser | null>(null);
   const [filter, setFilter] = useState('');
+
+  const [typing, setTyping] = useState(false);
+  // const [isTyping, setIsTyping] = useState(false);
 
   const [filteredConversations, setFilteredConversations] = useState<
     IConversation[]
@@ -108,6 +127,7 @@ const Messanger: React.FC<MessagerProps> = ({ socket }) => {
       dispatch(addMessage(data));
 
       socket?.current?.emit('sendMessage', receiver?._id!);
+      socket?.current?.emit('stopTyping', receiver?._id!);
     } catch (error) {
       console.log(error);
     }
@@ -133,6 +153,23 @@ const Messanger: React.FC<MessagerProps> = ({ socket }) => {
     } else {
       setFilteredConversations(conversations);
     }
+  };
+  const handleTyping = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setNewMessage(e.target.value);
+    if (!typing) {
+      setTyping(true);
+      socket?.current?.emit('typing', receiver?._id!);
+    }
+    const lastTypingTime = new Date().getTime();
+    const timerLength = 3000;
+    setTimeout(() => {
+      const timeNow = new Date().getTime();
+      const timeDiff = timeNow - lastTypingTime;
+      if (timeDiff >= timerLength && typing) {
+        setTyping(false);
+        socket?.current?.emit('stopTyping', receiver?._id!);
+      }
+    }, timerLength);
   };
   return (
     <div className="messanger">
@@ -165,6 +202,11 @@ const Messanger: React.FC<MessagerProps> = ({ socket }) => {
                 ))}
               <div ref={scrollRef}></div>
             </div>
+            {isTyping && (
+              <div className="messanger__typing-animation">
+                <Lottie options={defaultOptions} width={70} />
+              </div>
+            )}
             <form
               className="messanger__box--bottom"
               onSubmit={(e) => {
@@ -175,9 +217,7 @@ const Messanger: React.FC<MessagerProps> = ({ socket }) => {
               <textarea
                 placeholder="Write something"
                 value={newMessage}
-                onChange={(e) => {
-                  setNewMessage(e.target.value);
-                }}
+                onChange={handleTyping}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') handleSend();
                 }}

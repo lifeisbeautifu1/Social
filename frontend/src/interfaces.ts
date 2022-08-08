@@ -69,11 +69,15 @@ export interface ServerToClientEvents {
   getUsers: (users: IOnlineUser[]) => void;
   getMessage: () => void;
   getRequest: () => void;
+  typing: () => void;
+  stopTyping: () => void;
 }
 
 export interface ClientToServerEvents {
   addUser: (userId: string) => void;
   sendMessage: (receiverId: string) => void;
   sendRequest: (receiverId: string) => void;
+  typing: (receiverId: string) => void;
+  stopTyping: (receiverId: string) => void;
 }
 

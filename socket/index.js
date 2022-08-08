@@ -42,6 +42,18 @@ io.on('connection', (socket) => {
     socket.to(receiver?.socketId).emit('getMessage');
   });
 
+  socket.on('typing', (receiverId) => {
+    console.log('start typing');
+    const receiver = getUser(receiverId);
+    socket.to(receiver?.socketId).emit('typing');
+  });
+
+  socket.on('stopTyping', (receiverId) => {
+    console.log('stop typing');
+    const receiver = getUser(receiverId);
+    socket.to(receiver?.socketId).emit('stopTyping');
+  });
+
   socket.on('sendRequest', (receiverId) => {
     const receiver = getUser(receiverId);
     socket.to(receiver?.socketId).emit('getRequest');
