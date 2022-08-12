@@ -81,11 +81,6 @@ export const login = async (req: Request, res: Response) => {
       path: 'messageNotifications.from',
       select: 'username profilePicture',
     });
-    const newNotification = await MessageNotification.create({
-      from: user._id,
-      to: user._id,
-      conversation: '62efd4bec558d950e760fcf4',
-    });
     if (!user) {
       return res.status(StatusCodes.BAD_REQUEST).json({
         errors: {
