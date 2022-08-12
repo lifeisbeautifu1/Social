@@ -16,13 +16,18 @@ export const getUser = async (req: Request, res: Response) => {
 export const getUserInfo = async (req: Request, res: Response) => {
   const user = await User.findById(req.user.id)
     .populate('friends', 'username profilePicture')
-    .populate('friendRequests', 'from to createdAt');
+    .populate('friendRequests', 'from to createdAt')
+    .populate('messageNotifications', 'createdAt from to conversation');
   let fullUser = await User.populate(user, {
     path: 'friendRequests.from',
     select: 'username profilePicture',
   });
   fullUser = await User.populate(user, {
     path: 'friendRequests.to',
+    select: 'username profilePicture',
+  });
+  fullUser = await User.populate(user, {
+    path: 'messageNotifications.from',
     select: 'username profilePicture',
   });
 

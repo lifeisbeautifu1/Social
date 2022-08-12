@@ -8,6 +8,7 @@ import connectDB from './db/connectDB';
 import notFound from './middleware/notFound';
 import errorHandler from './middleware/error';
 import authMiddleware from './middleware/auth';
+import morgan from 'morgan';
 
 import auth from './routes/auth';
 import user from './routes/users';
@@ -16,6 +17,7 @@ import conversation from './routes/conversation';
 import message from './routes/message';
 import upload from './routes/upload';
 import friendRequests from './routes/friendRequests';
+import messageNotifications from './routes/messageNotification';
 
 const app = express();
 
@@ -24,7 +26,7 @@ const app = express();
 // );
 
 // app.use('/images', express.static(path.join(__dirname + '/public/images')));
-
+app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -58,6 +60,7 @@ app.use('/api/conversations', authMiddleware, conversation);
 app.use('/api/messages', authMiddleware, message);
 app.use('/api/upload', authMiddleware, upload);
 app.use('/api/friendRequests', authMiddleware, friendRequests);
+app.use('/api/messageNotifications', authMiddleware, messageNotifications);
 
 app.use(errorHandler);
 app.use(notFound);
@@ -68,7 +71,7 @@ const start = async () => {
   try {
     await connectDB();
     app.listen(PORT, () =>
-      console.log(`Server runnnig on port ${PORT}`.bgGreen)
+      console.log(`Server runnnig on port ${PORT}`.green.bold)
     );
   } catch (error) {
     console.log(`${error}`.red.bold);

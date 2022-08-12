@@ -1,0 +1,33 @@
+.message-notification {
+    display: flex;
+    padding: 1rem;
+    gap: 0.625rem;
+    overflow: hidden;
+    transition: background-color 0.3s;
+}
+
+.message-notification:hover {
+    background-color: rgb(240, 240, 240);
+}
+
+.message-notification__image {
+    width: 3.125rem;
+    height: 3.125rem;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.message-notification__info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: bold;
+    border-bottom: 0.5px solid #f1f1f1;
+}
+
+.message-notification__info p:nth-child(2) {
+    font-size: 0.7rem;
+    color: rgb(190, 190, 190);
+}

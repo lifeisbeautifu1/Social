@@ -58,7 +58,7 @@ const Feed: React.FC<FeedProps> = ({ profile, userId, scrollable }) => {
               },
             }
           );
-          console.log(data.posts);
+          // console.log(data.posts);
           dispatch(addPosts(data.posts));
         } catch (error) {
           console.log(error);

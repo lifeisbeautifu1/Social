@@ -3,7 +3,11 @@ import { ProtectedRoute, SharedLayout } from './components';
 import { Routes, Route } from 'react-router-dom';
 import { io, Socket } from 'socket.io-client';
 import { useRef, useEffect } from 'react';
-import { login, setRefetch } from './features/user/userSlice';
+import {
+  login,
+  setRefetch,
+  updateNotifications,
+} from './features/user/userSlice';
 import { useDispatch } from 'react-redux';
 import { setOnlineUsers } from './features/user/userSlice';
 import {
@@ -34,7 +38,13 @@ const App = () => {
         dispatch(setOnlineUsers(users));
       });
       socket?.current?.on('getMessage', () => {
+        console.log('i got new message');
+        // @ts-ignore
+        dispatch(updateNotifications());
         dispatch(setRefetchMessages());
+        const audio = new Audio(sound);
+
+        audio.play();
       });
       socket?.current?.on('getRequest', () => {
         const audio = new Audio(sound);

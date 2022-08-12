@@ -29,3 +29,11 @@ export const getConversations = async (req: Request, res: Response) => {
   }).populate('members', 'profilePicture username');
   res.status(StatusCodes.OK).json(conversations);
 };
+
+export const getConversation = async (req: Request, res: Response) => {
+  const conversation = await Conversation.findById(req.params.id).populate(
+    'members',
+    'profilePicture username'
+  );
+  res.status(StatusCodes.OK).json(conversation);
+};

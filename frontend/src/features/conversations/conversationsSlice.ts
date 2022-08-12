@@ -1,5 +1,6 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { IConversation, IMessage } from '../../interfaces';
+import axios from 'axios';
 
 type initialStateType = {
   conversations: IConversation[];
@@ -16,6 +17,24 @@ const initialState: initialStateType = {
   refetchMessages: false,
   isTyping: false,
 };
+
+export const fetchAndSetConversation = createAsyncThunk(
+  '/conversations/fetchAndSetConversation',
+  async (conversationId: any, thunkAPI) => {
+    try {
+      // @ts-ignore
+      const token = thunkAPI.getState().user.user.token;
+      const { data } = await axios.get('/conversations/' + conversationId, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return data;
+    } catch (error) {
+      thunkAPI.rejectWithValue(error);
+    }
+  }
+);
 
 export const conversationsSlice = createSlice({
   name: 'conversations',
@@ -39,6 +58,11 @@ export const conversationsSlice = createSlice({
     setRefetchMessages: (state) => {
       state.refetchMessages = !state.refetchMessages;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchAndSetConversation.fulfilled, (state, action) => {
+      state.selectedConversation = action.payload;
+    });
   },
 });
 

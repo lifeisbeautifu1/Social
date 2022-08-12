@@ -4,11 +4,13 @@ import { useAppSelector, useAppDispatch } from '../app/hooks';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { BsFillPersonFill, BsFillChatLeftTextFill } from 'react-icons/bs';
 import { IoIosNotifications } from 'react-icons/io';
-import { IFriendRequest, IUser } from '../interfaces';
+import { IFriendRequest, IMessageNotification, IUser } from '../interfaces';
 import axios from 'axios';
+import { onlyUniqueNotifications } from '../config/utils';
 import { useState } from 'react';
-import { FriendRequest } from './';
+import { FriendRequest, MessageNotification } from './';
 import { Socket } from 'socket.io-client';
+
 import { ServerToClientEvents, ClientToServerEvents } from '../interfaces';
 
 type NavbarProps = {
@@ -116,14 +118,36 @@ const Navbar: React.FC<NavbarProps> = ({ socket }) => {
               </div>
             )}
             {friendRequests?.length > 0 && (
-              <span className="navbar__badge">{friendRequests?.length}</span>
+              <span className="navbar__badge">
+                {user?.friendRequests.length}
+              </span>
             )}
           </div>
           <Link to="/messanger">
-            <div className="navbar__icon navbar__icon--messages">
+            <div className="navbar__icon navbar__icon--messages center">
               <BsFillChatLeftTextFill />
-              <span className="tooltip--messages">Messages</span>
-              <span className="navbar__badge">1</span>
+              {user?.messageNotifications.length > 0 ? (
+                <div className="navbar__message-notifications">
+                  {user?.messageNotifications
+                    .filter(onlyUniqueNotifications)
+                    .map((n: IMessageNotification) => (
+                      <MessageNotification key={n._id} notification={n} />
+                    ))}
+                </div>
+              ) : (
+                <div className="tooltip--messages tooltip--wide">
+                  No New Messages
+                </div>
+              )}
+
+              {user?.messageNotifications.length > 0 && (
+                <span className="navbar__badge">
+                  {
+                    user?.messageNotifications.filter(onlyUniqueNotifications)
+                      .length
+                  }
+                </span>
+              )}
             </div>
           </Link>
           <div className="navbar__icon navbar__icon--notifications">

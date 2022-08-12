@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+
 
 const UserSchema = new mongoose.Schema(
   {
@@ -19,6 +18,12 @@ const UserSchema = new mongoose.Schema(
       required: [true, 'Please provide password'],
       minLength: 8,
     },
+    messageNotifications: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'MessageNotification',
+      },
+    ],
     profilePicture: {
       type: String,
       default: '',

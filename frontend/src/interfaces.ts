@@ -7,6 +7,7 @@ export interface IUser {
   city: string;
   from: string;
   relationship: 1 | 2 | 3;
+  messageNotifications: IMessageNotification[];
   following: IUser[];
   followers: IUser[];
   friends: IUser[];
@@ -43,6 +44,14 @@ export interface IComment {
 export interface IConversation {
   _id: string;
   members: IUser[];
+}
+
+export interface IMessageNotification {
+  _id: string;
+  conversation: IConversation;
+  from: IUser;
+  to: IUser;
+  createdAt: string;
 }
 
 export interface IMessage {

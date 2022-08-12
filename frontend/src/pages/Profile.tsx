@@ -1,5 +1,5 @@
 import { Sidebar, Feed, Rightbar } from '../components';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../hooks';
 import { useDispatch } from 'react-redux';

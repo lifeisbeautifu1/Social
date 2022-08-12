@@ -14,6 +14,7 @@ type SinglePostProps = {
   > | null>;
 };
 
+
 const SinglePost: React.FC<SinglePostProps> = ({ socket }) => {
   const { id } = useParams();
   const navigate = useNavigate();

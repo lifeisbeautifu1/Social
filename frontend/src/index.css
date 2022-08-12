@@ -179,8 +179,8 @@ a {
 }
 
 .navbar__badge {
-  width: 1rem;
-  height: 1rem;
+  width: 1.1rem;
+    height: 1.1rem;
   background-color: red;
   border-radius: 50%;
   display: flex;
@@ -188,7 +188,7 @@ a {
   align-items: center;
   position: absolute;
   top: -2px;
-  right: -5px;
+  right: -8px;
   font-size: 0.75rem;
 }
 
@@ -776,7 +776,8 @@ a {
 
 .navbar__icon--messages:hover .tooltip--messages,
 .navbar__icon--notifications:hover .tooltip--messages,
-.navbar__icon--friends:hover .navbar__friend-requests {
+.navbar__icon--friends:hover .navbar__friend-requests,
+.navbar__icon--messages:hover .navbar__message-notifications {
   visibility: visible;
 }
 
@@ -800,11 +801,15 @@ a {
   visibility: hidden;
 }
 
+.tooltip--wide {
+  width: 125px;
+}
 .navbar__icon--friends {
   padding: 0.3125rem 0;
 }
 
-.navbar__friend-requests {
+.navbar__friend-requests,
+.navbar__message-notifications {
   position: absolute;
   font-size: 0.75rem;
   width: 300px;
@@ -824,7 +829,8 @@ a {
 }
 
 .tooltip--messages::after,
-.navbar__friend-requests::after {
+.navbar__friend-requests::after,
+.navbar__message-notifications::after {
   content: '';
   position: absolute;
   z-index: 100;
@@ -836,7 +842,18 @@ a {
   border-right: 5px solid transparent;
 }
 
-.navbar__friend-requests::after {
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tooltip--wide::after {
+  left: 72%;
+}
+
+.navbar__friend-requests::after,
+.navbar__message-notifications::after {
   left: 63%;
 }
 
@@ -1040,10 +1057,16 @@ a {
   display: flex;
   align-items: center;
   padding: 0.625rem;
-  margin-top: 1.25rem;
-  cursor: pointer;
+cursor: pointer;
 }
 
+.conversation:first-of-type {
+  margin-top: 1.25rem;
+}
+
+.conversation--active {
+  background-color: rgba(241, 241, 241);
+}
 .conversation:hover {
   background-color: rgba(231, 231, 231);
 }

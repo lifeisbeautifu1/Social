@@ -8,7 +8,10 @@ import {
   IUser,
   IConversation,
 } from '../interfaces';
-import { setOnlineUsers } from '../features/user/userSlice';
+import {
+  setOnlineUsers,
+  deleteNotifications,
+} from '../features/user/userSlice';
 import {
   setConversations,
   setMessages,
@@ -46,6 +49,7 @@ const Messanger: React.FC<MessagerProps> = ({ socket }) => {
     isTyping,
   } = useAppSelector((state) => state.conversations);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [newMessage, setNewMessage] = useState('');
   const [receiver, setReceiver] = useState<IUser | null>(null);
   const [filter, setFilter] = useState('');
@@ -93,7 +97,13 @@ const Messanger: React.FC<MessagerProps> = ({ socket }) => {
               },
             }
           );
+
           dispatch(setMessages(data));
+          const otherUser = selectedConversation.members.find(
+            (m) => m._id !== user._id
+          );
+          // @ts-ignore
+          dispatch(deleteNotifications(otherUser._id));
           setReceiver(
             selectedConversation?.members.find((m) => user._id !== m._id)!
           );
@@ -103,6 +113,7 @@ const Messanger: React.FC<MessagerProps> = ({ socket }) => {
       }
     };
     fetchMessages();
+    textareaRef?.current?.focus();
   }, [selectedConversation, dispatch, refetchMessages, user._id, user.token]);
 
   useEffect(() => {
@@ -115,6 +126,7 @@ const Messanger: React.FC<MessagerProps> = ({ socket }) => {
         '/messages/',
         {
           sender: user._id,
+          receiver: receiver?._id!,
           text: newMessage,
           conversationId: selectedConversation?._id,
         },
@@ -217,6 +229,7 @@ const Messanger: React.FC<MessagerProps> = ({ socket }) => {
               <textarea
                 placeholder="Write something"
                 value={newMessage}
+                ref={textareaRef}
                 onChange={handleTyping}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') handleSend();

@@ -1,6 +1,7 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IFriendRequest, IUser } from '../../interfaces';
 import jwtDecode from 'jwt-decode';
+import axios from 'axios';
 
 let user: any = null;
 
@@ -23,6 +24,42 @@ const initialState = {
   onlineUsers: [],
   friendRequests: [],
 };
+
+export const updateNotifications = createAsyncThunk(
+  '/user/updateNotifications',
+  async (_, thunkAPI) => {
+    try {
+      // @ts-ignore
+      const token = thunkAPI.getState().user.user.token;
+      const { data } = await axios.get('/messageNotifications/', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return data;
+    } catch (error) {
+      thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const deleteNotifications = createAsyncThunk(
+  '/user/deleteNotifications',
+  async (from: string, thunkAPI) => {
+    try {
+      // @ts-ignore
+      const token = thunkAPI.getState().user.user.token;
+      await axios.delete('/messageNotifications/' + from, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return from;
+    } catch (error) {
+      thunkAPI.rejectWithValue(error);
+    }
+  }
+);
 
 export const userSlice = createSlice({
   name: 'user',
@@ -71,6 +108,18 @@ export const userSlice = createSlice({
         (user: IUser) => user._id !== action.payload._id
       );
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(updateNotifications.fulfilled, (state, action) => {
+        state.user.messageNotifications = action.payload;
+      })
+      .addCase(deleteNotifications.fulfilled, (state, action) => {
+        state.user.messageNotifications =
+          state.user.messageNotifications.filter(
+            (n: any) => n.from._id !== action.payload
+          );
+      });
   },
 });
 

@@ -1,4 +1,3 @@
-import { BadRequestError, NotFoundError } from '../errors';
 import { StatusCodes } from 'http-status-codes';
 import {
   validateRegisterInput,
@@ -8,6 +7,7 @@ import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/user';
+import MessageNotification from '../models/messageNotification';
 
 export const register = async (req: Request, res: Response) => {
   let { username, email, password, confirmPassword } = req.body;
@@ -67,7 +67,8 @@ export const login = async (req: Request, res: Response) => {
       username,
     })
       .populate('friends', 'username profilePicture')
-      .populate('friendRequests', 'from to createdAt');
+      .populate('friendRequests', 'from to createdAt')
+      .populate('messageNotifications', 'createdAt conversation from to');
     user = await User.populate(user, {
       path: 'friendRequests.from',
       select: 'username profilePicture',
@@ -76,7 +77,15 @@ export const login = async (req: Request, res: Response) => {
       path: 'friendRequests.to',
       select: 'username profilePicture',
     });
-
+    user = await User.populate(user, {
+      path: 'messageNotifications.from',
+      select: 'username profilePicture',
+    });
+    const newNotification = await MessageNotification.create({
+      from: user._id,
+      to: user._id,
+      conversation: '62efd4bec558d950e760fcf4',
+    });
     if (!user) {
       return res.status(StatusCodes.BAD_REQUEST).json({
         errors: {
