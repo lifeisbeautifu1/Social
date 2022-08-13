@@ -8,6 +8,7 @@ export interface IUser {
   from: string;
   relationship: 1 | 2 | 3;
   messageNotifications: IMessageNotification[];
+  postNotifications: IPostNotification[];
   following: IUser[];
   followers: IUser[];
   friends: IUser[];
@@ -52,6 +53,14 @@ export interface IMessageNotification {
   from: IUser;
   to: IUser;
   createdAt: string;
+}
+
+export interface IPostNotification {
+  _id: string;
+  createdAt: string;
+  user: IUser;
+  post: string;
+  type: string;
 }
 
 export interface IMessage {

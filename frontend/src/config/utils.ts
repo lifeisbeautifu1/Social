@@ -7,5 +7,5 @@ export function onlyUniqueNotifications(
   index: number,
   self: IMessageNotification[]
 ): boolean {
-  return self.map((n) => n.from._id).indexOf(value.from._id) === index;
+  return self?.map((n) => n?.from?._id).indexOf(value?.from?._id) === index;
 }

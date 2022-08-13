@@ -776,6 +776,7 @@ a {
 
 .navbar__icon--messages:hover .tooltip--messages,
 .navbar__icon--notifications:hover .tooltip--messages,
+.navbar__icon--notifications:hover .navbar__message-notifications,
 .navbar__icon--friends:hover .navbar__friend-requests,
 .navbar__icon--messages:hover .navbar__message-notifications {
   visibility: visible;

@@ -4,11 +4,16 @@ import { useAppSelector, useAppDispatch } from '../app/hooks';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { BsFillPersonFill, BsFillChatLeftTextFill } from 'react-icons/bs';
 import { IoIosNotifications } from 'react-icons/io';
-import { IFriendRequest, IMessageNotification, IUser } from '../interfaces';
+import {
+  IFriendRequest,
+  IMessageNotification,
+  IPostNotification,
+  IUser,
+} from '../interfaces';
 import axios from 'axios';
 import { onlyUniqueNotifications } from '../config/utils';
 import { useState } from 'react';
-import { FriendRequest, MessageNotification } from './';
+import { FriendRequest, MessageNotification, PostNotification } from './';
 import { Socket } from 'socket.io-client';
 
 import { ServerToClientEvents, ClientToServerEvents } from '../interfaces';
@@ -152,8 +157,20 @@ const Navbar: React.FC<NavbarProps> = ({ socket }) => {
           </Link>
           <div className="navbar__icon navbar__icon--notifications">
             <IoIosNotifications />
-            <span className="tooltip--messages">Notifications</span>
-            <span className="navbar__badge">1</span>
+            {user?.postNotifications?.length > 0 ? (
+              <div className="navbar__message-notifications">
+                {user?.postNotifications.map((n: IPostNotification) => (
+                  <PostNotification key={n._id} notification={n} />
+                ))}
+              </div>
+            ) : (
+              <span className="tooltip--messages">Notifications</span>
+            )}
+            {user?.postNotifications?.length > 0 && (
+              <span className="navbar__badge">
+                {user?.postNotifications?.length}
+              </span>
+            )}
           </div>
         </div>
         <div className="navbar__profile">

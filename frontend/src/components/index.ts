@@ -15,3 +15,4 @@ export { default as RightbarFriend } from './RightbarFriend';
 export { default as ProtectedRoute } from './ProtectedRoute';
 export { default as FriendRequest } from './FriendRequest';
 export { default as MessageNotification } from './MessageNotification';
+export { default as PostNotification } from './PostNotification';

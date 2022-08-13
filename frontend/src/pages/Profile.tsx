@@ -226,7 +226,7 @@ const Profile: React.FC<ProfileProps> = ({ socket }) => {
             </div>
           </div>
           <div className="profile__right--bottom">
-            <Feed profile userId={userId} />
+            <Feed profile userId={userId} socket={socket} />
             <Rightbar user={user} socket={socket} />
           </div>
         </div>

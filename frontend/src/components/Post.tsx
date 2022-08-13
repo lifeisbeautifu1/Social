@@ -1,20 +1,29 @@
 import { FaTrash } from 'react-icons/fa';
 import React, { useState } from 'react';
 import { useAppSelector } from '../hooks';
-import { IPost } from '../interfaces';
+import {
+  ClientToServerEvents,
+  IPost,
+  ServerToClientEvents,
+} from '../interfaces';
 import { useDispatch } from 'react-redux';
 import { deletePost, updatePost } from '../features/posts/postsSlice';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { formatDistanceToNow } from 'date-fns';
+import { Socket } from 'socket.io-client';
 import axios from 'axios';
 
 type PostProps = {
   post: IPost;
   callback?: () => void;
+  socket: React.MutableRefObject<Socket<
+    ServerToClientEvents,
+    ClientToServerEvents
+  > | null>;
 };
 
-const Post: React.FC<PostProps> = ({ post, callback }) => {
+const Post: React.FC<PostProps> = ({ post, callback, socket }) => {
   const [likes, setLikes] = useState(post.likes?.length!);
   const dispatch = useDispatch();
 
@@ -37,6 +46,7 @@ const Post: React.FC<PostProps> = ({ post, callback }) => {
           },
         }
       );
+      socket?.current?.emit('sendRequest', post.author._id);
       dispatch(updatePost(data));
     } catch (error) {
       console.log(error);

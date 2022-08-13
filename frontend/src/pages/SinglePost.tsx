@@ -6,6 +6,7 @@ import { updateSelectedPost } from '../features/posts/postsSlice';
 import { Socket } from 'socket.io-client';
 import { ServerToClientEvents, ClientToServerEvents } from '../interfaces';
 import axios from 'axios';
+import { removeNotifications } from '../features/user/userSlice';
 
 type SinglePostProps = {
   socket: React.MutableRefObject<Socket<
@@ -13,7 +14,6 @@ type SinglePostProps = {
     ClientToServerEvents
   > | null>;
 };
-
 
 const SinglePost: React.FC<SinglePostProps> = ({ socket }) => {
   const { id } = useParams();
@@ -30,6 +30,7 @@ const SinglePost: React.FC<SinglePostProps> = ({ socket }) => {
         },
       });
       dispatch(updateSelectedPost(data));
+      dispatch(removeNotifications(data._id));
     };
     fetchPost();
   }, [id, dispatch, user.token]);
@@ -54,6 +55,7 @@ const SinglePost: React.FC<SinglePostProps> = ({ socket }) => {
           }
         );
         dispatch(updateSelectedPost(data));
+        socket?.current?.emit('sendRequest', selectedPost?.author?._id!);
         setBody('');
       } catch (error) {
         console.log(error);
@@ -65,7 +67,9 @@ const SinglePost: React.FC<SinglePostProps> = ({ socket }) => {
     <div className="home">
       <Sidebar />
       <div className="single-post">
-        {selectedPost && <Post post={selectedPost} callback={callback} />}
+        {selectedPost && (
+          <Post socket={socket} post={selectedPost} callback={callback} />
+        )}
         <div className="comment__form--wrapper">
           <h3 className="comment__form--title">Post comment</h3>
           <form className="comment__form" onSubmit={handleSubmit}>

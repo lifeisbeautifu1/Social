@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IFriendRequest, IUser } from '../../interfaces';
+import { IFriendRequest, IPostNotification, IUser } from '../../interfaces';
 import jwtDecode from 'jwt-decode';
 import axios from 'axios';
 
@@ -100,6 +100,11 @@ export const userSlice = createSlice({
         (fr: IFriendRequest) => fr._id !== action.payload._id
       );
     },
+    removeNotifications: (state, action: PayloadAction<string>) => {
+      state.user.postNotifications = state.user.postNotifications.filter(
+        (n: IPostNotification) => n.post !== action.payload
+      );
+    },
     addFriend: (state, action: PayloadAction<IUser>) => {
       state.user?.friends.push(action.payload);
     },
@@ -130,6 +135,7 @@ export const {
   updateUser,
   addFriendRequest,
   removeFriendRequest,
+  removeNotifications,
   removeFriend,
   addFriend,
   setRefetch,

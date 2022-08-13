@@ -5,14 +5,20 @@ import { addPosts, setNumberOfPages } from '../features/posts/postsSlice';
 import { init } from '../features/posts/postsSlice';
 import { useQuery } from '../config/utils';
 import axios from 'axios';
+import { ClientToServerEvents, ServerToClientEvents } from '../interfaces';
+import { Socket } from 'socket.io-client';
 
 type FeedProps = {
   profile?: boolean;
   userId?: string;
   scrollable?: boolean;
+  socket: React.MutableRefObject<Socket<
+    ServerToClientEvents,
+    ClientToServerEvents
+  > | null>;
 };
 
-const Feed: React.FC<FeedProps> = ({ profile, userId, scrollable }) => {
+const Feed: React.FC<FeedProps> = ({ profile, userId, scrollable, socket }) => {
   const { user } = useAppSelector((state) => state.user);
   const { posts, numberOfPages } = useAppSelector((state) => state.posts);
   const dispatch = useAppDispatch();
@@ -78,7 +84,7 @@ const Feed: React.FC<FeedProps> = ({ profile, userId, scrollable }) => {
 
         <div className="posts__container">
           {posts.map((p) => (
-            <Post key={p?._id} post={p} />
+            <Post key={p?._id} post={p} socket={socket} />
           ))}
         </div>
       </div>
@@ -87,3 +93,4 @@ const Feed: React.FC<FeedProps> = ({ profile, userId, scrollable }) => {
 };
 
 export default Feed;
+
