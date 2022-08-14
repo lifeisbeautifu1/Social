@@ -18,13 +18,8 @@ export const deletePost = createAsyncThunk(
   '/posts/deletePost',
   async (post: IPost, thunkAPI) => {
     try {
-      // @ts-ignore
-      const token = thunkAPI.getState().user.user.token;
-      await axios.delete('/posts/' + post._id, {
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
-      });
+      
+      await axios.delete('/posts/' + post._id);
       return post;
     } catch (error) {
       thunkAPI.rejectWithValue(error);

@@ -29,15 +29,7 @@ const Rightbar: React.FC<RightbarProps> = ({ user, socket }) => {
 
   const createConversation = async () => {
     try {
-      await axios.post(
-        '/conversations/' + user?._id,
-        {},
-        {
-          headers: {
-            authorization: `Bearer ${currentUser?.token}`,
-          },
-        }
-      );
+      await axios.post('/conversations/' + user?._id);
     } catch (error) {
       console.log(error);
     }
@@ -87,25 +79,13 @@ const Rightbar: React.FC<RightbarProps> = ({ user, socket }) => {
   const handleClick = async () => {
     try {
       if (isFriend) {
-        await axios.delete(`/users/${user?._id}/friend`, {
-          headers: {
-            Authorization: `Bearer ${currentUser?.token}`,
-          },
-        });
+        await axios.delete(`/users/${user?._id}/friend`);
         dispatch(removeFriend(user!));
         setIsFriend(!isFriend);
       } else {
-        const { data } = await axios.post(
-          '/friendRequests/',
-          {
-            to: user?._id,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${currentUser?.token}`,
-            },
-          }
-        );
+        const { data } = await axios.post('/friendRequests/', {
+          to: user?._id,
+        });
         dispatch(addFriendRequest(data));
       }
       socket?.current?.emit('sendRequest', user?._id!);
@@ -118,11 +98,7 @@ const Rightbar: React.FC<RightbarProps> = ({ user, socket }) => {
     const fetchFriends = async () => {
       try {
         if (user?._id) {
-          const { data } = await axios.get('/users/friends/' + user?._id, {
-            headers: {
-              Authorization: `Bearer ${currentUser?.token}`,
-            },
-          });
+          const { data } = await axios.get('/users/friends/' + user?._id);
           setFriends(data);
           const friendsId = currentUser?.friends?.map(
             // @ts-ignore
@@ -136,7 +112,7 @@ const Rightbar: React.FC<RightbarProps> = ({ user, socket }) => {
     };
 
     fetchFriends();
-  }, [user?._id, currentUser?.friends, currentUser?.token]);
+  }, [user?._id, currentUser?.friends]);
 
   const RightbarHome = () => {
     return (

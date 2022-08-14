@@ -71,11 +71,7 @@ const Messanger: React.FC<MessagerProps> = ({ socket }) => {
   useEffect(() => {
     const fetchConversations = async () => {
       try {
-        const { data } = await axios.get('/conversations', {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        });
+        const { data } = await axios.get('/conversations');
         dispatch(setConversations(data));
         setFilteredConversations(data);
       } catch (error) {
@@ -83,19 +79,14 @@ const Messanger: React.FC<MessagerProps> = ({ socket }) => {
       }
     };
     fetchConversations();
-  }, [dispatch, user._id, user.token]);
+  }, [dispatch, user._id]);
 
   useEffect(() => {
     const fetchMessages = async () => {
       try {
         if (selectedConversation) {
           const { data } = await axios.get(
-            '/messages/' + selectedConversation?._id,
-            {
-              headers: {
-                Authorization: `Bearer ${user.token}`,
-              },
-            }
+            '/messages/' + selectedConversation?._id
           );
 
           dispatch(setMessages(data));
@@ -114,7 +105,7 @@ const Messanger: React.FC<MessagerProps> = ({ socket }) => {
     };
     fetchMessages();
     textareaRef?.current?.focus();
-  }, [selectedConversation, dispatch, refetchMessages, user._id, user.token]);
+  }, [selectedConversation, dispatch, refetchMessages, user._id]);
 
   useEffect(() => {
     scrollRef?.current?.scrollIntoView({ behavior: 'smooth' });
@@ -122,20 +113,12 @@ const Messanger: React.FC<MessagerProps> = ({ socket }) => {
 
   const handleSend = async () => {
     try {
-      const { data } = await axios.post(
-        '/messages/',
-        {
-          sender: user._id,
-          receiver: receiver?._id!,
-          text: newMessage,
-          conversationId: selectedConversation?._id,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        }
-      );
+      const { data } = await axios.post('/messages/', {
+        sender: user._id,
+        receiver: receiver?._id!,
+        text: newMessage,
+        conversationId: selectedConversation?._id,
+      });
       dispatch(addMessage(data));
 
       socket?.current?.emit('sendMessage', receiver?._id!);

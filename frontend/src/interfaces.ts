@@ -13,7 +13,6 @@ export interface IUser {
   followers: IUser[];
   friends: IUser[];
   friendRequests: IFriendRequest[];
-  token: string;
 }
 
 export interface IFriendRequest {

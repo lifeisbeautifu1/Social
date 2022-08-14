@@ -29,23 +29,14 @@ const Share = () => {
       formData.append('file', file);
       // newPost.img = fileName;
       try {
-        const { data: imageData } = await axios.post('/upload', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            authorization: `Bearer ${user?.token}`,
-          },
-        });
+        const { data: imageData } = await axios.post('/upload', formData);
         newPost.img = imageData.secure_url;
       } catch (error) {
         console.log(error);
       }
     }
     try {
-      const { data } = await axios.post('/posts', newPost, {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      });
+      const { data } = await axios.post('/posts', newPost);
       setDesc('');
       setFile(null);
       dispatch(addPost(data));

@@ -16,12 +16,7 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
   const handleDelete = async () => {
     try {
       const { data } = await axios.delete(
-        `/posts/${comment.postId}/comment/${comment._id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        }
+        `/posts/${comment.postId}/comment/${comment._id}`
       );
       dispatch(updateSelectedPost(data));
     } catch (error) {

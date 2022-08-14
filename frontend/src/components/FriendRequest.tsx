@@ -3,7 +3,7 @@ import { IFriendRequest } from '../interfaces';
 import { formatDistanceToNow } from 'date-fns';
 import { BsCheck2Circle } from 'react-icons/bs';
 import { MdOutlineCancel } from 'react-icons/md';
-import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { useAppDispatch } from '../app/hooks';
 import axios from 'axios';
 import { addFriend, removeFriendRequest } from '../features/user/userSlice';
 import { Socket } from 'socket.io-client';
@@ -19,35 +19,18 @@ interface FriendRequestProps {
 
 const FriendRequest: React.FC<FriendRequestProps> = ({ fr, socket }) => {
   const dispatch = useAppDispatch();
-  const { user } = useAppSelector((state) => state.user);
   const closeFriendRequest = async (status: string) => {
     try {
       if (status === 'Accept') {
-        const { data } = await axios.patch(
-          `/friendRequests/${fr._id}`,
-          {
-            status,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${user?.token}`,
-            },
-          }
-        );
+        const { data } = await axios.patch(`/friendRequests/${fr._id}`, {
+          status,
+        });
         dispatch(addFriend(data));
         dispatch(removeFriendRequest(fr));
       } else {
-        await axios.patch(
-          `/friendRequests/${fr._id}`,
-          {
-            status,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${user?.token}`,
-            },
-          }
-        );
+        await axios.patch(`/friendRequests/${fr._id}`, {
+          status,
+        });
         dispatch(removeFriendRequest(fr));
       }
       socket?.current?.emit('sendRequest', fr.from._id);

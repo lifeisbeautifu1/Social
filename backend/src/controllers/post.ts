@@ -1,6 +1,7 @@
 import User from '../models/user';
 import Post from '../models/post';
 import Comment from '../models/comment';
+import PostNotification from '../models/postNotification';
 import { BadRequestError, NotFoundError } from '../errors';
 import { StatusCodes } from 'http-status-codes';
 import { Request, Response } from 'express';
@@ -10,7 +11,7 @@ export const updatePost = async (req: Request, res: Response) => {
   if (!post) {
     throw new NotFoundError(`Post with id ${req.params.id} doesnt exist`);
   } else {
-    if (post.author == req.user.id) {
+    if (post.author == res.locals.user.id) {
       post = await post.updateOne(req.body, {
         new: true,
         runValidators: true,
@@ -34,7 +35,7 @@ export const createPost = async (req: Request, res: Response) => {
 export const deletePost = async (req: Request, res: Response) => {
   const post = await Post.findById(req.params.id);
   if (post) {
-    if (post.author == req.user.id) {
+    if (post.author == res.locals.user.id) {
       await Comment.deleteMany({ postId: post._id });
       await post.deleteOne();
       return res
@@ -52,18 +53,30 @@ export const likePost = async (req: Request, res: Response) => {
   let post = await Post.findById(req.params.id);
   if (post) {
     // @ts-ignore
-    if (post.likes.includes(req.user.id)) {
+    if (post.likes.includes(res.locals.user.id)) {
       // @ts-ignore
-      post.likes = post.likes.filter((id) => id != req.user.id);
+      post.likes = post.likes.filter((id) => id != res.locals.user.id);
     } else {
       // @ts-ignore
-      post.likes.push(req.user.id);
+      post.likes.push(res.locals.user.id);
+      const notification = await PostNotification.create({
+        user: res.locals.user.id,
+        post: post?._id,
+        type: 'Like',
+      });
+      await User.findByIdAndUpdate(post?.author!, {
+        $push: {
+          // @ts-ignore
+          postNotifications: notification?._id,
+        },
+      });
     }
     await post.save();
     post = await Post.findById(req.params.id).populate(
       'author',
       'username profilePicture'
     );
+
     res.status(StatusCodes.OK).json(post);
   } else {
     throw new NotFoundError(`Post with id ${req.params.id} not found`);
@@ -78,6 +91,19 @@ export const getPost = async (req: Request, res: Response) => {
     path: 'comments.author',
     select: 'username profilePicture',
   });
+  const notifications = await PostNotification.find({
+    post: fullPost?._id,
+  });
+  const notificationId = notifications.map((n) => n._id);
+  await User.findByIdAndUpdate(post?.author?._id, {
+    $pull: {
+      postNotifications: {
+        // @ts-ignore
+        $in: notificationId,
+      },
+    },
+  });
+  await PostNotification.deleteMany({ post: post?._id });
   res.status(StatusCodes.OK).json(fullPost);
 };
 
@@ -125,7 +151,7 @@ export const addComment = async (req: Request, res: Response) => {
   const { body } = req.body;
   const comment = await Comment.create({
     postId: id,
-    author: req.user.id,
+    author: res.locals.user.id,
     body,
   });
   const post = await Post.findByIdAndUpdate(
@@ -145,6 +171,17 @@ export const addComment = async (req: Request, res: Response) => {
   const updatedPost = await User.populate(post, {
     path: 'comments.author',
     select: 'username profilePicture',
+  });
+  const notification = await PostNotification.create({
+    user: res.locals.user.id,
+    post: post?._id,
+    type: 'Comment',
+  });
+  await User.findByIdAndUpdate(post?.author?._id!, {
+    $push: {
+      // @ts-ignore
+      postNotifications: notification?._id,
+    },
   });
   res.status(StatusCodes.OK).json(updatedPost);
 };

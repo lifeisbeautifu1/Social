@@ -48,31 +48,18 @@ const Profile: React.FC<ProfileProps> = ({ socket }) => {
       try {
         if (currentUser.profilePicture) {
           const id = currentUser.profilePicture.split('/').at(-1).split('.')[0];
-          await axios.delete('/upload/' + id, {
-            headers: {
-              Authorization: `Bearer ${currentUser.token}`,
-            },
-          });
+          await axios.delete('/upload/' + id);
         }
         const { data: imageData } = await axios.post('/upload', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${currentUser.token}`,
           },
         });
         const url = imageData.secure_url;
         try {
-          const { data } = await axios.patch(
-            '/users/' + currentUser._id,
-            {
-              [photo]: url,
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${currentUser.token}`,
-              },
-            }
-          );
+          const { data } = await axios.patch('/users/' + currentUser._id, {
+            [photo]: url,
+          });
           dispatch(updateUser(data));
           setRefetch(!refetch);
         } catch (error) {
@@ -87,11 +74,7 @@ const Profile: React.FC<ProfileProps> = ({ socket }) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const { data } = await axios.get('/users/' + userId, {
-          headers: {
-            Authorization: `Bearer ${currentUser.token}`,
-          },
-        });
+        const { data } = await axios.get('/users/' + userId);
         setUser(data);
         setProfileData({
           ...profileData,
@@ -104,22 +87,14 @@ const Profile: React.FC<ProfileProps> = ({ socket }) => {
       }
     };
     fetchUser();
-  }, [userId, navigate, refetch, currentUser.token]);
+  }, [userId, navigate, refetch]);
 
   const handleUpdateSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const { data } = await axios.patch(
-        '/users/' + currentUser._id,
-        {
-          ...profileData,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${currentUser.token}`,
-          },
-        }
-      );
+      const { data } = await axios.patch('/users/' + currentUser._id, {
+        ...profileData,
+      });
       dispatch(updateUser(data));
       setIsEdit(false);
       setRefetch(!refetch);

@@ -9,6 +9,7 @@ import notFound from './middleware/notFound';
 import errorHandler from './middleware/error';
 import authMiddleware from './middleware/auth';
 import morgan from 'morgan';
+import cookieParser from 'cookie-parser';
 
 import auth from './routes/auth';
 import user from './routes/users';
@@ -27,6 +28,7 @@ const app = express();
 
 // app.use('/images', express.static(path.join(__dirname + '/public/images')));
 app.use(morgan('dev'));
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

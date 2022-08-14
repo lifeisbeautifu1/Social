@@ -37,15 +37,7 @@ const Post: React.FC<PostProps> = ({ post, callback, socket }) => {
     setLikes(isLiked ? likes - 1 : likes + 1);
     setIsLiked((prevState) => !prevState);
     try {
-      const { data } = await axios.post(
-        `/posts/${post._id}/like`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${currentUser.token}`,
-          },
-        }
-      );
+      const { data } = await axios.post(`/posts/${post._id}/like`);
       socket?.current?.emit('sendRequest', post.author._id);
       dispatch(updatePost(data));
     } catch (error) {
@@ -58,11 +50,7 @@ const Post: React.FC<PostProps> = ({ post, callback, socket }) => {
       if (post.img) {
         //@ts-ignore
         const id = post.img.split('/').at(-1).split('.')[0];
-        await axios.delete('/upload/' + id, {
-          headers: {
-            Authorization: `Bearer ${currentUser.token}`,
-          },
-        });
+        await axios.delete('/upload/' + id);
       }
     }
     // @ts-ignore

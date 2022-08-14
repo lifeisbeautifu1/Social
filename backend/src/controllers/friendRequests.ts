@@ -7,7 +7,7 @@ import { constants } from 'perf_hooks';
 export const createRequest = async (req: Request, res: Response) => {
   const { to } = req.body;
   const newFriendRequest = await FriendRequest.create({
-    from: req.user.id,
+    from: res.locals.user.id,
     to,
   });
   await User.findByIdAndUpdate(to, {
@@ -16,7 +16,7 @@ export const createRequest = async (req: Request, res: Response) => {
       friendRequests: newFriendRequest,
     },
   });
-  await User.findByIdAndUpdate(req.user.id, {
+  await User.findByIdAndUpdate(res.locals.user.id, {
     $push: {
       // @ts-ignore
       friendRequests: newFriendRequest,

@@ -6,6 +6,8 @@ import {
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import cookie from 'cookie';
+
 import User from '../models/user';
 import MessageNotification from '../models/messageNotification';
 
@@ -47,10 +49,20 @@ export const register = async (req: Request, res: Response) => {
       expiresIn: process.env.JWT_EXPIRES_IN,
     });
 
+    res.set(
+      'Set-Cookie',
+      cookie.serialize('token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: 3600,
+        path: '/',
+      })
+    );
+
     res.status(StatusCodes.OK).json({
       // @ts-ignore
       ...user._doc,
-      token,
     });
   } else {
     res.status(StatusCodes.BAD_REQUEST).json({ errors });
@@ -68,7 +80,8 @@ export const login = async (req: Request, res: Response) => {
     })
       .populate('friends', 'username profilePicture')
       .populate('friendRequests', 'from to createdAt')
-      .populate('messageNotifications', 'createdAt conversation from to');
+      .populate('messageNotifications', 'createdAt conversation from to')
+      .populate('postNotifications', 'post createdAt user type');
     user = await User.populate(user, {
       path: 'friendRequests.from',
       select: 'username profilePicture',
@@ -79,6 +92,10 @@ export const login = async (req: Request, res: Response) => {
     });
     user = await User.populate(user, {
       path: 'messageNotifications.from',
+      select: 'username profilePicture',
+    });
+    user = await User.populate(user, {
+      path: 'posnNotifications.user',
       select: 'username profilePicture',
     });
     if (!user) {
@@ -103,12 +120,36 @@ export const login = async (req: Request, res: Response) => {
       expiresIn: process.env.JWT_EXPIRES_IN,
     });
 
+    res.set(
+      'Set-Cookie',
+      cookie.serialize('token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: 3600,
+        path: '/',
+      })
+    );
+
     res.status(StatusCodes.OK).json({
       // @ts-ignore
       ...user._doc,
-      token,
     });
   } else {
     res.status(StatusCodes.BAD_REQUEST).json({ errors });
   }
+};
+
+export const logout = (req: Request, res: Response) => {
+  res.set(
+    'Set-Cookie',
+    cookie.serialize('token', '', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: +new Date(0),
+      path: '/',
+    })
+  );
+  res.json({ message: 'Logout' });
 };

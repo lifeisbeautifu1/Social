@@ -34,11 +34,7 @@ const Navbar: React.FC<NavbarProps> = ({ socket }) => {
     e.preventDefault();
     if (search) {
       try {
-        const { data } = await axios.get(`/users/find?search=${search}`, {
-          headers: {
-            authorization: `Bearer ${user.token}`,
-          },
-        });
+        const { data } = await axios.get(`/users/find?search=${search}`);
         setUsers(data);
       } catch (error) {
         console.log(error);

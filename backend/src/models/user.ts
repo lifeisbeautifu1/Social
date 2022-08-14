@@ -24,6 +24,12 @@ const UserSchema = new mongoose.Schema(
         ref: 'MessageNotification',
       },
     ],
+    postNotifications: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'PostNotification',
+      },
+    ],
     profilePicture: {
       type: String,
       default: '',

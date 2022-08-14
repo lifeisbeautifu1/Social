@@ -22,13 +22,7 @@ export const fetchAndSetConversation = createAsyncThunk(
   '/conversations/fetchAndSetConversation',
   async (conversationId: any, thunkAPI) => {
     try {
-      // @ts-ignore
-      const token = thunkAPI.getState().user.user.token;
-      const { data } = await axios.get('/conversations/' + conversationId, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const { data } = await axios.get('/conversations/' + conversationId);
       return data;
     } catch (error) {
       thunkAPI.rejectWithValue(error);

@@ -32,12 +32,7 @@ const Feed: React.FC<FeedProps> = ({ profile, userId, scrollable, socket }) => {
       const { data } = await axios.get(
         profile
           ? `/posts/all/${userId}`
-          : `/posts/timeline/?userId=${user?._id}&page=${page}`,
-        {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        }
+          : `/posts/timeline/?userId=${user?._id}&page=${page}`
       );
       if (profile) {
         dispatch(init(data));
@@ -47,7 +42,7 @@ const Feed: React.FC<FeedProps> = ({ profile, userId, scrollable, socket }) => {
       }
     };
     fetchPosts();
-  }, [userId, profile, dispatch, user]);
+  }, [userId, profile, dispatch, user, page]);
 
   const handleScroll = async (e: any) => {
     let triggerHeight = e.target.scrollTop + e.target.offsetHeight;
@@ -57,12 +52,7 @@ const Feed: React.FC<FeedProps> = ({ profile, userId, scrollable, socket }) => {
         setCurrentPage(currentPage + 1);
         try {
           const { data } = await axios.get(
-            `/posts/timeline?userId=${user?._id}&page=${currentPage + 1}`,
-            {
-              headers: {
-                authorization: `Bearer ${user.token}`,
-              },
-            }
+            `/posts/timeline?userId=${user?._id}&page=${currentPage + 1}`
           );
           // console.log(data.posts);
           dispatch(addPosts(data.posts));

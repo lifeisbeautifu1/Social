@@ -17,10 +17,10 @@ import {
 import { useAppSelector } from './hooks';
 import { ServerToClientEvents, ClientToServerEvents } from './interfaces';
 import { ProfileInfoContextProvider } from './context';
-import axios from 'axios';
 // import useSound from 'use-sound';
 // @ts-ignore
 import sound from './sounds/notification.mp3';
+import axios from 'axios';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -61,18 +61,14 @@ const App = () => {
   useEffect(() => {
     const updateUser = async () => {
       try {
-        const { data } = await axios.get('/users/me', {
-          headers: {
-            authorization: `Bearer ${user.token}`,
-          },
-        });
-        dispatch(login({ ...data, token: user.token }));
+        const { data } = await axios.get('/users/me');
+        dispatch(login({ ...data }));
       } catch (error) {
         console.log(error);
       }
     };
     updateUser();
-  }, [refetch]);
+  }, [refetch, dispatch]);
 
   return (
     <Routes>

@@ -4,7 +4,7 @@ import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
 export const getNotifications = async (req: Request, res: Response) => {
-  let user = await User.findById(req.user.id).populate(
+  let user = await User.findById(res.locals.user.id).populate(
     'messageNotifications',
     'createdAt from to conversation'
   );
@@ -19,7 +19,7 @@ export const deleteNotifications = async (req: Request, res: Response) => {
   const { id } = req.params;
   const notifications = await MessageNotification.find({ from: id });
   let notificationsId = notifications.map((n) => n._id);
-  await User.findByIdAndUpdate(req.user.id, {
+  await User.findByIdAndUpdate(res.locals.user.id, {
     $pull: {
       messageNotifications: {
         // @ts-ignore

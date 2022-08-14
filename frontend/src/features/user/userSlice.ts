@@ -1,21 +1,11 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IFriendRequest, IPostNotification, IUser } from '../../interfaces';
-import jwtDecode from 'jwt-decode';
 import axios from 'axios';
 
 let user: any = null;
 
 if (localStorage.getItem('user')) {
-  const userInfo = JSON.parse(localStorage.getItem('user')!);
-  // console.log(token);
-  const info: any = jwtDecode(userInfo.token);
-  // console.log(info);
-  // console.log(info.exp * 1000 > Date.now());
-  if (info.exp * 1000 > Date.now()) {
-    user = userInfo;
-  } else {
-    user = null;
-  }
+  user = JSON.parse(localStorage.getItem('user')!);
 }
 
 const initialState = {
@@ -29,13 +19,7 @@ export const updateNotifications = createAsyncThunk(
   '/user/updateNotifications',
   async (_, thunkAPI) => {
     try {
-      // @ts-ignore
-      const token = thunkAPI.getState().user.user.token;
-      const { data } = await axios.get('/messageNotifications/', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const { data } = await axios.get('/messageNotifications/');
       return data;
     } catch (error) {
       thunkAPI.rejectWithValue(error);
@@ -47,13 +31,7 @@ export const deleteNotifications = createAsyncThunk(
   '/user/deleteNotifications',
   async (from: string, thunkAPI) => {
     try {
-      // @ts-ignore
-      const token = thunkAPI.getState().user.user.token;
-      await axios.delete('/messageNotifications/' + from, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await axios.delete('/messageNotifications/' + from);
       return from;
     } catch (error) {
       thunkAPI.rejectWithValue(error);
@@ -75,7 +53,7 @@ export const userSlice = createSlice({
     logout: (state) => {
       state.user = null;
       state.friendRequests = [];
-      localStorage.removeItem('token');
+      localStorage.removeItem('user');
     },
     setOnlineUsers: (state, action) => {
       state.onlineUsers = action.payload;
