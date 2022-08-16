@@ -55,7 +55,8 @@ const SinglePost: React.FC<SinglePostProps> = ({ socket }) => {
           }
         );
         dispatch(updateSelectedPost(data));
-        socket?.current?.emit('sendRequest', selectedPost?.author?._id!);
+        if (selectedPost?.author?._id !== user._id)
+          socket?.current?.emit('sendRequest', selectedPost?.author?._id!);
         setBody('');
       } catch (error) {
         console.log(error);

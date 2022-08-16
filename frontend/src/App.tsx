@@ -47,9 +47,9 @@ const App = () => {
         audio.play();
       });
       socket?.current?.on('getRequest', () => {
-        // const audio = new Audio(sound);
+        const audio = new Audio(sound);
         dispatch(setRefetch());
-        // audio.play();
+        audio.play();
       });
       socket?.current?.on('typing', () => dispatch(setIsTyping(true)));
       socket?.current?.on('stopTyping', () => dispatch(setIsTyping(false)));

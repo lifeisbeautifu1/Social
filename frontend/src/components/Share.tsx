@@ -45,9 +45,11 @@ const Share = () => {
     }
   };
   return (
-    <div className="share">
-      <div className="share__wrapper">
-        <div className="share__top">
+    <div className="w-full bg-white rounded shadow">
+      <div className="p-6">
+        <h1 className="text-lg font-semibold mb-4">Create new post</h1>
+
+        <div className="flex gap-2">
           <img
             src={
               user?.profilePicture
@@ -55,18 +57,17 @@ const Share = () => {
                 : 'https://res.cloudinary.com/dxf7urmsh/image/upload/v1659264459/noAvatar_lyqqt7.png'
             }
             alt="profile"
-            className="share__image"
+            className="w-12 h-12 rounded-full object-cover "
           />
-          <input
-            placeholder={`What's on your mind ${user?.username}?`}
-            type="text"
+          <textarea
+            className="w-full p-3 border border-gray-200 rounded outline-none resize-none h-[150px]"
             value={desc}
             onChange={(e) => setDesc(e.target.value)}
-            className="share__input"
+            placeholder="Type your message..."
           />
         </div>
-        <hr className="share__hr" />
-        {file && (
+        <hr className="my-2" />
+        {/* {file && (
           <div className="share__container">
             <img
               className="share__image--upload"
@@ -75,14 +76,29 @@ const Share = () => {
             />
             <MdCancel className="share__cancel" onClick={() => setFile(null)} />
           </div>
-        )}
+        )} */}
         <form className="share__bottom" onSubmit={handleSubmit}>
           <div className="share__options">
-            <label htmlFor="post" className="share__option">
-              <GoFileMedia
-                style={{ color: 'tomato' }}
-                className="share__icon"
-              />
+            <label htmlFor="post" className="share__option text-gray-500">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6 mr-2"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+              </svg>
               <span className="share__text">Photo or Video</span>
               <input
                 type="file"
@@ -93,27 +109,12 @@ const Share = () => {
                 onChange={(e) => setFile(e.target.files[0])}
               />
             </label>
-            <div className="share__option">
-              <MdLabelImportant
-                style={{ color: 'blue' }}
-                className="share__icon"
-              />
-              <span className="share__text">Tag</span>
-            </div>
-            <div className="share__option">
-              <MdRoom style={{ color: 'green' }} className="share__icon" />
-              <span className="share__text">Locations</span>
-            </div>
-            <div className="share__option">
-              <BsFillEmojiHeartEyesFill
-                style={{ color: 'goldenrod' }}
-                className="share__icon"
-              />
-              <span className="share__text">Feelings</span>
-            </div>
           </div>
-          <button type="submit" className="share__button">
-            Share
+          <button
+            type="submit"
+            className="rounded px-4 text-sm py-1 bg-[#5181b8] text-white transition duration-200 hover:opacity-[0.9]"
+          >
+            Post
           </button>
         </form>
       </div>

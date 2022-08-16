@@ -154,7 +154,7 @@ a {
 
 .navbar__icon {
   font-size: 1.5rem;
-  margin-right: 1rem;
+  
   display: flex;
   justify-content: center;
   align-items: center;
@@ -192,7 +192,6 @@ a {
 /* Sidebar */
 
 .sidebar {
-  flex: 3;
   height: calc(100vh - 50px);
   overflow-y: scroll;
   position: sticky;
@@ -292,13 +291,15 @@ a {
 
 /* Share */
 
-.share {
+/* .share {
   width: 100%;
   border-radius: 0.3125rem;
   box-shadow: 0 0 16px -8px rgba(0, 0, 0, 0.68);
 }
 
-.share__wrapper {
+*/
+
+/* .share__wrapper {
   padding: 0.625rem;
 }
 
@@ -306,6 +307,8 @@ a {
   display: flex;
   align-items: center;
 }
+
+*/
 
 .share__image {
   width: 3.125rem;
@@ -769,6 +772,7 @@ a {
 .navbar__icon--notifications:hover .tooltip--messages,
 .navbar__icon--notifications:hover .navbar__message-notifications,
 .navbar__icon--friends:hover .navbar__friend-requests,
+.navbar__icon--friends:hover .tooltip--messages,
 .navbar__icon--messages:hover .navbar__message-notifications {
   visibility: visible;
 }

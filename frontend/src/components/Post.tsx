@@ -14,6 +14,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { Socket } from 'socket.io-client';
 import axios from 'axios';
 
+
 type PostProps = {
   post: IPost;
   callback?: () => void;
@@ -38,7 +39,9 @@ const Post: React.FC<PostProps> = ({ post, callback, socket }) => {
     setIsLiked((prevState) => !prevState);
     try {
       const { data } = await axios.post(`/posts/${post._id}/like`);
-      socket?.current?.emit('sendRequest', post.author._id);
+      if (!isLiked && post.author._id !== currentUser._id) {
+        socket?.current?.emit('sendRequest', post.author._id);
+      }
       dispatch(updatePost(data));
     } catch (error) {
       console.log(error);

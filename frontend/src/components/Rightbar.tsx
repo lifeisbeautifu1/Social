@@ -127,12 +127,12 @@ const Rightbar: React.FC<RightbarProps> = ({ user, socket }) => {
             <b>Pola Foster</b> and <b>3 others</b> have a birthday today.
           </span>
         </div>
-        <img
+        {/* <img
           src="https://res.cloudinary.com/dxf7urmsh/image/upload/v1659268597/ad_m6csgu.png"
           alt="ad"
           className="rightbar__ad"
-        />
-        <h4 className="rightbar__title">Online Friends</h4>
+        /> */}
+        <h4 className="rightbar__title mt-8">Online Friends</h4>
         <ul className="rightbar__list--friends">
           {onlineFriends?.map((u) => (
             <Online key={u?._id} user={u} />

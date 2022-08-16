@@ -95,7 +95,7 @@ export const login = async (req: Request, res: Response) => {
       select: 'username profilePicture',
     });
     user = await User.populate(user, {
-      path: 'posnNotifications.user',
+      path: 'postNotifications.user',
       select: 'username profilePicture',
     });
     if (!user) {

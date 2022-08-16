@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { logout } from '../features/user/userSlice';
 import { useAppSelector, useAppDispatch } from '../app/hooks';
 import { AiOutlineSearch } from 'react-icons/ai';
+import Logo from '../images/social-logo.png';
 import {
   IFriendRequest,
   IMessageNotification,
@@ -64,15 +65,11 @@ const Navbar: React.FC<NavbarProps> = ({ socket }) => {
           to="/"
           className="font-bold text-xl flex items-center gradient-text"
         >
-          <img
-            src="./images/social-logo.png"
-            alt="Social"
-            className="w-10 h-8 object-cover"
-          />
+          <img src={Logo} alt="Social" className="w-10 h-8 object-cover" />
           Social
         </Link>
         <form
-          className="ml-4 md:ml-16 my-2  flex items-center gap-2 bg-[#edeef0] p-[5px] px-[8px] w-[200px] rounded-md text-xl relative"
+          className="hidden ml-4 md:ml-16 my-2  sm:flex items-center gap-2 bg-[#edeef0] p-[5px] px-[8px] w-[200px] rounded-md text-xl relative"
           onSubmit={handleSubmit}
         >
           <AiOutlineSearch className="text-gray-600" />
@@ -85,7 +82,7 @@ const Navbar: React.FC<NavbarProps> = ({ socket }) => {
             className="bg-transparent w-full h-full outline-none text-sm"
           />
           {users.length > 0 && (
-            <div className="navbar__users w-[350px] left-0 top-[50px] text-sm">
+            <div className="navbar__users w-full left-0 top-[50px] text-sm">
               {users.map((user) => (
                 <Link
                   key={user._id}
@@ -93,7 +90,7 @@ const Navbar: React.FC<NavbarProps> = ({ socket }) => {
                   onClick={() => setUsers([])}
                   className="navbar__user"
                 >
-                  <div className="navbar__user-picture">
+                  <div className="w-8 h-8 rounded-full object-cover overflow-hidden">
                     <img
                       src={
                         user.profilePicture
@@ -103,11 +100,12 @@ const Navbar: React.FC<NavbarProps> = ({ socket }) => {
                       alt="user"
                     />
                   </div>
-                  <div className="flex flex-col justify-center text-xs">
-                    <h4 className="font-semibold">{user.username}</h4>
-                    <h5 className="text-gray-400">
-                      From:{' '}
-                      {user.from === 'From ...' ? 'Not specified' : user.from}
+                  <div className="flex flex-col justify-start">
+                    <h4 className="font-semibold text-sm text-[#2a5885]">
+                      {user.username}
+                    </h4>
+                    <h5 className="text-[#626d7a] text-xs">
+                      {user.from === 'From ...' ? '' : user.from}
                     </h5>
                   </div>
                 </Link>
@@ -116,7 +114,7 @@ const Navbar: React.FC<NavbarProps> = ({ socket }) => {
           )}
         </form>
 
-        <div className="ml-auto flex items-center text-gray-500">
+        <div className="ml-auto flex gap-3 items-center text-gray-500">
           <div className="navbar__icon navbar__icon--friends">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -129,10 +127,10 @@ const Navbar: React.FC<NavbarProps> = ({ socket }) => {
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-            {friendRequests?.length > 0 && (
+            {friendRequests?.length > 0 ? (
               <div className="navbar__friend-requests">
                 <div className="navbar__friend-requests-header">
                   Pending requests ({friendRequests?.length})
@@ -141,6 +139,8 @@ const Navbar: React.FC<NavbarProps> = ({ socket }) => {
                   <FriendRequest socket={socket} key={fr._id} fr={fr} />
                 ))}
               </div>
+            ) : (
+              <div className="tooltip--messages">Friends</div>
             )}
             {friendRequests?.length > 0 && (
               <span className="navbar__badge">{friendRequests?.length}</span>
@@ -171,9 +171,7 @@ const Navbar: React.FC<NavbarProps> = ({ socket }) => {
                     ))}
                 </div>
               ) : (
-                <div className="tooltip--messages tooltip--wide">
-                  No New Messages
-                </div>
+                <div className="tooltip--messages">Messages</div>
               )}
 
               {user?.messageNotifications?.length > 0 && (

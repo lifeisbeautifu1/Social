@@ -11,10 +11,12 @@ type HomeProps = {
 
 const Home: React.FC<HomeProps> = ({ socket }) => {
   return (
-    <div className="home">
-      <Sidebar />
-      <Feed scrollable socket={socket} />
-      <Rightbar socket={socket} />
+    <div className="bg-gray-100">
+      <div className="flex w-full md:w-[70%] mx-auto">
+        <Sidebar />
+        <Feed scrollable socket={socket} />
+        {/* <Rightbar socket={socket} /> */}
+      </div>
     </div>
   );
 };
