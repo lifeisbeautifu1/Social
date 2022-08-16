@@ -9,7 +9,7 @@ import jwt from 'jsonwebtoken';
 import cookie from 'cookie';
 
 import User from '../models/user';
-import MessageNotification from '../models/messageNotification';
+// import MessageNotification from '../models/messageNotification';
 
 export const register = async (req: Request, res: Response) => {
   let { username, email, password, confirmPassword } = req.body;
@@ -53,7 +53,7 @@ export const register = async (req: Request, res: Response) => {
       'Set-Cookie',
       cookie.serialize('token', token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
+        // secure: process.env.NODE_ENV === 'production',
         sameSite: 'strict',
         maxAge: 3600,
         path: '/',
@@ -124,7 +124,7 @@ export const login = async (req: Request, res: Response) => {
       'Set-Cookie',
       cookie.serialize('token', token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
+        // secure: process.env.NODE_ENV === 'production',
         sameSite: 'strict',
         maxAge: 3600,
         path: '/',
@@ -145,7 +145,7 @@ export const logout = (req: Request, res: Response) => {
     'Set-Cookie',
     cookie.serialize('token', '', {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      // secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
       maxAge: +new Date(0),
       path: '/',

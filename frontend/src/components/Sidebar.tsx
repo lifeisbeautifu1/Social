@@ -63,7 +63,7 @@ const Sidebar = () => {
         <hr className="sidebar__hr" />
         <ul className="sidebar__list--friend">
           {/* @ts-ignore */}
-          {user?.friends.map((u) => (
+          {user?.friends?.map((u) => (
             <Friend key={u?._id} user={u} />
           ))}
         </ul>

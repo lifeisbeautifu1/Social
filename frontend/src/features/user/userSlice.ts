@@ -39,6 +39,15 @@ export const deleteNotifications = createAsyncThunk(
   }
 );
 
+export const logout = createAsyncThunk('/user/logout', async (_, thunkAPI) => {
+  try {
+    const { data } = await axios.get('/auth/logout');
+    return data;
+  } catch (error) {
+    thunkAPI.rejectWithValue(error);
+  }
+});
+
 export const userSlice = createSlice({
   name: 'user',
   initialState,
@@ -53,11 +62,6 @@ export const userSlice = createSlice({
       state.user.postNotifications = action.payload.postNotifications.filter(
         (p: IPostNotification) => p.user._id !== state.user._id
       );
-    },
-    logout: (state) => {
-      state.user = null;
-      state.friendRequests = [];
-      localStorage.removeItem('user');
     },
     setOnlineUsers: (state, action) => {
       state.onlineUsers = action.payload;
@@ -108,13 +112,18 @@ export const userSlice = createSlice({
           state.user.messageNotifications.filter(
             (n: any) => n.from._id !== action.payload
           );
+      })
+      .addCase(logout.fulfilled, (state, action) => {
+        state.user = null;
+        state.friendRequests = [];
+        state.onlineUsers = [];
+        localStorage.removeItem('user');
       });
   },
 });
 
 export const {
   login,
-  logout,
   setOnlineUsers,
   updateUser,
   addFriendRequest,
