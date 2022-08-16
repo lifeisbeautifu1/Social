@@ -32,11 +32,13 @@ const UserSchema = new mongoose.Schema(
     ],
     profilePicture: {
       type: String,
-      default: '',
+      default:
+        'https://res.cloudinary.com/dxf7urmsh/image/upload/v1659264459/noAvatar_lyqqt7.png',
     },
     coverPicture: {
       type: String,
-      default: '',
+      default:
+        'https://res.cloudinary.com/dxf7urmsh/image/upload/v1659264833/16588370472353_vy1sjr.jpg',
     },
     desc: {
       type: String,

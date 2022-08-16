@@ -1,4 +1,4 @@
-import { Online, RightbarFriend } from './';
+import { RightbarFriend } from './';
 import { IFriendRequest, IUser } from '../interfaces';
 import { useAppSelector } from '../hooks';
 import { useDispatch } from 'react-redux';
@@ -62,19 +62,19 @@ const Rightbar: React.FC<RightbarProps> = ({ user, socket }) => {
     }
   }, [user]);
 
-  const [onlineFriends, setOnlineFriends] = useState<IUser[]>([]);
+  // const [onlineFriends, setOnlineFriends] = useState<IUser[]>([]);
 
-  useEffect(() => {
-    // @ts-ignore
-    const onlineUsersId = onlineUsers?.map((onlineUser) => onlineUser.userId);
+  // useEffect(() => {
+  //   // @ts-ignore
+  //   const onlineUsersId = onlineUsers?.map((onlineUser) => onlineUser.userId);
 
-    setOnlineFriends(
-      // @ts-ignore
-      currentUser?.friends.filter((friend) =>
-        onlineUsersId.includes(friend._id)
-      )
-    );
-  }, [onlineUsers, currentUser?.friends]);
+  //   setOnlineFriends(
+  //     // @ts-ignore
+  //     currentUser?.friends.filter((friend) =>
+  //       onlineUsersId.includes(friend._id)
+  //     )
+  //   );
+  // }, [onlineUsers, currentUser?.friends]);
 
   const handleClick = async () => {
     try {
@@ -133,11 +133,11 @@ const Rightbar: React.FC<RightbarProps> = ({ user, socket }) => {
           className="rightbar__ad"
         /> */}
         <h4 className="rightbar__title mt-8">Online Friends</h4>
-        <ul className="rightbar__list--friends">
+        {/* <ul className="rightbar__list--friends">
           {onlineFriends?.map((u) => (
             <Online key={u?._id} user={u} />
           ))}
-        </ul>
+        </ul> */}
       </>
     );
   };
@@ -146,13 +146,19 @@ const Rightbar: React.FC<RightbarProps> = ({ user, socket }) => {
     return (
       <>
         {currentUser?._id !== user?._id && (
-          <div className="rightbar__buttons">
+          <div className="my-7 flex items-center flex-wrap gap-2">
             {!hide && (
-              <button className="rightbar__button" onClick={handleClick}>
+              <button
+                className="w-[150px] border border-gray-300 py-[2px] px-4 rounded font-medium transition duration-300 hover:bg-gray-700 hover:border-gray-700 hover:text-white"
+                onClick={handleClick}
+              >
                 {isFriend ? 'Remove Friend' : 'Add Friend'}
               </button>
             )}
-            <button className="rightbar__button" onClick={createConversation}>
+            <button
+              className="border w-[150px] border-gray-300 py-[2px] px-4 rounded font-medium transition duration-300 hover:bg-gray-700 hover:border-gray-700 hover:text-white"
+              onClick={createConversation}
+            >
               Send Message
             </button>
           </div>
@@ -184,9 +190,9 @@ const Rightbar: React.FC<RightbarProps> = ({ user, socket }) => {
         ) : (
           <div className="rightbar__edit-info">
             <div className="rightbar__control">
-              <label htmlFor="city">City: </label>
+              <label htmlFor="city">City </label>
               <input
-                className="rightbar__edit-input"
+                className="mt-1 w-full px-3 py-2 transition duration-200 border border-gray-300 rounded outline-none bg-gray-50 focus:bg-white hover:bg-white"
                 type="text"
                 name="city"
                 placeholder={'City ...'}
@@ -196,9 +202,9 @@ const Rightbar: React.FC<RightbarProps> = ({ user, socket }) => {
               />
             </div>
             <div className="rightbar__control">
-              <label htmlFor="from">From: </label>
+              <label htmlFor="from">From </label>
               <input
-                className="rightbar__edit-input"
+                className="mt-1 w-full px-3 py-2 transition duration-200 border border-gray-300 rounded outline-none bg-gray-50 focus:bg-white hover:bg-white"
                 type="text"
                 name="from"
                 id="from"
@@ -208,9 +214,9 @@ const Rightbar: React.FC<RightbarProps> = ({ user, socket }) => {
               />
             </div>
             <div className="rightbar__control">
-              <label htmlFor="relationship">Relationship: </label>
+              <label htmlFor="relationship">Relationship </label>
               <select
-                className="rightbar__edit-input"
+                className="mt-1 w-full px-3 py-2 transition duration-200 border border-gray-300 rounded outline-none bg-gray-50 focus:bg-white hover:bg-white"
                 name="relationship"
                 id="relationship"
                 value={profileData.relationship}
@@ -234,7 +240,7 @@ const Rightbar: React.FC<RightbarProps> = ({ user, socket }) => {
   };
 
   return (
-    <div className="hidden md:block :w-[25%]">
+    <div className="hidden md:block w-[35%]">
       <div className="p-5">{user ? RightbarProfile() : RightbarHome()}</div>
     </div>
   );

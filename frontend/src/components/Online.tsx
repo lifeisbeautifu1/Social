@@ -8,8 +8,11 @@ type OnlineProps = {
 
 const Online: React.FC<OnlineProps> = ({ user }) => {
   return (
-    <Link to={`/profile/${user._id}`} className="rightbar__item--friend">
-      <div className="rightbar__imageContainer">
+    <Link
+      to={`/profile/${user._id}`}
+      className="rightbar__item--friend  hover:bg-gray-200 py-1 rounded"
+    >
+      <div className="pl-2 rightbar__imageContainer ">
         <img
           src={
             user.profilePicture
@@ -17,11 +20,11 @@ const Online: React.FC<OnlineProps> = ({ user }) => {
               : 'https://res.cloudinary.com/dxf7urmsh/image/upload/v1659264459/noAvatar_lyqqt7.png'
           }
           alt="friend"
-          className="rightbar__image--friend"
+          className="h-6 w-6 rounded-full object-cover"
         />
-        <span className="rightbar__online"></span>
+        {/* <span className="rightbar__online"></span> */}
       </div>
-      <span className="rightbar__name--friend">{user?.username}</span>
+      <span className="text-sm">{user?.username}</span>
     </Link>
   );
 };

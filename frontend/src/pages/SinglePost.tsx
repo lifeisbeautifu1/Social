@@ -92,7 +92,7 @@ const SinglePost: React.FC<SinglePostProps> = ({ socket }) => {
             </button>
           </form>
         </div>
-        <div className="comments__wrapper">
+        <div className="flex flex-col mt-4 mb-10">
           {selectedPost?.comments.map((c) => (
             <Comment key={c._id} comment={c} />
           ))}

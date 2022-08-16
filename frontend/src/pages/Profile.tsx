@@ -110,7 +110,12 @@ const Profile: React.FC<ProfileProps> = ({ socket }) => {
         <div className="profile__right w-full pl-4">
           <div className="profile__right--top">
             <div className="profile__cover">
-              <div className="profile__cover-wrapper transition duration-200 hover:border hover:border-white">
+              <div
+                className={`profile__cover-wrapper transition duration-200 ${
+                  currentUser._id === user._id &&
+                  'hover:border hover:border-white'
+                }`}
+              >
                 <img
                   className="profile__cover--image"
                   alt="cover"
@@ -133,7 +138,11 @@ const Profile: React.FC<ProfileProps> = ({ socket }) => {
                   </label>
                 )}
               </div>
-              <div className="profile__cover-wrapper--secondary transition duration-200 hover:border-[3px]">
+              <div
+                className={`profile__cover-wrapper--secondary transition duration-200 ${
+                  currentUser._id === user._id && 'hover:border-[3px]'
+                }`}
+              >
                 <img
                   className=""
                   src={
@@ -173,20 +182,22 @@ const Profile: React.FC<ProfileProps> = ({ socket }) => {
                   onSubmit={handleUpdateSubmit}
                 >
                   <input
-                    className="profile__info-input"
+                    className="mt-1 w-full px-3 py-2 transition duration-200 border border-gray-300 rounded outline-none bg-gray-50 focus:bg-white hover:bg-white"
                     type="text"
                     name="username"
                     value={profileData.username}
                     onChange={handleChange}
                   />
                   <input
-                    className="profile__info-input"
+                    className="mt-1 w-full px-3 py-2 transition duration-200 border border-gray-300 rounded outline-none bg-gray-50 focus:bg-white hover:bg-white"
                     name="desc"
                     type="text"
                     value={profileData.desc}
                     onChange={handleChange}
                   />
-                  <button className="profile__info-btn">Update</button>
+                  <button className="w-full border border-gray-300 py-[2px] px-4 rounded font-medium transition duration-300 hover:bg-gray-700 hover:border-gray-700 hover:text-white">
+                    Update
+                  </button>
                 </form>
               )}
               {currentUser._id === userId && !isEdit && (

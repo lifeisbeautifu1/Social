@@ -2,10 +2,25 @@ import { Link } from 'react-router-dom';
 import { useAppSelector } from '../hooks';
 import { onlyUniqueNotifications } from '../config/utils';
 import { IoPeopleOutline } from 'react-icons/io5';
-import { FaUsers } from 'react-icons/fa';
+import { useState, useEffect } from 'react';
+import { IUser } from '../interfaces';
+import { Online } from './';
+// import { FaUsers } from 'react-icons/fa';
 
 const Sidebar = () => {
-  const { user } = useAppSelector((state) => state.user);
+  const { user, onlineUsers } = useAppSelector((state) => state.user);
+  const [onlineFriends, setOnlineFriends] = useState<IUser[]>([]);
+
+  useEffect(() => {
+    // @ts-ignore
+    const onlineUsersId = onlineUsers?.map((onlineUser) => onlineUser.userId);
+
+    setOnlineFriends(
+      // @ts-ignore
+      user?.friends.filter((friend) => onlineUsersId.includes(friend._id))
+    );
+  }, [onlineUsers, user?.friends]);
+  console.log(onlineFriends);
   return (
     <div className="sidebar w-[200px]">
       <div className="py-5 px-1">
@@ -121,6 +136,30 @@ const Sidebar = () => {
             </li>
           </Link>
           <hr className="my-2" />
+          <ul className="flex flex-col gap-1">
+            <li className="flex items-center gap-2 px-2 py-2 rounded transition duration-200 hover:bg-gray-200">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5 text-[#5181b8]"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"
+                />
+              </svg>
+
+              <span className="text-sm">Online friends</span>
+            </li>
+
+            {onlineFriends.map((friend) => (
+              <Online key={friend._id} user={friend} />
+            ))}
+          </ul>
         </ul>
       </div>
     </div>

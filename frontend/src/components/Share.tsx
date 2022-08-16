@@ -85,7 +85,7 @@ const Share = () => {
             <div className="share__options">
               <label
                 htmlFor="post"
-                className="hover:text-gray-600 flex items-center text-sm cursor-pointer text-gray-500"
+                className="hover:text-gray-700 flex items-center text-sm cursor-pointer text-gray-500"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -120,7 +120,7 @@ const Share = () => {
 
             <button
               type="submit"
-              className="self-end justify-end border border-gray-300 py-1 px-3 rounded font-medium transition duration-200 hover:bg-gray-700 hover:border-gray-700 hover:text-white"
+              className="self-end justify-end border border-gray-300 py-[2px] px-4 rounded font-medium transition duration-200 hover:bg-gray-700 hover:border-gray-700 hover:text-white"
             >
               Post
             </button>

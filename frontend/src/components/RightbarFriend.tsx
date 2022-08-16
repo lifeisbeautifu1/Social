@@ -17,7 +17,7 @@ const RightbarFriend: React.FC<RightbarFriendProps> = ({ friend }) => {
               : 'https://res.cloudinary.com/dxf7urmsh/image/upload/v1659264459/noAvatar_lyqqt7.png'
           }
           alt="following user"
-          className="rightbar__image--following"
+          className="w-16 h-16 rounded"
         />
         <span className="rightbar__name--following">{friend?.username}</span>
       </div>

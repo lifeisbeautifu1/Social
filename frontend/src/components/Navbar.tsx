@@ -43,8 +43,7 @@ const Navbar: React.FC<NavbarProps> = ({ socket }) => {
     window.addEventListener('click', closeModal);
     return () => window.removeEventListener('click', closeModal);
   }, []);
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const searchNow = async () => {
     if (search) {
       try {
         const { data } = await axios.get(`/users/find?search=${search}`);
@@ -55,8 +54,11 @@ const Navbar: React.FC<NavbarProps> = ({ socket }) => {
     } else {
       setUsers([]);
     }
-    setSearch('');
   };
+
+  useEffect(() => {
+    searchNow();
+  }, [search]);
 
   return (
     <div className="navbar shadow">
@@ -68,16 +70,18 @@ const Navbar: React.FC<NavbarProps> = ({ socket }) => {
           <img src={Logo} alt="Social" className="w-10 h-8 object-cover" />
           Social
         </Link>
-        <form
-          className="hidden ml-4 md:ml-16 my-2  sm:flex items-center gap-2 bg-[#edeef0] p-[5px] px-[8px] w-[200px] rounded-md text-xl relative"
-          onSubmit={handleSubmit}
-        >
+        <div className="hidden ml-4 md:ml-16 my-2  sm:flex items-center gap-2 bg-[#edeef0] p-[5px] px-[8px] w-[200px] rounded-md text-xl relative">
           <AiOutlineSearch className="text-gray-600" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            onBlur={() => setTimeout(() => setUsers([]), 100)}
+            onBlur={() =>
+              setTimeout(() => {
+                setUsers([]);
+                setSearch('');
+              }, 100)
+            }
             placeholder="Search"
             className="bg-transparent w-full h-full outline-none text-sm"
           />
@@ -112,7 +116,7 @@ const Navbar: React.FC<NavbarProps> = ({ socket }) => {
               ))}
             </div>
           )}
-        </form>
+        </div>
 
         <div className="ml-auto flex gap-3 items-center text-gray-500">
           <div className="navbar__icon navbar__icon--friends">

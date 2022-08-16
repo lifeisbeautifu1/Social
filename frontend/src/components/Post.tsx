@@ -67,10 +67,10 @@ const Post: React.FC<PostProps> = ({ post, callback, socket }) => {
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="post bg-white">
+      <div className="post bg-white py-2 px-4">
         <div className="post__wrapper">
           <div className="post__top">
-            <div className="post__top--left">
+            <div className="flex gap-2 items-center">
               <Link to={`/profile/${post?.author?._id}`}>
                 <img
                   src={
@@ -79,15 +79,17 @@ const Post: React.FC<PostProps> = ({ post, callback, socket }) => {
                       : 'https://res.cloudinary.com/dxf7urmsh/image/upload/v1659264459/noAvatar_lyqqt7.png'
                   }
                   alt="profile"
-                  className="post__image--left"
+                  className="h-12 w-12 object-cover rounded-full"
                 />
               </Link>
-              <span className="post__name">{post.author?.username}</span>
-              <span className="post__date">
-                {formatDistanceToNow(new Date(post?.createdAt!), {
-                  addSuffix: true,
-                })}
-              </span>
+              <div className="flex flex-col justify-center items-start">
+                <span className="">{post.author?.username}</span>
+                <span className="text-xs text-gray-400">
+                  {formatDistanceToNow(new Date(post?.createdAt!), {
+                    addSuffix: true,
+                  })}
+                </span>
+              </div>
             </div>
             {currentUser._id === post.author._id && (
               <div className="post__top--right" onClick={handleDelete}>
@@ -108,6 +110,7 @@ const Post: React.FC<PostProps> = ({ post, callback, socket }) => {
               </div>
             )}
           </div>
+
           <div className="post__center">
             <span className="post__text">{post?.desc}</span>
             {post?.img && (

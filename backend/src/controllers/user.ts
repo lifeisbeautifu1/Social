@@ -67,7 +67,8 @@ export const updateUser = async (req: Request, res: Response) => {
     path: 'postNotifications.user',
     select: 'profilePicture username',
   });
-  res.status(StatusCodes.OK).json(fullUser);
+  
+  res.status(StatusCodes.OK).json(updatedUser);
 };
 
 export const deleteUser = async (req: Request, res: Response) => {

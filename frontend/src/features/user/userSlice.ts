@@ -70,12 +70,14 @@ export const userSlice = createSlice({
       state.refetch = !state.refetch;
     },
     updateUser: (state, action) => {
-      state.user = {
-        ...action.payload,
-        // postNotifications: action.payload.postNotifications.filter(
-        //   (n: IPostNotification) => n.user._id !== state.user._id
-        // ),
-      };
+      state.user = action.payload;
+      state.user.postNotifications = action.payload.postNotifications.filter(
+        (p: IPostNotification) => p.user._id !== state.user._id
+      );
+      state.friendRequests = action.payload.friendRequests?.filter(
+        (fr: IFriendRequest) => fr.from._id !== action.payload._id
+      );
+      localStorage.setItem('user', JSON.stringify(action.payload));
     },
     addFriendRequest: (state, action: PayloadAction<IFriendRequest>) => {
       state.user?.friendRequests.push(action.payload);

@@ -89,7 +89,7 @@ export const getPost = async (req: Request, res: Response) => {
     .populate('comments', 'author body postId createdAt');
   const fullPost = await User.populate(post, {
     path: 'comments.author',
-    select: 'username profilePicture',
+    select: 'username profilePicture desc',
   });
   const notifications = await PostNotification.find({
     post: fullPost?._id,
@@ -166,11 +166,11 @@ export const addComment = async (req: Request, res: Response) => {
       runValidators: true,
     }
   )
-    .populate('author', 'username profilePicture')
+    .populate('author', 'username profilePicture desc')
     .populate('comments', 'author body postId createdAt');
   const updatedPost = await User.populate(post, {
     path: 'comments.author',
-    select: 'username profilePicture',
+    select: 'username profilePicture desc',
   });
   const notification = await PostNotification.create({
     user: res.locals.user.id,
