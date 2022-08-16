@@ -14,7 +14,7 @@ const Login = () => {
 
   useEffect(() => {
     user && navigate('/');
-  }, []);
+  }, [user, navigate]);
 
   const dispatch = useDispatch();
   const [errors, setErrors] = useState<IError>({} as IError);

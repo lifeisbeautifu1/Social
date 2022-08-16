@@ -1,9 +1,7 @@
-import { NavLink, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { logout } from '../features/user/userSlice';
 import { useAppSelector, useAppDispatch } from '../app/hooks';
 import { AiOutlineSearch } from 'react-icons/ai';
-import { BsFillPersonFill, BsFillChatLeftTextFill } from 'react-icons/bs';
-import { IoIosNotifications } from 'react-icons/io';
 import {
   IFriendRequest,
   IMessageNotification,
@@ -12,7 +10,7 @@ import {
 } from '../interfaces';
 import axios from 'axios';
 import { onlyUniqueNotifications } from '../config/utils';
-import { useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { FriendRequest, MessageNotification, PostNotification } from './';
 import { Socket } from 'socket.io-client';
 
@@ -28,8 +26,22 @@ type NavbarProps = {
 const Navbar: React.FC<NavbarProps> = ({ socket }) => {
   const { user, friendRequests } = useAppSelector((state) => state.user);
   const [search, setSearch] = useState('');
+  const [showInfo, setShowInfo] = useState(false);
   const [users, setUsers] = useState<IUser[]>([]);
   const dispatch = useAppDispatch();
+  const modal = useRef<any>();
+  useEffect(() => {
+    const closeModal = (e: any) => {
+      // console.log(e.target, modal.current?.parentElement);
+      if (
+        e.target !== modal.current
+        // e.target === modal.current?.parentElement
+      )
+        setShowInfo(false);
+    };
+    window.addEventListener('click', closeModal);
+    return () => window.removeEventListener('click', closeModal);
+  }, []);
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (search) {
@@ -46,14 +58,21 @@ const Navbar: React.FC<NavbarProps> = ({ socket }) => {
   };
 
   return (
-    <div className="navbar shadow flex items-center">
-      <div className="flex item-center gap-16 w-[70%] m-auto">
-        <Link to="/" className="font-bold text-xl flex items-center">
+    <div className="navbar shadow">
+      <div className="h-full flex item-center w-full px-4 md:px-0 md:w-[70%] m-auto">
+        <Link
+          to="/"
+          className="font-bold text-xl flex items-center gradient-text"
+        >
+          <img
+            src="./images/social-logo.png"
+            alt="Social"
+            className="w-10 h-8 object-cover"
+          />
           Social
         </Link>
-
         <form
-          className="flex items-center gap-2 bg-[#edeef0] p-[5px] px-[8px] w-[200px] rounded-md text-xl"
+          className="ml-4 md:ml-16 my-2  flex items-center gap-2 bg-[#edeef0] p-[5px] px-[8px] w-[200px] rounded-md text-xl relative"
           onSubmit={handleSubmit}
         >
           <AiOutlineSearch className="text-gray-600" />
@@ -61,38 +80,43 @@ const Navbar: React.FC<NavbarProps> = ({ socket }) => {
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
+            onBlur={() => setTimeout(() => setUsers([]), 100)}
             placeholder="Search"
             className="bg-transparent w-full h-full outline-none text-sm"
           />
+          {users.length > 0 && (
+            <div className="navbar__users w-[350px] left-0 top-[50px] text-sm">
+              {users.map((user) => (
+                <Link
+                  key={user._id}
+                  to={`/profile/${user._id}`}
+                  onClick={() => setUsers([])}
+                  className="navbar__user"
+                >
+                  <div className="navbar__user-picture">
+                    <img
+                      src={
+                        user.profilePicture
+                          ? user.profilePicture
+                          : 'https://res.cloudinary.com/dxf7urmsh/image/upload/v1659264459/noAvatar_lyqqt7.png'
+                      }
+                      alt="user"
+                    />
+                  </div>
+                  <div className="flex flex-col justify-center text-xs">
+                    <h4 className="font-semibold">{user.username}</h4>
+                    <h5 className="text-gray-400">
+                      From:{' '}
+                      {user.from === 'From ...' ? 'Not specified' : user.from}
+                    </h5>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
         </form>
-        {users.length > 0 && (
-          <div className="navbar__users">
-            {users.map((user) => (
-              <Link
-                key={user._id}
-                to={`/profile/${user._id}`}
-                onClick={() => setUsers([])}
-                className="navbar__user"
-              >
-                <div className="navbar__user-picture">
-                  <img
-                    src={
-                      user.profilePicture
-                        ? user.profilePicture
-                        : 'https://res.cloudinary.com/dxf7urmsh/image/upload/v1659264459/noAvatar_lyqqt7.png'
-                    }
-                    alt="user"
-                  />
-                </div>
-                <div className="navbar__user-info">
-                  <h4>{user.username}</h4>
-                  <h5>From: {user.from ? user.from : 'Not specified'}</h5>
-                </div>
-              </Link>
-            ))}
-          </div>
-        )}
-        <div className="ml-auto flex items-center text-gray-700">
+
+        <div className="ml-auto flex items-center text-gray-500">
           <div className="navbar__icon navbar__icon--friends">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -193,22 +217,110 @@ const Navbar: React.FC<NavbarProps> = ({ socket }) => {
             )}
           </div>
         </div>
+
+        <div
+          className="flex px-2 h-full items-center gap-2 ml-4 md:ml-8 relative  hover:bg-gray-100 cursor-pointer profile-section"
+          onClick={(e) => {
+            setShowInfo(!showInfo);
+            e.stopPropagation();
+          }}
+        >
+          <img
+            className="w-8 h-8 rounded-full object-cover"
+            src={
+              user?.profilePicture
+                ? user?.profilePicture
+                : 'https://res.cloudinary.com/dxf7urmsh/image/upload/v1659264459/noAvatar_lyqqt7.png'
+            }
+            alt="profile"
+          />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className={`h-4 w-4  transition duration-300 text-gray-600 ${
+              showInfo && 'rotate-180'
+            }`}
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
+          {showInfo && (
+            <div
+              ref={modal}
+              className="info flex flex-col w-[250%]  bg-white border border-gray-200 shadow rounded absolute top-[60px] right-[20%] md:right-[-50%] text-sm text-gray-500 font-semibold"
+            >
+              <Link
+                className="p-2 hover:bg-gray-100 cursor-pointer flex items-center gap-1"
+                to={`/profile/${user?._id}`}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4 text-[#5181b8]"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                  />
+                </svg>
+                Profile
+              </Link>
+              <Link
+                className="p-2 hover:bg-gray-100 cursor-pointer flex gap-1 items-center"
+                to="/"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4 text-[#5181b8]"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
+                  />
+                </svg>
+                News
+              </Link>
+              <span
+                className="p-2 hover:bg-gray-100 cursor-pointer flex gap-1  hover:underline items-center"
+                onClick={() => dispatch(logout())}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4 text-[#5181b8]"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                  />
+                </svg>
+                Logout
+              </span>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
 };
 
 export default Navbar;
-
- /* <div className="navbar__profile hidden">
-            <Link to={'/profile/' + user?._id}>
-              <img
-                src={
-                  user?.profilePicture
-                    ? user?.profilePicture
-                    : 'https://res.cloudinary.com/dxf7urmsh/image/upload/v1659264459/noAvatar_lyqqt7.png'
-                }
-                alt="profile"
-              />
-            </Link>
-          </div> */
