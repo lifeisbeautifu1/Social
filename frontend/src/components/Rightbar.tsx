@@ -234,10 +234,8 @@ const Rightbar: React.FC<RightbarProps> = ({ user, socket }) => {
   };
 
   return (
-    <div className="rightbar">
-      <div className="rightbar__wrapper">
-        {user ? RightbarProfile() : RightbarHome()}
-      </div>
+    <div className="hidden md:block :w-[25%]">
+      <div className="p-5">{user ? RightbarProfile() : RightbarHome()}</div>
     </div>
   );
 };

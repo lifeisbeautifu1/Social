@@ -105,12 +105,12 @@ const Profile: React.FC<ProfileProps> = ({ socket }) => {
 
   return (
     <>
-      <div className="profile">
+      <div className="flex w-full md:w-[70%] mx-auto">
         <Sidebar />
-        <div className="profile__right">
+        <div className="profile__right w-full pl-4">
           <div className="profile__right--top">
             <div className="profile__cover">
-              <div className="profile__cover-wrapper">
+              <div className="profile__cover-wrapper transition duration-200 hover:border hover:border-white">
                 <img
                   className="profile__cover--image"
                   alt="cover"
@@ -133,9 +133,9 @@ const Profile: React.FC<ProfileProps> = ({ socket }) => {
                   </label>
                 )}
               </div>
-              <div className="profile__cover-wrapper--secondary">
+              <div className="profile__cover-wrapper--secondary transition duration-200 hover:border-[3px]">
                 <img
-                  className="profile__cover--user"
+                  className=""
                   src={
                     user?.profilePicture
                       ? user?.profilePicture
@@ -200,7 +200,7 @@ const Profile: React.FC<ProfileProps> = ({ socket }) => {
               )}
             </div>
           </div>
-          <div className="profile__right--bottom">
+          <div className="flex">
             <Feed profile userId={userId} socket={socket} />
             <Rightbar user={user} socket={socket} />
           </div>

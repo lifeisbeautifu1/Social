@@ -191,13 +191,14 @@ a {
 
 /* Sidebar */
 
-.sidebar {
+/* .sidebar {
   height: calc(100vh - 50px);
-  overflow-y: scroll;
+  /* overflow-y: scroll;
   position: sticky;
   top: 50px;
 }
 
+*/ */
 ::-webkit-scrollbar {
   width: 5px;
 }
@@ -504,14 +505,17 @@ a {
 }
 
 /* Rightbar */
-
+/* 
 .rightbar {
   flex: 3.75;
 }
 
-.rightbar__wrapper {
+*/
+/* .rightbar__wrapper {
   padding: 1.25rem 1.25rem 0 1.25rem;
 }
+
+*/
 
 .rightbar__birthday {
   display: flex;
@@ -667,7 +671,7 @@ a {
 
 /* Profile */
 
-.profile {
+/* .profile {
   display: flex;
 }
 
@@ -675,10 +679,12 @@ a {
   flex: 9;
 }
 
-.profile__right--bottom {
+*/
+/* .profile__right--bottom {
   display: flex;
 }
 
+*/
 .profile__cover {
   position: relative;
   height: 320px;

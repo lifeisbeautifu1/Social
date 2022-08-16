@@ -68,7 +68,7 @@ const Feed: React.FC<FeedProps> = ({ profile, userId, scrollable, socket }) => {
       className={scrollable ? 'feed scrollable' : 'feed'}
       onScroll={handleScroll}
     >
-      <div className="feed__wrapper">
+      <div className={`py-4 ${!profile && 'pl-4'}`}>
         {!profile && <Share />}
         {user._id === userId && <Share />}
 

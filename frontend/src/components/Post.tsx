@@ -67,7 +67,7 @@ const Post: React.FC<PostProps> = ({ post, callback, socket }) => {
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="post">
+      <div className="post bg-white">
         <div className="post__wrapper">
           <div className="post__top">
             <div className="post__top--left">
@@ -91,7 +91,20 @@ const Post: React.FC<PostProps> = ({ post, callback, socket }) => {
             </div>
             {currentUser._id === post.author._id && (
               <div className="post__top--right" onClick={handleDelete}>
-                <FaTrash />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                  />
+                </svg>
               </div>
             )}
           </div>
@@ -103,12 +116,6 @@ const Post: React.FC<PostProps> = ({ post, callback, socket }) => {
           </div>
           <div className="post__bottom">
             <div className="post__bottom--left">
-              <img
-                src="https://res.cloudinary.com/dxf7urmsh/image/upload/v1659268597/like_mjyy2f.png"
-                alt="like"
-                onClick={handleLike}
-                className="post__like"
-              />
               <img
                 src="https://res.cloudinary.com/dxf7urmsh/image/upload/v1659268597/heart_ghyyc6.png"
                 alt="heart"
