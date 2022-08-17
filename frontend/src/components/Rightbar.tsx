@@ -144,7 +144,7 @@ const Rightbar: React.FC<RightbarProps> = ({ user, socket }) => {
     return (
       <>
         {currentUser?._id !== user?._id && (
-          <div className="my-7 flex items-center flex-wrap gap-2">
+          <div className="my-4 flex items-center flex-wrap gap-2">
             {!hide && (
               <button
                 className="w-[150px] border border-gray-300 py-[2px] px-4 rounded font-medium transition duration-300 hover:bg-gray-700 hover:border-gray-700 hover:text-white"
