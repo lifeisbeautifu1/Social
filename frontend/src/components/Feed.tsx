@@ -70,7 +70,7 @@ const Feed: React.FC<FeedProps> = ({ profile, userId, scrollable, socket }) => {
     >
       <div className={`py-4 ${!profile && 'pl-4 pr-2'}`}>
         {!profile && <Share />}
-        {user._id === userId && <Share />}
+        {/* {user._id === userId && <Share />} */}
 
         <div className="posts__container">
           {posts.map((p) => (
