@@ -1,4 +1,4 @@
-# Project Mgmt App
+# Social
 
 Social Media FullStack Applciation build with MERN
 [Live demo](https://project-social.netlify.app/)
