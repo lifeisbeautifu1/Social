@@ -6,23 +6,23 @@ type ChatOnlineProps = {
   onlineUsers: IOnlineUser[];
 };
 
-const ChatOnline: React.FC<ChatOnlineProps> = ({ onlineUsers }) => {
-  const { user } = useAppSelector((state) => state.user);
-  const [onlineFriends, setOnlineFriends] = useState<IUser[]>([]);
+const ChatOnline: React.FC<ChatOnlineProps> = () => {
+  const { onlineFriends } = useAppSelector((state) => state.user);
+  // const [onlineFriends, setOnlineFriends] = useState<IUser[]>([]);
 
-  useEffect(() => {
-    const onlineUsersId = onlineUsers.map((onlineUser) => onlineUser.userId);
+  // useEffect(() => {
+  //   const onlineUsersId = onlineUsers.map((onlineUser) => onlineUser.userId);
 
-    setOnlineFriends(
-      // @ts-ignore
-      user.following.filter((friend) => onlineUsersId.includes(friend._id))
-    );
-  }, [onlineUsers, user.following]);
+  //   setOnlineFriends(
+  //     // @ts-ignore
+  //     user.following.filter((friend) => onlineUsersId.includes(friend._id))
+  //   );
+  // }, [onlineUsers, user.following]);
 
   return (
     <div className="chat-online">
       {onlineFriends &&
-        onlineFriends.map((friend) => (
+        onlineFriends.map((friend: any) => (
           <div key={friend._id} className="chat-online__friend">
             <div className="chat-online__image-container">
               <img

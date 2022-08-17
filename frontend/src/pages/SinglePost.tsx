@@ -1,4 +1,4 @@
-import { Sidebar, Rightbar, Post, Comment } from '../components';
+import { Sidebar, Post, Comment } from '../components';
 import { useParams, useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { useAppSelector, useAppDispatch } from '../app/hooks';

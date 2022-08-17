@@ -2,25 +2,32 @@ import { Link } from 'react-router-dom';
 import { useAppSelector } from '../hooks';
 import { onlyUniqueNotifications } from '../config/utils';
 import { IoPeopleOutline } from 'react-icons/io5';
-import { useState, useEffect } from 'react';
-import { IUser } from '../interfaces';
+import { useEffect } from 'react';
+import { useAppDispatch } from '../app/hooks';
+import { setOnlineFriends } from '../features/user/userSlice';
+// import { IUser } from '../interfaces';
 import { Online } from './';
 // import { FaUsers } from 'react-icons/fa';
 
 const Sidebar = () => {
-  const { user, onlineUsers } = useAppSelector((state) => state.user);
-  const [onlineFriends, setOnlineFriends] = useState<IUser[]>([]);
+  const { user, onlineUsers, onlineFriends } = useAppSelector(
+    (state) => state.user
+  );
+  const dispatch = useAppDispatch();
+  // const [onlineFriends, setOnlineFriends] = useState<IUser[]>([]);
 
   useEffect(() => {
     // @ts-ignore
     const onlineUsersId = onlineUsers?.map((onlineUser) => onlineUser.userId);
 
-    setOnlineFriends(
-      // @ts-ignore
-      user?.friends.filter((friend) => onlineUsersId.includes(friend._id))
+    dispatch(
+      setOnlineFriends(
+        // @ts-ignore
+        user?.friends.filter((friend) => onlineUsersId.includes(friend._id))
+      )
     );
   }, [onlineUsers, user?.friends]);
-  console.log(onlineFriends);
+  // console.log(onlineFriends);
   return (
     <div className="sidebar w-[200px]">
       <div className="py-5 px-1">
@@ -156,7 +163,7 @@ const Sidebar = () => {
               <span className="text-sm">Online friends</span>
             </li>
 
-            {onlineFriends.map((friend) => (
+            {onlineFriends.map((friend: any) => (
               <Online key={friend._id} user={friend} />
             ))}
           </ul>
@@ -164,6 +171,6 @@ const Sidebar = () => {
       </div>
     </div>
   );
-};
+};;;;;;;;;;
 
 export default Sidebar;

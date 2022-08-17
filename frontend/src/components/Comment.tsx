@@ -1,6 +1,5 @@
 import { IComment } from '../interfaces';
 import { Link } from 'react-router-dom';
-import { FaTrash } from 'react-icons/fa';
 import { formatDistanceToNow } from 'date-fns';
 import { updateSelectedPost } from '../features/posts/postsSlice';
 import axios from 'axios';

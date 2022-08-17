@@ -32,7 +32,7 @@ const App = () => {
 
   useEffect(() => {
     if (user) {
-      socket.current = io('http://localhost:8900');
+      socket.current = io('http://localhost:5000');
       socket?.current?.emit('addUser', user?._id);
       socket?.current?.on('getUsers', (users) => {
         dispatch(setOnlineUsers(users));

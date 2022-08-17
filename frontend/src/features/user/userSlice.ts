@@ -12,6 +12,7 @@ const initialState = {
   user,
   refetch: false,
   onlineUsers: [],
+  onlineFriends: [],
   friendRequests: [],
 };
 
@@ -65,6 +66,9 @@ export const userSlice = createSlice({
     },
     setOnlineUsers: (state, action) => {
       state.onlineUsers = action.payload;
+    },
+    setOnlineFriends: (state, action) => {
+      state.onlineFriends = action.payload;
     },
     setRefetch: (state) => {
       state.refetch = !state.refetch;
@@ -134,6 +138,7 @@ export const {
   removeFriend,
   addFriend,
   setRefetch,
+  setOnlineFriends,
 } = userSlice.actions;
 
 export default userSlice.reducer;

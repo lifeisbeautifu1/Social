@@ -2,6 +2,7 @@ import express from 'express';
 import 'express-async-errors';
 import 'colors';
 import 'dotenv/config';
+import { Server } from 'socket.io';
 
 import connectDB from './db/connectDB';
 
@@ -10,6 +11,7 @@ import errorHandler from './middleware/error';
 import authMiddleware from './middleware/auth';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
 
 import auth from './routes/auth';
 import user from './routes/users';
@@ -20,6 +22,9 @@ import upload from './routes/upload';
 import friendRequests from './routes/friendRequests';
 import messageNotifications from './routes/messageNotification';
 
+// Chats
+import { addUser, users, removeUser, getUser } from './config/users';
+
 const app = express();
 
 // const __dirname = path.resolve(
@@ -28,6 +33,7 @@ const app = express();
 
 // app.use('/images', express.static(path.join(__dirname + '/public/images')));
 app.use(morgan('dev'));
+app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -72,9 +78,60 @@ const PORT = process.env.PORT || 5000;
 const start = async () => {
   try {
     await connectDB();
-    app.listen(PORT, () =>
+    const server = app.listen(PORT, () =>
       console.log(`Server runnnig on port ${PORT}`.green.bold)
     );
+    const io = new Server(server, {
+      cors: {
+        origin: '*',
+      },
+    });
+
+    io.on('connection', (socket) => {
+      console.log('User connected');
+
+      socket.on('addUser', (userId) => {
+        addUser(userId, socket.id);
+        io.emit('getUsers', users);
+      });
+
+      socket.on('disconnect', () => {
+        console.log('User disconnected');
+        removeUser(socket.id);
+        io.emit('getUsers', users);
+      });
+
+      socket.on('sendMessage', (receiverId) => {
+        // console.log(users, receiverId);
+        const receiver = getUser(receiverId);
+        // console.log('yoo bro you got message wake up', receiver);
+        if (receiver) {
+          socket.to(receiver.socketId).emit('getMessage');
+        }
+      });
+
+      socket.on('typing', (receiverId) => {
+        // console.log('start typing');
+        const receiver = getUser(receiverId);
+        if (receiver) {
+          socket.to(receiver.socketId).emit('typing');
+        }
+      });
+
+      socket.on('stopTyping', (receiverId) => {
+        // console.log('stop typing');
+        const receiver = getUser(receiverId);
+        if (receiver) {
+          socket.to(receiver.socketId).emit('stopTyping');
+        }
+      });
+      socket.on('sendRequest', (receiverId) => {
+        const receiver = getUser(receiverId);
+        if (receiver) {
+          socket.to(receiver.socketId).emit('getRequest');
+        }
+      });
+    });
   } catch (error) {
     console.log(`${error}`.red.bold);
     process.exit(1);

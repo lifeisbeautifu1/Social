@@ -1,4 +1,4 @@
-import { Sidebar, Feed, Rightbar } from '../components';
+import { Sidebar, Feed } from '../components';
 import { Socket } from 'socket.io-client';
 import { ServerToClientEvents, ClientToServerEvents } from '../interfaces';
 

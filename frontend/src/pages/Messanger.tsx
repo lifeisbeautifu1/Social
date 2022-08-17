@@ -49,7 +49,7 @@ const Messanger: React.FC<MessagerProps> = ({ socket }) => {
     isTyping,
   } = useAppSelector((state) => state.conversations);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const textareaRef = useRef<HTMLInputElement>(null);
   const [newMessage, setNewMessage] = useState('');
   const [receiver, setReceiver] = useState<IUser | null>(null);
   const [filter, setFilter] = useState('');
@@ -128,8 +128,7 @@ const Messanger: React.FC<MessagerProps> = ({ socket }) => {
     }
     setNewMessage('');
   };
-  const handleFilter = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleFilter = async () => {
     if (filter) {
       setFilteredConversations(
         conversations.filter((c) => {
@@ -149,7 +148,10 @@ const Messanger: React.FC<MessagerProps> = ({ socket }) => {
       setFilteredConversations(conversations);
     }
   };
-  const handleTyping = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  useEffect(() => {
+    handleFilter();
+  }, [filter]);
+  const handleTyping = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewMessage(e.target.value);
     if (!typing) {
       setTyping(true);
@@ -167,26 +169,26 @@ const Messanger: React.FC<MessagerProps> = ({ socket }) => {
     }, timerLength);
   };
   return (
-    <div className="messanger">
-      <div className="messanger__menu">
-        <form onSubmit={handleFilter}>
+    <div className="flex w-full md:w-[70%] mx-auto">
+      <div className="w-[350px] p-4 sticky top-[0px]">
+        <div>
           <input
             type="text"
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
-            placeholder="Search for friends"
-            className="messanger__input--menu"
+            placeholder="Search dialogs"
+            className="w-full shadow my-4 p-2 rounded text-sm border border-gray-200 outline-none"
           />
-        </form>
+        </div>
         {filteredConversations &&
           filteredConversations.map((c) => (
             <Conversation key={c._id} conversation={c} />
           ))}
       </div>
-      <div className="messanger__box">
+      <div className="w-full">
         {selectedConversation ? (
           <>
-            <div className="messanger__box--top">
+            <div className="messanger overflow-scroll">
               {messages &&
                 messages.map((m) => (
                   <Message
@@ -203,13 +205,27 @@ const Messanger: React.FC<MessagerProps> = ({ socket }) => {
               </div>
             )}
             <form
-              className="messanger__box--bottom"
+              className="mt-4 border-t border-gray-200 flex items-center py-3 px-4 bg-gray-100 gap-2 text-gray-500"
               onSubmit={(e) => {
                 e.preventDefault();
                 handleSend();
               }}
             >
-              <textarea
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-7 w-7 cursor-pointer hover:text-gray-700"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"
+                />
+              </svg>
+              <input
                 placeholder="Write something"
                 value={newMessage}
                 ref={textareaRef}
@@ -217,11 +233,22 @@ const Messanger: React.FC<MessagerProps> = ({ socket }) => {
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') handleSend();
                 }}
-                className="messanger__input--message"
+                className="border border-gray-200 rounded-md px-4 py-2 outline-none w-full resize-none text-sm"
               />
-              <button type="submit" className="messanger__btn--submit">
-                Send
-              </button>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6 cursor-pointer hover:text-gray-700"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"
+                />
+              </svg>
             </form>{' '}
           </>
         ) : (
@@ -230,9 +257,9 @@ const Messanger: React.FC<MessagerProps> = ({ socket }) => {
           </span>
         )}
       </div>
-      <div className="messanger__online">
+      {/* <div className="messanger__online">
         <ChatOnline onlineUsers={onlineUsers} />
-      </div>
+      </div> */}
     </div>
   );
 };
