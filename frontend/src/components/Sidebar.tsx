@@ -26,7 +26,7 @@ const Sidebar = () => {
         user?.friends.filter((friend) => onlineUsersId.includes(friend._id))
       )
     );
-  }, [onlineUsers, user?.friends]);
+  }, [onlineUsers, user?.friends, dispatch]);
   // console.log(onlineFriends);
   return (
     <div className="sidebar w-[200px]">

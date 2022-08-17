@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import 'express-async-errors';
 import 'colors';
 import 'dotenv/config';
@@ -32,9 +32,33 @@ const app = express();
 // );
 
 // app.use('/images', express.static(path.join(__dirname + '/public/images')));
-app.use(morgan('dev'));
-app.use(cors());
+
+const corsOptions = {
+  origin: true,
+  credentials: true,
+};
+
+app.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, PUT, PATCH, POST, DELETE');
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept'
+  );
+  next();
+});
+
+app.enable('trust proxy');
+app.use(cors(corsOptions));
 app.use(cookieParser());
+app.use(morgan('dev'));
+// app.use(cookieParser());
+// app.use(
+//   cors({
+//     origin: 'https://project-social.netlify.app',
+//     credentials: true,
+//   })
+// );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -60,6 +84,10 @@ app.use(express.urlencoded({ extended: true }));
 // });
 
 // File uploading part ended
+
+app.get('/', (req: Request, res: Response) =>
+  res.status(200).send('Hello world!')
+);
 
 app.use('/api/auth', auth);
 app.use('/api/users', authMiddleware, user);

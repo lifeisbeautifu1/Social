@@ -6,6 +6,7 @@ import { updateSelectedPost } from '../features/posts/postsSlice';
 import { Socket } from 'socket.io-client';
 import { ServerToClientEvents, ClientToServerEvents } from '../interfaces';
 import axios from 'axios';
+import Picker from 'emoji-picker-react';
 import { removeNotifications } from '../features/user/userSlice';
 
 type SinglePostProps = {
@@ -21,6 +22,8 @@ const SinglePost: React.FC<SinglePostProps> = ({ socket }) => {
   const { user } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const [body, setBody] = useState('');
+
+  const [showPicker, setShowPicker] = useState(false);
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -63,6 +66,9 @@ const SinglePost: React.FC<SinglePostProps> = ({ socket }) => {
       }
     }
   };
+  const onEmojiClick = (event: any, emojiObject: any) => {
+    setBody(body + emojiObject.emoji);
+  };
 
   return (
     <div className="flex w-full md:w-[70%] mx-auto">
@@ -74,7 +80,7 @@ const SinglePost: React.FC<SinglePostProps> = ({ socket }) => {
         <div className="mt-8 rounded shadow border border-gray-200 p-6 flex flex-col gap-4">
           <h3 className="text-lg">Add a new comment</h3>
           <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-            <div className="flex gap-4">
+            <div className="flex gap-4 relative">
               <img
                 className="w-10 h-10 object-cover rounded-full"
                 src={user.profilePicture}
@@ -86,6 +92,33 @@ const SinglePost: React.FC<SinglePostProps> = ({ socket }) => {
                 placeholder="Type your message..."
                 className="w-full p-3 border border-gray-200 resize-none outline-none rounded h-[100px]"
               />
+              <span
+                className="absolute top-2 right-2"
+                onClick={() => setShowPicker(!showPicker)}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="cursor-pointer h-6 w-6 text-gray-500 hover:text-gray-700"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </span>
+              {showPicker && (
+                <div
+                  className="absolute top-10 right-2"
+                  onBlur={() => setShowPicker(false)}
+                >
+                  <Picker onEmojiClick={onEmojiClick} />
+                </div>
+              )}
             </div>
             <button className="self-end justify-end border border-gray-300 py-1 px-3 rounded font-medium transition duration-200 hover:bg-gray-700 hover:border-gray-700 hover:text-white">
               Post comment

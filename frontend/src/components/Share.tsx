@@ -4,11 +4,18 @@ import { useDispatch } from 'react-redux';
 import { addPost } from '../features/posts/postsSlice';
 import React, { useState } from 'react';
 import axios from 'axios';
+import Picker from 'emoji-picker-react';
 
 const Share = () => {
   const { user } = useAppSelector((state) => state.user);
   const [desc, setDesc] = useState('');
   const [file, setFile] = useState(null);
+
+  const [showPicker, setShowPicker] = useState(false);
+
+  const onEmojiClick = (event: any, emojiObject: any) => {
+    setDesc(desc + emojiObject.emoji);
+  };
 
   const dispatch = useDispatch();
 
@@ -49,7 +56,7 @@ const Share = () => {
         <h1 className="text-lg font-semibold mb-4">Create new post</h1>
 
         <form className="flex flex-col" onSubmit={handleSubmit}>
-          <div className="flex gap-2">
+          <div className="flex gap-2 relative">
             <img
               src={
                 user?.profilePicture
@@ -65,6 +72,31 @@ const Share = () => {
               onChange={(e) => setDesc(e.target.value)}
               placeholder="Type your message..."
             />
+            <span
+              className="absolute top-2 right-2"
+              onClick={() => setShowPicker(!showPicker)}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="cursor-pointer h-6 w-6 text-gray-500 hover:text-gray-700"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            </span>
+
+            {showPicker && (
+              <div className="absolute z-10 top-10 right-0">
+                <Picker onEmojiClick={onEmojiClick} />
+              </div>
+            )}
           </div>
 
           <hr className="my-4" />

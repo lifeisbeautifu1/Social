@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useAppSelector } from '../hooks';
-import { IOnlineUser, IUser } from '../interfaces';
+import { IOnlineUser } from '../interfaces';
 
 type ChatOnlineProps = {
   onlineUsers: IOnlineUser[];

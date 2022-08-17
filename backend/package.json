@@ -4,6 +4,7 @@
   "description": "social media app mern stack",
   "main": "index.js",
   "scripts": {
+    "start": "node src/index.js",
     "start:dev": "nodemon --watch './**/*.ts' --exec ts-node src/index.ts"
   },
   "keywords": [

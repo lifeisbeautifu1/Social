@@ -1,7 +1,8 @@
-import { Conversation, Message, ChatOnline } from '../components';
+import { Conversation, Message } from '../components';
 import { useAppSelector } from '../hooks';
 import { useDispatch } from 'react-redux';
 import React, { useEffect, useState, useRef } from 'react';
+import Picker from 'emoji-picker-react';
 import {
   ServerToClientEvents,
   ClientToServerEvents,
@@ -40,7 +41,8 @@ type MessagerProps = {
 
 const Messanger: React.FC<MessagerProps> = ({ socket }) => {
   const dispatch = useDispatch();
-  const { user, onlineUsers } = useAppSelector((state) => state.user);
+  const [showPicker, setShowPicker] = useState(false);
+  const { user } = useAppSelector((state) => state.user);
   const {
     conversations,
     selectedConversation,
@@ -56,6 +58,10 @@ const Messanger: React.FC<MessagerProps> = ({ socket }) => {
 
   const [typing, setTyping] = useState(false);
   // const [isTyping, setIsTyping] = useState(false);
+
+  const onEmojiClick = (event: any, emojiObject: any) => {
+    setNewMessage(newMessage + emojiObject.emoji);
+  };
 
   const [filteredConversations, setFilteredConversations] = useState<
     IConversation[]
@@ -205,7 +211,7 @@ const Messanger: React.FC<MessagerProps> = ({ socket }) => {
               </div>
             )}
             <form
-              className="mt-4 border-t border-gray-200 flex items-center py-3 px-4 bg-gray-100 gap-2 text-gray-500"
+              className="relative mt-4 border-t border-gray-200 flex items-center py-3 px-4 bg-gray-100 gap-2 text-gray-500"
               onSubmit={(e) => {
                 e.preventDefault();
                 handleSend();
@@ -230,11 +236,32 @@ const Messanger: React.FC<MessagerProps> = ({ socket }) => {
                 value={newMessage}
                 ref={textareaRef}
                 onChange={handleTyping}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') handleSend();
-                }}
                 className="border border-gray-200 rounded-md px-4 py-2 outline-none w-full resize-none text-sm"
               />
+              <span
+                className="absolute top-5 right-14"
+                onClick={() => setShowPicker(!showPicker)}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="cursor-pointer h-6 w-6 text-gray-500 hover:text-gray-700"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </span>
+              {showPicker && (
+                <div className="absolute left-[50%] bottom-4">
+                  <Picker onEmojiClick={onEmojiClick} />
+                </div>
+              )}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-6 w-6 cursor-pointer hover:text-gray-700"

@@ -1,7 +1,6 @@
 {
   "name": "social",
   "version": "0.1.0",
-  "proxy": "http://localhost:5000/api",
   "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.3",
@@ -14,8 +13,8 @@
     "@types/react-dom": "^18.0.6",
     "axios": "^0.27.2",
     "date-fns": "^2.29.1",
+    "emoji-picker-react": "^3.6.1",
     "framer-motion": "^6.5.1",
-    "jwt-decode": "^3.1.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.4.0",

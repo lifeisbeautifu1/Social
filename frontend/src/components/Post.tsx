@@ -1,4 +1,3 @@
-import { FaTrash } from 'react-icons/fa';
 import React, { useState } from 'react';
 import { useAppSelector } from '../hooks';
 import {
@@ -13,7 +12,6 @@ import { motion } from 'framer-motion';
 import { formatDistanceToNow } from 'date-fns';
 import { Socket } from 'socket.io-client';
 import axios from 'axios';
-
 
 type PostProps = {
   post: IPost;

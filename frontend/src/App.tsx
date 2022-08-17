@@ -22,6 +22,9 @@ import { ProfileInfoContextProvider } from './context';
 import sound from './sounds/notification.mp3';
 import axios from 'axios';
 
+axios.defaults.baseURL = 'https://social-api-backend.herokuapp.com/api';
+axios.defaults.withCredentials = true;
+
 const App = () => {
   const dispatch = useDispatch();
   const socket = useRef<Socket<
@@ -32,7 +35,7 @@ const App = () => {
 
   useEffect(() => {
     if (user) {
-      socket.current = io('http://localhost:5000');
+      socket.current = io('https://social-api-backend.herokuapp.com/');
       socket?.current?.emit('addUser', user?._id);
       socket?.current?.on('getUsers', (users) => {
         dispatch(setOnlineUsers(users));

@@ -49,16 +49,13 @@ export const register = async (req: Request, res: Response) => {
       expiresIn: process.env.JWT_EXPIRES_IN,
     });
 
-    res.set(
-      'Set-Cookie',
-      cookie.serialize('token', token, {
-        httpOnly: true,
-        // secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
-        maxAge: 3600 * 24 * 7,
-        path: '/',
-      })
-    );
+    res.cookie('token', token, {
+      secure: true,
+      httpOnly: true,
+      maxAge: 3600 * 24 * 7,
+      sameSite: 'none',
+      path: '/',
+    });
 
     res.status(StatusCodes.OK).json({
       // @ts-ignore
@@ -120,16 +117,22 @@ export const login = async (req: Request, res: Response) => {
       expiresIn: process.env.JWT_EXPIRES_IN,
     });
 
-    res.set(
-      'Set-Cookie',
-      cookie.serialize('token', token, {
-        httpOnly: true,
-        // secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
-        maxAge: 3600 * 24 * 7,
-        path: '/',
-      })
-    );
+    // res.set(
+    //   'Set-Cookie',
+    //   cookie.serialize('token', token, {
+    //     httpOnly: true,
+    //     secure: true,
+    //     maxAge: 3600 * 24 * 7,
+    //     path: '/',
+    //   })
+    // );
+    res.cookie('token', token, {
+      secure: true,
+      httpOnly: true,
+      maxAge: 3600 * 24 * 7,
+      sameSite: 'none',
+      path: '/',
+    });
 
     res.status(StatusCodes.OK).json({
       // @ts-ignore
@@ -145,9 +148,9 @@ export const logout = (req: Request, res: Response) => {
     'Set-Cookie',
     cookie.serialize('token', '', {
       httpOnly: true,
-      // secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      secure: true,
       maxAge: +new Date(0),
+      sameSite: 'none',
       path: '/',
     })
   );
