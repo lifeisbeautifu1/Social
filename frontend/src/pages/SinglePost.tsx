@@ -67,6 +67,7 @@ const SinglePost: React.FC<SinglePostProps> = ({ socket }) => {
     }
   };
   const onEmojiClick = (event: any, emojiObject: any) => {
+    // console.log(emojiObject.emoji);
     setBody(body + emojiObject.emoji);
   };
 
@@ -112,10 +113,7 @@ const SinglePost: React.FC<SinglePostProps> = ({ socket }) => {
                 </svg>
               </span>
               {showPicker && (
-                <div
-                  className="absolute top-10 right-2"
-                  onBlur={() => setShowPicker(false)}
-                >
+                <div className="absolute top-10 right-2">
                   <Picker onEmojiClick={onEmojiClick} />
                 </div>
               )}

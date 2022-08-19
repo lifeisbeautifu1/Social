@@ -258,7 +258,7 @@ const Messanger: React.FC<MessagerProps> = ({ socket }) => {
                 </svg>
               </span>
               {showPicker && (
-                <div className="absolute left-[50%] bottom-4">
+                <div className="absolute left-[50%] bottom-20">
                   <Picker onEmojiClick={onEmojiClick} />
                 </div>
               )}
