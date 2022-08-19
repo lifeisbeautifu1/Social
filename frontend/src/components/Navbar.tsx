@@ -78,12 +78,6 @@ const Navbar: React.FC<NavbarProps> = ({ socket }) => {
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            onBlur={() =>
-              setTimeout(() => {
-                setUsers([]);
-                setSearch('');
-              }, 100)
-            }
             placeholder="Search"
             className="bg-transparent w-full h-full outline-none text-sm"
           />
