@@ -31,6 +31,7 @@ const Navbar: React.FC<NavbarProps> = ({ socket }) => {
   const [users, setUsers] = useState<IUser[]>([]);
   const dispatch = useAppDispatch();
   const modal = useRef<any>();
+
   useEffect(() => {
     const closeModal = (e: any) => {
       // console.log(e.target, modal.current?.parentElement);
@@ -43,20 +44,21 @@ const Navbar: React.FC<NavbarProps> = ({ socket }) => {
     window.addEventListener('click', closeModal);
     return () => window.removeEventListener('click', closeModal);
   }, []);
-  const searchNow = async () => {
-    if (search) {
-      try {
-        const { data } = await axios.get(`/users/find?search=${search}`);
-        setUsers(data);
-      } catch (error) {
-        console.log(error);
-      }
-    } else {
-      setUsers([]);
-    }
-  };
 
   useEffect(() => {
+    const searchNow = async () => {
+      if (search) {
+        try {
+          const { data } = await axios.get(`/users/find?search=${search}`);
+          setUsers(data);
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        setUsers([]);
+      }
+    };
+
     searchNow();
   }, [search]);
 
@@ -91,7 +93,6 @@ const Navbar: React.FC<NavbarProps> = ({ socket }) => {
                 <Link
                   key={user._id}
                   to={`/profile/${user._id}`}
-                  onClick={() => setUsers([])}
                   className="navbar__user"
                 >
                   <div className="w-8 h-8 rounded-full object-cover overflow-hidden">

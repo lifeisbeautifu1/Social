@@ -1,6 +1,6 @@
 import { RightbarFriend } from './';
 import { IFriendRequest, IUser } from '../interfaces';
-import { useAppSelector } from '../hooks';
+import { useAppSelector } from '../app/hooks';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { addFriendRequest, removeFriend } from '../features/user/userSlice';

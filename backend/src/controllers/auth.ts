@@ -49,13 +49,23 @@ export const register = async (req: Request, res: Response) => {
       expiresIn: process.env.JWT_EXPIRES_IN,
     });
 
-    res.cookie('token', token, {
-      secure: true,
-      httpOnly: true,
-      maxAge: 3600 * 24 * 7,
-      sameSite: 'none',
-      path: '/',
-    });
+    // res.cookie('token', token, {
+    //   secure: true,
+    //   httpOnly: true,
+    //   maxAge: 3600 * 24 * 7,
+    //   sameSite: 'none',
+    //   path: '/',
+    // });
+    res.set(
+      'Set-Cookie',
+      cookie.serialize('token', token, {
+        httpOnly: true,
+        sameSite: 'none',
+        secure: true,
+        maxAge: 3600 * 24 * 7,
+        path: '/',
+      })
+    );
 
     res.status(StatusCodes.OK).json({
       // @ts-ignore
@@ -117,22 +127,23 @@ export const login = async (req: Request, res: Response) => {
       expiresIn: process.env.JWT_EXPIRES_IN,
     });
 
-    // res.set(
-    //   'Set-Cookie',
-    //   cookie.serialize('token', token, {
-    //     httpOnly: true,
-    //     secure: true,
-    //     maxAge: 3600 * 24 * 7,
-    //     path: '/',
-    //   })
-    // );
-    res.cookie('token', token, {
-      secure: true,
-      httpOnly: true,
-      maxAge: 3600 * 24 * 7,
-      sameSite: 'none',
-      path: '/',
-    });
+    res.set(
+      'Set-Cookie',
+      cookie.serialize('token', token, {
+        httpOnly: true,
+        sameSite: 'none',
+        secure: true,
+        maxAge: 3600 * 24 * 7,
+        path: '/',
+      })
+    );
+    // res.cookie('token', token, {
+    //   secure: true,
+    //   httpOnly: true,
+    //   maxAge: 3600 * 24 * 7,
+    //   sameSite: 'none',
+    //   path: '/',
+    // });
 
     res.status(StatusCodes.OK).json({
       // @ts-ignore

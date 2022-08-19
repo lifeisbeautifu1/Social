@@ -7,6 +7,7 @@ import { useQuery } from '../config/utils';
 import axios from 'axios';
 import { ClientToServerEvents, ServerToClientEvents } from '../interfaces';
 import { Socket } from 'socket.io-client';
+import ClockLoader from 'react-spinners/ClockLoader';
 
 type FeedProps = {
   profile?: boolean;
@@ -21,6 +22,7 @@ type FeedProps = {
 const Feed: React.FC<FeedProps> = ({ profile, userId, scrollable, socket }) => {
   const { user } = useAppSelector((state) => state.user);
   const { posts, numberOfPages } = useAppSelector((state) => state.posts);
+  const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
   const query = useQuery();
   const page = query.get('page') || 1;
@@ -29,16 +31,23 @@ const Feed: React.FC<FeedProps> = ({ profile, userId, scrollable, socket }) => {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const { data } = await axios.get(
-        profile
-          ? `/posts/all/${userId}`
-          : `/posts/timeline/?userId=${user?._id}&page=${page}`
-      );
-      if (profile) {
-        dispatch(init(data));
-      } else {
-        dispatch(init(data.posts));
-        dispatch(setNumberOfPages(data.numberOfPages));
+      setLoading(true);
+      try {
+        const { data } = await axios.get(
+          profile
+            ? `/posts/all/${userId}`
+            : `/posts/timeline/?userId=${user?._id}&page=${page}`
+        );
+        if (profile) {
+          dispatch(init(data));
+        } else {
+          dispatch(init(data.posts));
+          dispatch(setNumberOfPages(data.numberOfPages));
+        }
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+        setLoading(false);
       }
     };
     fetchPosts();
@@ -73,9 +82,11 @@ const Feed: React.FC<FeedProps> = ({ profile, userId, scrollable, socket }) => {
         {/* {user._id === userId && <Share />} */}
 
         <div className="posts__container">
-          {posts.map((p) => (
-            <Post key={p?._id} post={p} socket={socket} />
-          ))}
+          {loading ? (
+            <ClockLoader className="mx-auto" color="#555" />
+          ) : (
+            posts.map((p) => <Post key={p?._id} post={p} socket={socket} />)
+          )}
         </div>
       </div>
     </div>
