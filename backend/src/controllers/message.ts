@@ -34,6 +34,6 @@ export const getMessages = async (req: Request, res: Response) => {
     conversationId: req.params.conversationId,
   })
     .populate('sender', 'username profilePicture')
-    .sort('createdAt');
+    .sort({ createdAt: -1 });
   res.status(StatusCodes.OK).json(messages);
 };

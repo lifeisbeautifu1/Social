@@ -44,7 +44,7 @@ const getMessages = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         conversationId: req.params.conversationId,
     })
         .populate('sender', 'username profilePicture')
-        .sort('createdAt');
+        .sort({ createdAt: -1 });
     res.status(http_status_codes_1.StatusCodes.OK).json(messages);
 });
 exports.getMessages = getMessages;
