@@ -50,14 +50,13 @@ const Messanger: React.FC<MessagerProps> = ({ socket }) => {
     refetchMessages,
     isTyping,
   } = useAppSelector((state) => state.conversations);
-  const scrollRef = useRef<HTMLDivElement>(null);
+
   const textareaRef = useRef<HTMLInputElement>(null);
   const [newMessage, setNewMessage] = useState('');
   const [receiver, setReceiver] = useState<IUser | null>(null);
   const [filter, setFilter] = useState('');
 
   const [typing, setTyping] = useState(false);
-  // const [isTyping, setIsTyping] = useState(false);
 
   const onEmojiClick = (event: any, emojiObject: any) => {
     setNewMessage(newMessage + emojiObject.emoji);
@@ -112,10 +111,6 @@ const Messanger: React.FC<MessagerProps> = ({ socket }) => {
     fetchMessages();
     textareaRef?.current?.focus();
   }, [selectedConversation, dispatch, refetchMessages, user._id]);
-
-  useEffect(() => {
-    scrollRef?.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
 
   const handleSend = async () => {
     try {
@@ -183,7 +178,7 @@ const Messanger: React.FC<MessagerProps> = ({ socket }) => {
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
             placeholder="Search dialogs"
-            className="w-full shadow my-4 p-2 rounded text-sm border border-gray-200 outline-none"
+            className="w-full  my-4 p-2 rounded text-sm border border-gray-200 outline-none shadow-inner"
           />
         </div>
         {filteredConversations &&
@@ -194,7 +189,7 @@ const Messanger: React.FC<MessagerProps> = ({ socket }) => {
       <div className="w-full">
         {selectedConversation ? (
           <>
-            <div className="messanger overflow-scroll">
+            <div className="messanger overflow-scroll flex  flex-col-reverse">
               {messages &&
                 messages.map((m) => (
                   <Message
@@ -203,7 +198,6 @@ const Messanger: React.FC<MessagerProps> = ({ socket }) => {
                     own={m.sender._id === user._id}
                   />
                 ))}
-              <div ref={scrollRef}></div>
             </div>
             {isTyping && (
               <div className="messanger__typing-animation">
@@ -236,7 +230,7 @@ const Messanger: React.FC<MessagerProps> = ({ socket }) => {
                 value={newMessage}
                 ref={textareaRef}
                 onChange={handleTyping}
-                className="border border-gray-200 rounded-md px-4 py-2 outline-none w-full resize-none text-sm"
+                className="border border-gray-200 rounded-md px-4 py-2 outline-none w-full resize-none text-sm shadow-inner"
               />
               <span
                 className="absolute top-5 right-14"
@@ -289,6 +283,6 @@ const Messanger: React.FC<MessagerProps> = ({ socket }) => {
       </div> */}
     </div>
   );
-};
+};;;;
 
 export default Messanger;

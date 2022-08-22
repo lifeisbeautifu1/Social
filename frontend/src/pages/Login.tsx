@@ -67,7 +67,7 @@ const Login = () => {
                       onChange={handleChange}
                       name="username"
                       id="username"
-                      className={`block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border appearance-none
+                      className={`block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border appearance-none shadow-inner
                   ${
                     errors.username
                       ? 'border-red-600 focus:border-red-600'
@@ -99,7 +99,7 @@ const Login = () => {
                       onChange={handleChange}
                       name="password"
                       id="password"
-                      className={`block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border appearance-none
+                      className={`block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border appearance-none shadow-inner
                   ${
                     errors.password
                       ? 'border-red-600 focus:border-red-600'
@@ -164,7 +164,7 @@ const Login = () => {
 
                 <button
                   type="submit"
-                  className="w-full py-2 mb-4 text-sm font-bold text-white uppercase transition duration-200 bg-blue-500 border border-blue-500 rounded hover:bg-blue-500/90"
+                  className="w-full py-2 mb-4 text-sm font-bold text-white uppercase transition duration-200 bg-blue-500 border border-blue-500  rounded shadow hover:shadow-lg hover:bg-blue-500/90"
                 >
                   Login
                 </button>
@@ -202,7 +202,7 @@ const Login = () => {
                 <div className="flex items-center mb-2">
                   <input
                     type="checkbox"
-                    className="mr-1 cursor-pointer "
+                    className="mr-1 cursor-pointer  border-gray-100 border"
                     name="agreement"
                     checked={formState.agreement}
                     onChange={(e) =>
@@ -228,7 +228,7 @@ const Login = () => {
                       onChange={handleChange}
                       name="email"
                       id="email"
-                      className={`block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border appearance-none
+                      className={`block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border appearance-none shadow-inner
                   ${
                     errors.email
                       ? 'border-red-600 focus:border-red-600'
@@ -260,7 +260,7 @@ const Login = () => {
                       onChange={handleChange}
                       name="username"
                       id="username"
-                      className={`block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border appearance-none
+                      className={`block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border appearance-none shadow-inner
                   ${
                     errors.username
                       ? 'border-red-600 focus:border-red-600'
@@ -293,7 +293,7 @@ const Login = () => {
                       onChange={handleChange}
                       name="password"
                       id="password"
-                      className={`block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border appearance-none
+                      className={`block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border appearance-none shadow-inner
                   ${
                     errors.password
                       ? 'border-red-600 focus:border-red-600'
@@ -363,7 +363,7 @@ const Login = () => {
                       onChange={handleChange}
                       name="confirmPassword"
                       id="confirmPassword"
-                      className={`block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border appearance-none
+                      className={`block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border appearance-none shadow-inner
                   ${
                     errors.confirmPassword
                       ? 'border-red-600 focus:border-red-600'
@@ -392,7 +392,7 @@ const Login = () => {
 
                 <button
                   type="submit"
-                  className="w-full py-2 mb-4 text-sm font-bold text-white uppercase transition duration-200 bg-blue-500 border border-blue-500 rounded hover:bg-blue-500/90"
+                  className="w-full py-2 mb-4 text-sm font-bold text-white uppercase transition duration-200 bg-blue-500 border border-blue-500 shadow hover:shadow-lg rounded hover:bg-blue-500/90"
                 >
                   Sign Up
                 </button>

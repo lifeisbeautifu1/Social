@@ -147,14 +147,14 @@ const Rightbar: React.FC<RightbarProps> = ({ user, socket }) => {
           <div className="my-4 flex items-center flex-wrap gap-2">
             {!hide && (
               <button
-                className="w-[150px] border border-gray-300 py-[2px] px-4 rounded font-medium transition duration-300 hover:bg-gray-700 hover:border-gray-700 hover:text-white"
+                className="w-[150px] shadow hover:shadow-lg border  py-2 px-4 text-sm font-bold rounded text-white transition duration-300 bg-blue-500  border-blue-500  hover:bg-blue-500/90 "
                 onClick={handleClick}
               >
                 {isFriend ? 'Remove Friend' : 'Add Friend'}
               </button>
             )}
             <button
-              className="border w-[150px] border-gray-300 py-[2px] px-4 rounded font-medium transition duration-300 hover:bg-gray-700 hover:border-gray-700 hover:text-white"
+              className="w-[150px] shadow hover:shadow-lg border  py-2 px-4 text-sm font-bold rounded text-white transition duration-300 bg-blue-500  border-blue-500  hover:bg-blue-500/90 "
               onClick={createConversation}
             >
               Send Message

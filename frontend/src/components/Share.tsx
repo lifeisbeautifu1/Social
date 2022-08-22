@@ -51,7 +51,7 @@ const Share = () => {
     }
   };
   return (
-    <div className="w-full bg-white rounded shadow-md border border-gray-200">
+    <div className="w-full bg-white rounded shadow hover:shadow-md border border-gray-200">
       <div className="p-6">
         <h1 className="text-lg font-semibold mb-4">Create new post</h1>
 
@@ -67,7 +67,7 @@ const Share = () => {
               className="w-12 h-12 rounded-full object-cover "
             />
             <textarea
-              className="w-full p-3 border border-gray-200 rounded outline-none resize-none h-[150px]"
+              className="w-full p-3 border border-gray-200 rounded outline-none resize-none h-[150px] shadow-inner"
               value={desc}
               onChange={(e) => setDesc(e.target.value)}
               placeholder="Type your message..."
@@ -152,7 +152,7 @@ const Share = () => {
 
             <button
               type="submit"
-              className="self-end justify-end border border-gray-300 py-[2px] px-4 rounded font-medium transition duration-200 hover:bg-gray-700 hover:border-gray-700 hover:text-white"
+              className="w-[100px] shadow hover:shadow-lg border  py-2 px-4 text-sm font-bold rounded text-white transition duration-300 bg-blue-500  border-blue-500  hover:bg-blue-500/90 "
             >
               Post
             </button>

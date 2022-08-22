@@ -72,14 +72,14 @@ const Navbar: React.FC<NavbarProps> = ({ socket }) => {
           <img src={Logo} alt="Social" className="w-10 h-8 object-cover" />
           Social
         </Link>
-        <div className="hidden ml-4 md:ml-16 my-2  sm:flex items-center gap-2 bg-[#edeef0] p-[5px] px-[8px] w-[200px] rounded-md text-xl relative">
+        <div className="shadow-inner hidden ml-4 md:ml-16 my-2  sm:flex items-center gap-2 bg-[#edeef0] p-[5px] px-[8px] w-[200px] rounded-md text-xl relative">
           <AiOutlineSearch className="text-gray-600" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search"
-            className="bg-transparent w-full h-full outline-none text-sm"
+            className=" bg-transparent w-full h-full outline-none text-sm"
           />
           {users.length > 0 && (
             <div className="navbar__users w-full left-0 top-[50px] text-sm">

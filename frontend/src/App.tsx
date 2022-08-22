@@ -8,8 +8,8 @@ import {
   setRefetch,
   updateNotifications,
 } from './features/user/userSlice';
-import { useDispatch } from 'react-redux';
-import { setOnlineUsers } from './features/user/userSlice';
+import { useAppDispatch } from './app/hooks';
+import { setOnlineUsers, logout } from './features/user/userSlice';
 import {
   setRefetchMessages,
   setIsTyping,
@@ -26,7 +26,7 @@ axios.defaults.baseURL = 'https://social-api-backend.herokuapp.com/api';
 axios.defaults.withCredentials = true;
 
 const App = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const socket = useRef<Socket<
     ServerToClientEvents,
     ClientToServerEvents
@@ -67,6 +67,7 @@ const App = () => {
         const { data } = await axios.get('/users/me');
         dispatch(login({ ...data }));
       } catch (error) {
+        dispatch(logout());
         console.log(error);
       }
     };

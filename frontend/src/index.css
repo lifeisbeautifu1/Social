@@ -357,10 +357,7 @@ a {
   transform: scale(0.95);
 }
 
-.post {
-  border-radius: 0.625rem;
-  box-shadow: 0 0 16px -8px rgba(0, 0, 0, 0.68);
-}
+
 
 .post__wrapper {
   padding: 0.625rem;
@@ -388,7 +385,7 @@ a {
   margin-top: 2rem;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1rem;
 }
 
 .post__top--right {

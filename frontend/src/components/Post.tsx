@@ -65,7 +65,7 @@ const Post: React.FC<PostProps> = ({ post, callback, socket }) => {
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="post bg-white py-2 px-4">
+      <div className="border rounded shadow hover:shadow-md border-gray-200 bg-white py-2 px-4">
         <div className="post__wrapper">
           <div className="post__top">
             <div className="flex gap-2 items-center">
@@ -81,7 +81,7 @@ const Post: React.FC<PostProps> = ({ post, callback, socket }) => {
                 />
               </Link>
               <div className="flex flex-col justify-center items-start">
-                <span className="">{post.author?.username}</span>
+                <span className="font-semibold">{post.author?.username}</span>
                 <span className="text-xs text-gray-400">
                   {formatDistanceToNow(new Date(post?.createdAt!), {
                     addSuffix: true,
@@ -123,10 +123,15 @@ const Post: React.FC<PostProps> = ({ post, callback, socket }) => {
                 onClick={handleLike}
                 className="post__like"
               />
-              <span className="post__counter">{likes} people like it</span>
+              <span className="text-gray-600 text-sm">
+                {likes} people like it
+              </span>
             </div>
             <div className="post__bottom--right">
-              <Link to={`/post/${post._id}`} className="post__comment">
+              <Link
+                to={`/post/${post._id}`}
+                className="text-gray-600 text-sm hover:underline"
+              >
                 {' '}
                 {post.comments.length} comments
               </Link>
