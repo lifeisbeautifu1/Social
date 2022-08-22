@@ -75,19 +75,21 @@ const likePost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             post.likes = post.likes.filter((id) => id != res.locals.user.id);
         }
         else {
-            // @ts-ignore
             post.likes.push(res.locals.user.id);
-            const notification = yield postNotification_1.default.create({
-                user: res.locals.user.id,
-                post: post === null || post === void 0 ? void 0 : post._id,
-                type: 'Like',
-            });
-            yield user_1.default.findByIdAndUpdate(post === null || post === void 0 ? void 0 : post.author, {
-                $push: {
-                    // @ts-ignore
-                    postNotifications: notification === null || notification === void 0 ? void 0 : notification._id,
-                },
-            });
+            if ((post === null || post === void 0 ? void 0 : post.author) !== res.locals.user.id) {
+                // @ts-ignore
+                const notification = yield postNotification_1.default.create({
+                    user: res.locals.user.id,
+                    post: post === null || post === void 0 ? void 0 : post._id,
+                    type: 'Like',
+                });
+                yield user_1.default.findByIdAndUpdate(post === null || post === void 0 ? void 0 : post.author, {
+                    $push: {
+                        // @ts-ignore
+                        postNotifications: notification === null || notification === void 0 ? void 0 : notification._id,
+                    },
+                });
+            }
         }
         yield post.save();
         post = yield post_1.default.findById(req.params.id).populate('author', 'username profilePicture');
@@ -158,7 +160,7 @@ const getUsersPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* 
 });
 exports.getUsersPosts = getUsersPosts;
 const addComment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _b;
+    var _b, _c;
     const { id } = req.params;
     const { body } = req.body;
     const comment = yield comment_1.default.create({
@@ -180,17 +182,19 @@ const addComment = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         path: 'comments.author',
         select: 'username profilePicture desc',
     });
-    const notification = yield postNotification_1.default.create({
-        user: res.locals.user.id,
-        post: post === null || post === void 0 ? void 0 : post._id,
-        type: 'Comment',
-    });
-    yield user_1.default.findByIdAndUpdate((_b = post === null || post === void 0 ? void 0 : post.author) === null || _b === void 0 ? void 0 : _b._id, {
-        $push: {
-            // @ts-ignore
-            postNotifications: notification === null || notification === void 0 ? void 0 : notification._id,
-        },
-    });
+    if (((_b = post === null || post === void 0 ? void 0 : post.author) === null || _b === void 0 ? void 0 : _b._id) !== res.locals.user.id) {
+        const notification = yield postNotification_1.default.create({
+            user: res.locals.user.id,
+            post: post === null || post === void 0 ? void 0 : post._id,
+            type: 'Comment',
+        });
+        yield user_1.default.findByIdAndUpdate((_c = post === null || post === void 0 ? void 0 : post.author) === null || _c === void 0 ? void 0 : _c._id, {
+            $push: {
+                // @ts-ignore
+                postNotifications: notification === null || notification === void 0 ? void 0 : notification._id,
+            },
+        });
+    }
     res.status(http_status_codes_1.StatusCodes.OK).json(updatedPost);
 });
 exports.addComment = addComment;

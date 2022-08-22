@@ -57,19 +57,21 @@ export const likePost = async (req: Request, res: Response) => {
       // @ts-ignore
       post.likes = post.likes.filter((id) => id != res.locals.user.id);
     } else {
-      // @ts-ignore
       post.likes.push(res.locals.user.id);
-      const notification = await PostNotification.create({
-        user: res.locals.user.id,
-        post: post?._id,
-        type: 'Like',
-      });
-      await User.findByIdAndUpdate(post?.author!, {
-        $push: {
-          // @ts-ignore
-          postNotifications: notification?._id,
-        },
-      });
+      if (post?.author !== res.locals.user.id) {
+        // @ts-ignore
+        const notification = await PostNotification.create({
+          user: res.locals.user.id,
+          post: post?._id,
+          type: 'Like',
+        });
+        await User.findByIdAndUpdate(post?.author!, {
+          $push: {
+            // @ts-ignore
+            postNotifications: notification?._id,
+          },
+        });
+      }
     }
     await post.save();
     post = await Post.findById(req.params.id).populate(
@@ -172,17 +174,20 @@ export const addComment = async (req: Request, res: Response) => {
     path: 'comments.author',
     select: 'username profilePicture desc',
   });
-  const notification = await PostNotification.create({
-    user: res.locals.user.id,
-    post: post?._id,
-    type: 'Comment',
-  });
-  await User.findByIdAndUpdate(post?.author?._id!, {
-    $push: {
-      // @ts-ignore
-      postNotifications: notification?._id,
-    },
-  });
+  if (post?.author?._id !== res.locals.user.id) {
+    const notification = await PostNotification.create({
+      user: res.locals.user.id,
+      post: post?._id,
+      type: 'Comment',
+    });
+
+    await User.findByIdAndUpdate(post?.author?._id!, {
+      $push: {
+        // @ts-ignore
+        postNotifications: notification?._id,
+      },
+    });
+  }
   res.status(StatusCodes.OK).json(updatedPost);
 };
 
