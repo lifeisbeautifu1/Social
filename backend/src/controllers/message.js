@@ -42,7 +42,9 @@ exports.createMessage = createMessage;
 const getMessages = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const messages = yield message_1.default.find({
         conversationId: req.params.conversationId,
-    }).populate('sender', 'username profilePicture');
+    })
+        .populate('sender', 'username profilePicture')
+        .sort('createdAt');
     res.status(http_status_codes_1.StatusCodes.OK).json(messages);
 });
 exports.getMessages = getMessages;

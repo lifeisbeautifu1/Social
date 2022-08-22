@@ -32,6 +32,8 @@ export const createMessage = async (req: Request, res: Response) => {
 export const getMessages = async (req: Request, res: Response) => {
   const messages = await Message.find({
     conversationId: req.params.conversationId,
-  }).populate('sender', 'username profilePicture');
+  })
+    .populate('sender', 'username profilePicture')
+    .sort('createdAt');
   res.status(StatusCodes.OK).json(messages);
 };
