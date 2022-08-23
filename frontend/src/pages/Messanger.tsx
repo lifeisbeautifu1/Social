@@ -170,15 +170,15 @@ const Messanger: React.FC<MessagerProps> = ({ socket }) => {
     }, timerLength);
   };
   return (
-    <div className="flex w-full md:w-[70%] mx-auto">
-      <div className="w-[350px] p-4 sticky top-[0px]">
+    <div className="flex flex-col md:flex-row w-full md:w-[70%] mx-auto">
+      <div className="w-full shadow md:shadow-none md:w-[350px] flex md:flex-col  p-0 md:p-4 sticky top-[40px] ">
         <div>
           <input
             type="text"
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
             placeholder="Search dialogs"
-            className="w-full  my-4 p-2 rounded text-sm border border-gray-200 outline-none shadow-inner"
+            className="hidden md:block w-full  my-4 p-2 rounded text-sm border border-gray-200 outline-none shadow-inner"
           />
         </div>
         {filteredConversations &&
@@ -233,7 +233,7 @@ const Messanger: React.FC<MessagerProps> = ({ socket }) => {
                 className="border border-gray-200 rounded-md px-4 py-2 outline-none w-full resize-none text-sm shadow-inner"
               />
               <span
-                className="absolute top-5 right-14"
+                className="hidden md:block absolute top-5 right-14"
                 onClick={() => setShowPicker(!showPicker)}
               >
                 <svg
@@ -273,7 +273,7 @@ const Messanger: React.FC<MessagerProps> = ({ socket }) => {
             </form>{' '}
           </>
         ) : (
-          <span className="messanger__select-text">
+          <span className="text-gray-400 inline-block mt-4 text-center text-xl">
             Select chat to send messages
           </span>
         )}

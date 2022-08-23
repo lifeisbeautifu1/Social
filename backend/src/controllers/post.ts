@@ -58,7 +58,7 @@ export const likePost = async (req: Request, res: Response) => {
       post.likes = post.likes.filter((id) => id != res.locals.user.id);
     } else {
       post.likes.push(res.locals.user.id);
-      if (post?.author !== res.locals.user.id) {
+      if (post?.author != res.locals.user.id) {
         // @ts-ignore
         const notification = await PostNotification.create({
           user: res.locals.user.id,
@@ -174,7 +174,7 @@ export const addComment = async (req: Request, res: Response) => {
     path: 'comments.author',
     select: 'username profilePicture desc',
   });
-  if (post?.author?._id !== res.locals.user.id) {
+  if (post?.author?._id != res.locals.user.id) {
     const notification = await PostNotification.create({
       user: res.locals.user.id,
       post: post?._id,

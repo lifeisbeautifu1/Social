@@ -187,7 +187,25 @@ const Rightbar: React.FC<RightbarProps> = ({ user, socket }) => {
           </div>
         ) : (
           <div className="rightbar__edit-info">
-            <div className="rightbar__control">
+            <div className="relative mb-2">
+              <input
+                type="text"
+                name="city"
+                placeholder=" "
+                id="city"
+                value={profileData.city}
+                onChange={handleChange}
+                className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border appearance-none shadow-inner
+                  focus:outline-none focus:ring-0  peer"
+              />
+              <label
+                htmlFor="city"
+                className="absolute text-sm  duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
+              >
+                City
+              </label>
+            </div>
+            {/* <div className="rightbar__control">
               <label htmlFor="city">City </label>
               <input
                 className="mt-1 w-full px-3 py-2 transition duration-200 border border-gray-300 rounded outline-none bg-gray-50 focus:bg-white hover:bg-white"
@@ -198,8 +216,26 @@ const Rightbar: React.FC<RightbarProps> = ({ user, socket }) => {
                 value={profileData.city}
                 onChange={handleChange}
               />
+            </div> */}
+            <div className="relative mb-2">
+              <input
+                type="text"
+                name="from"
+                placeholder=" "
+                id="from"
+                value={profileData.from}
+                onChange={handleChange}
+                className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border appearance-none shadow-inner
+                  focus:outline-none focus:ring-0  peer"
+              />
+              <label
+                htmlFor="from"
+                className="absolute text-sm  duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
+              >
+                From
+              </label>
             </div>
-            <div className="rightbar__control">
+            {/* <div className="rightbar__control">
               <label htmlFor="from">From </label>
               <input
                 className="mt-1 w-full px-3 py-2 transition duration-200 border border-gray-300 rounded outline-none bg-gray-50 focus:bg-white hover:bg-white"
@@ -210,11 +246,12 @@ const Rightbar: React.FC<RightbarProps> = ({ user, socket }) => {
                 value={profileData.from}
                 onChange={handleChange}
               />
-            </div>
+            </div> */}
             <div className="rightbar__control">
               <label htmlFor="relationship">Relationship </label>
               <select
-                className="mt-1 w-full px-3 py-2 transition duration-200 border border-gray-300 rounded outline-none bg-gray-50 focus:bg-white hover:bg-white"
+                className="block p-2.5 w-full text-sm text-gray-900 bg-transparent rounded-lg border
+                  focus:outline-none focus:ring-0 shadow-inner"
                 name="relationship"
                 id="relationship"
                 value={profileData.relationship}

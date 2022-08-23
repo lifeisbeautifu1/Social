@@ -47,7 +47,7 @@ export const conversationsSlice = createSlice({
       state.messages = action.payload;
     },
     addMessage: (state, action) => {
-      state.messages.push(action.payload);
+      state.messages.unshift(action.payload);
     },
     setRefetchMessages: (state) => {
       state.refetchMessages = !state.refetchMessages;

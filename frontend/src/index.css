@@ -185,13 +185,14 @@ a {
 }
 
 ::-webkit-scrollbar {
-  width: 5px;
+  width: 4px;
 }
 
-::-webkit-scrollbar-track {
+/* ::-webkit-scrollbar-track {
   background-color: #f1f1f1;
 }
 
+*/
 ::-webkit-scrollbar-thumb {
   background-color: rgba(179, 179, 179);
 }
@@ -356,8 +357,6 @@ a {
 .share__cancel:hover {
   transform: scale(0.95);
 }
-
-
 
 .post__wrapper {
   padding: 0.625rem;
@@ -947,6 +946,13 @@ a {
 
 .messanger {
   height: calc(100vh - 150px);
+    padding: 0.5rem;
+    }
+    
+    @media (max-width: 768px) {
+      .messanger {
+        height: calc(100vh - 190px);
+      }
 }
 
 .messanger__input--menu {

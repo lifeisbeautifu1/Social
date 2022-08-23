@@ -107,7 +107,7 @@ const Profile: React.FC<ProfileProps> = ({ socket }) => {
     <>
       <div className="flex w-full md:w-[70%] mx-auto">
         <Sidebar />
-        <div className="profile__right w-full pl-4">
+        <div className="profile__right w-full pl-0 md:pl-4">
           <div className="profile__right--top">
             <div className="profile__cover">
               <div
@@ -182,20 +182,20 @@ const Profile: React.FC<ProfileProps> = ({ socket }) => {
                   onSubmit={handleUpdateSubmit}
                 >
                   <input
-                    className="mt-1 w-full px-3 py-2 transition duration-200 border border-gray-300 rounded outline-none bg-gray-50 focus:bg-white hover:bg-white"
+                    className="mt-1 w-full px-3 py-2 transition duration-200 border border-gray-300 shadow-inner rounded outline-none bg-gray-50 focus:bg-white hover:bg-white"
                     type="text"
                     name="username"
                     value={profileData.username}
                     onChange={handleChange}
                   />
                   <input
-                    className="mt-1 w-full px-3 py-2 transition duration-200 border border-gray-300 rounded outline-none bg-gray-50 focus:bg-white hover:bg-white"
+                    className="mt-1 w-full shadow-inner px-3 py-2 transition duration-200 border border-gray-300 rounded outline-none bg-gray-50 focus:bg-white hover:bg-white"
                     name="desc"
                     type="text"
                     value={profileData.desc}
                     onChange={handleChange}
                   />
-                  <button className="w-full border border-gray-300 py-[2px] px-4 rounded font-medium transition duration-300 hover:bg-gray-700 hover:border-gray-700 hover:text-white">
+                  <button className="w-full shadow hover:shadow-lg border  py-2 px-4 text-sm font-bold rounded text-white transition duration-300 bg-blue-500  border-blue-500  hover:bg-blue-500/90 ">
                     Update
                   </button>
                 </form>
@@ -211,7 +211,7 @@ const Profile: React.FC<ProfileProps> = ({ socket }) => {
               )}
             </div>
           </div>
-          <div className="flex">
+          <div className="flex px-2 md:px-0">
             <Feed profile userId={userId} socket={socket} />
             <Rightbar user={user} socket={socket} />
           </div>

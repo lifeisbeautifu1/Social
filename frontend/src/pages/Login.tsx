@@ -46,12 +46,12 @@ const Login = () => {
   switch (pathname) {
     case '/login': {
       return (
-        <div className="flex bg-white">
+        <div className="flex  bg-white">
           <div
-            className="h-screen bg-center bg-cover w-36"
+            className="hidden md:block h-screen bg-center bg-cover w-36 "
             style={{ backgroundImage: 'url(./images/bricks.jpeg)' }}
           ></div>
-          <div className="flex flex-col justify-center pl-6">
+          <div className="h-screen flex flex-col justify-center pl-6">
             <div className="w-[18rem]">
               <h1 className="mb-2 text-lg font-medium">Login</h1>
               <p className="mb-10 text-xs">
@@ -188,10 +188,10 @@ const Login = () => {
       return (
         <div className="flex bg-white">
           <div
-            className="h-screen bg-center bg-cover w-36"
+            className="hidden md:block h-screen bg-center bg-cover w-36"
             style={{ backgroundImage: 'url(./images/bricks.jpeg)' }}
           ></div>
-          <div className="flex flex-col justify-center pl-6">
+          <div className="h-screen flex flex-col justify-center pl-6">
             <div className="w-[18rem]">
               <h1 className="mb-2 text-lg font-medium">Sign Up</h1>
               <p className="mb-10 text-xs">

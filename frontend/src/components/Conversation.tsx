@@ -31,7 +31,7 @@ const Conversation: React.FC<ConversationProps> = ({ conversation }) => {
         dispatch(deleteNotifications(otherUser._id));
       }}
     >
-      <div className="chat-online__image-container">
+      <div className="chat-online__image-container w-full md:w-auto justify-center">
         <img
           className="w-10 h-10 rounded-full object-cover"
           src={
@@ -55,7 +55,9 @@ const Conversation: React.FC<ConversationProps> = ({ conversation }) => {
         alt="conversation"
         className="w-10 h-10 rounded-full object-cover mr-2"
       /> */}
-      <span className="font-medium text-gray-600">{otherUser?.username}</span>
+      <span className="hidden md:inline font-medium text-gray-600">
+        {otherUser?.username}
+      </span>
     </div>
   );
 };

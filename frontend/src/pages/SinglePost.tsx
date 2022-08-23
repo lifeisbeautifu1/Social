@@ -91,7 +91,7 @@ const SinglePost: React.FC<SinglePostProps> = ({ socket }) => {
                 value={body}
                 onChange={(e) => setBody(e.target.value)}
                 placeholder="Type your message..."
-                className="w-full p-3 border border-gray-200 resize-none outline-none rounded h-[100px]"
+                className="shadow-inner w-full p-3 border border-gray-200 resize-none outline-none rounded h-[100px]"
               />
               <span
                 className="absolute top-2 right-2"
@@ -118,7 +118,7 @@ const SinglePost: React.FC<SinglePostProps> = ({ socket }) => {
                 </div>
               )}
             </div>
-            <button className="self-end justify-end border border-gray-300 py-1 px-3 rounded font-medium transition duration-200 hover:bg-gray-700 hover:border-gray-700 hover:text-white">
+            <button className="self-end w-[150px] shadow hover:shadow-lg border  py-2 px-4 text-sm font-bold rounded text-white transition duration-300 bg-blue-500  border-blue-500  hover:bg-blue-500/90 ">
               Post comment
             </button>
           </form>
