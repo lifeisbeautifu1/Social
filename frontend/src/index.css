@@ -944,6 +944,17 @@ a {
   align-self: center;
 }
 
+.info {
+  opacity: 0;
+  transition: transform ease-in-out 150ms, opacity ease-in-out 150ms;
+  transform: scaleX(0.15) scaleY(0.15);
+}
+
+.info.active {
+  transform: scaleX(1) scaleY(1);
+  opacity: 1;
+}
+
 .messanger {
   height: calc(100vh - 150px);
     padding: 0.5rem;
