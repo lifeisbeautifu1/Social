@@ -3,6 +3,7 @@ import { useAppSelector } from '../hooks';
 import { useDispatch } from 'react-redux';
 import { addPost } from '../features/posts/postsSlice';
 import React, { useState } from 'react';
+import { createRipple } from '../config/createRipple';
 import axios from 'axios';
 import Picker from 'emoji-picker-react';
 
@@ -152,7 +153,8 @@ const Share = () => {
 
             <button
               type="submit"
-              className="w-[100px] shadow hover:shadow-lg border  py-2 px-4 text-sm font-bold rounded text-white transition duration-300 bg-blue-500  border-blue-500  hover:bg-blue-500/90 "
+              onClick={createRipple}
+              className="relative overflow-hidden w-[100px] shadow    py-2 px-4 text-sm font-bold rounded text-white transition duration-300 bg-blue-500    hover:bg-blue-500/90 "
             >
               Post
             </button>

@@ -10,6 +10,7 @@ import { updateUser } from '../features/user/userSlice';
 import { useProfileInfoContext } from '../context';
 import { Socket } from 'socket.io-client';
 import { ServerToClientEvents, ClientToServerEvents } from '../interfaces';
+import { createRipple } from '../config/createRipple';
 
 type ProfileProps = {
   socket: React.MutableRefObject<Socket<
@@ -195,7 +196,10 @@ const Profile: React.FC<ProfileProps> = ({ socket }) => {
                     value={profileData.desc}
                     onChange={handleChange}
                   />
-                  <button className="w-full shadow hover:shadow-lg border  py-2 px-4 text-sm font-bold rounded text-white transition duration-300 bg-blue-500  border-blue-500  hover:bg-blue-500/90 ">
+                  <button
+                    onClick={createRipple}
+                    className="relative overflow-hidden w-full shadow  border  py-2 px-4 text-sm font-bold rounded text-white transition duration-300 bg-blue-500  hover:bg-blue-500/90 "
+                  >
                     Update
                   </button>
                 </form>

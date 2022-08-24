@@ -4,6 +4,7 @@ import { useAppSelector } from '../app/hooks';
 import { login } from '../features/user/userSlice';
 import React, { useState, useEffect } from 'react';
 import { IError } from '../interfaces';
+import { createRipple } from '../config/createRipple';
 import axios from 'axios';
 
 const Login = () => {
@@ -164,7 +165,8 @@ const Login = () => {
 
                 <button
                   type="submit"
-                  className="w-full py-2 mb-4 text-sm font-bold text-white uppercase transition duration-200 bg-blue-500 border border-blue-500  rounded shadow hover:shadow-lg hover:bg-blue-500/90"
+                  onClick={createRipple}
+                  className="relative overflow-hidden w-full py-2 mb-4 text-sm font-bold text-white uppercase transition duration-200 bg-blue-500  rounded shadow-md hover:bg-blue-500/90"
                 >
                   Login
                 </button>
@@ -286,7 +288,75 @@ const Login = () => {
                 </div>
 
                 <div className="mb-2">
-                  <div className="relative">
+                  <div className="relative password">
+                    <div
+                      id="popover-password"
+                      role="tooltip"
+                      className="inline-block absolute right-[-105%] top-[-120%]  z-10 w-72 text-sm font-light text-gray-500 bg-white rounded-lg border border-gray-200 shadow-sm transition-opacity duration-300 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400"
+                    >
+                      <div className="p-3 space-y-2">
+                        <h3 className="font-semibold text-gray-900 dark:text-white">
+                          Must have at least 6 characters
+                        </h3>
+                        <div className="grid grid-cols-4 gap-2">
+                          <div className="h-1 bg-orange-300 dark:bg-orange-400"></div>
+                          <div className="h-1 bg-orange-300 dark:bg-orange-400"></div>
+                          <div className="h-1 bg-gray-200 dark:bg-gray-600"></div>
+                          <div className="h-1 bg-gray-200 dark:bg-gray-600"></div>
+                        </div>
+                        <p>It’s better to have:</p>
+                        <ul>
+                          <li className="flex items-center mb-1">
+                            <svg
+                              className="mr-2 w-4 h-4 text-green-400 dark:text-green-500"
+                              aria-hidden="true"
+                              fill="currentColor"
+                              viewBox="0 0 20 20"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                fill-rule="evenodd"
+                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                clip-rule="evenodd"
+                              ></path>
+                            </svg>
+                            Upper & lower case letters
+                          </li>
+                          <li className="flex items-center mb-1">
+                            <svg
+                              className="mr-2 w-4 h-4 text-gray-300 dark:text-gray-400"
+                              aria-hidden="true"
+                              fill="currentColor"
+                              viewBox="0 0 20 20"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                fill-rule="evenodd"
+                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                clip-rule="evenodd"
+                              ></path>
+                            </svg>
+                            A symbol (#$&)
+                          </li>
+                          <li className="flex items-center">
+                            <svg
+                              className="mr-2 w-4 h-4 text-gray-300 dark:text-gray-400"
+                              aria-hidden="true"
+                              fill="currentColor"
+                              viewBox="0 0 20 20"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                fill-rule="evenodd"
+                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                clip-rule="evenodd"
+                              ></path>
+                            </svg>
+                            A longer password (min. 12 chars.)
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
                     <input
                       type={showPassword ? 'text' : 'password'}
                       value={formState.password}
@@ -391,8 +461,9 @@ const Login = () => {
                 </div>
 
                 <button
+                  onClick={createRipple}
                   type="submit"
-                  className="w-full py-2 mb-4 text-sm font-bold text-white uppercase transition duration-200 bg-blue-500 border border-blue-500 shadow hover:shadow-lg rounded hover:bg-blue-500/90"
+                  className="relative overflow-hidden w-full py-2 mb-4 text-sm font-bold text-white uppercase transition duration-200 bg-blue-500 shadow-md rounded hover:bg-blue-500/90"
                 >
                   Sign Up
                 </button>

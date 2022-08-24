@@ -8,6 +8,7 @@ import { ServerToClientEvents, ClientToServerEvents } from '../interfaces';
 import axios from 'axios';
 import Picker from 'emoji-picker-react';
 import { removeNotifications } from '../features/user/userSlice';
+import { createRipple } from '../config/createRipple';
 
 type SinglePostProps = {
   socket: React.MutableRefObject<Socket<
@@ -118,7 +119,10 @@ const SinglePost: React.FC<SinglePostProps> = ({ socket }) => {
                 </div>
               )}
             </div>
-            <button className="self-end w-[150px] shadow hover:shadow-lg border  py-2 px-4 text-sm font-bold rounded text-white transition duration-300 bg-blue-500  border-blue-500  hover:bg-blue-500/90 ">
+            <button
+              onClick={createRipple}
+              className="relative overflow-hidden self-end w-[150px] shadow  border  py-2 px-4 text-sm font-bold rounded text-white transition duration-300 bg-blue-500    hover:bg-blue-500/90 "
+            >
               Post comment
             </button>
           </form>
