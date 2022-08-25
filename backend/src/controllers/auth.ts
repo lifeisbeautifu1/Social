@@ -62,7 +62,7 @@ export const register = async (req: Request, res: Response) => {
         httpOnly: true,
         sameSite: 'none',
         secure: true,
-        maxAge: 3600 * 24 * 7,
+        maxAge: 1000 * 3600 * 24 * 7,
         path: '/',
       })
     );
@@ -133,7 +133,7 @@ export const login = async (req: Request, res: Response) => {
         httpOnly: true,
         sameSite: 'none',
         secure: true,
-        maxAge: 3600 * 24 * 7,
+        maxAge: 1000 * 3600 * 24 * 7,
         path: '/',
       })
     );
