@@ -123,7 +123,7 @@ const App = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Login />} />
       <Route path="/verify" element={<Verify />} />
-      <Route path="/confirm/email/:token" element={<Confirm />} />
+      <Route path="/email/confirm/:token" element={<Confirm />} />
     </Routes>
   );
 };
