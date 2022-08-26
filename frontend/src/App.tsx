@@ -1,4 +1,12 @@
-import { Home, Profile, Login, Messanger, SinglePost } from './pages';
+import {
+  Home,
+  Profile,
+  Login,
+  Messanger,
+  SinglePost,
+  Verify,
+  Confirm,
+} from './pages';
 import { ProtectedRoute, SharedLayout } from './components';
 import { Routes, Route } from 'react-router-dom';
 import { io, Socket } from 'socket.io-client';
@@ -114,6 +122,8 @@ const App = () => {
       </Route>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Login />} />
+      <Route path="/verify" element={<Verify />} />
+      <Route path="/confirm/email/:token" element={<Confirm />} />
     </Routes>
   );
 };

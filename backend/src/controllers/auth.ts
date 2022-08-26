@@ -56,8 +56,8 @@ export const register = async (req: Request, res: Response) => {
       to: email,
       subject: 'Email verification',
       html: `<h1>Thank you!</h1>
-        <p>In order to create account, please proceed to the following link:
-        <a href="https://project-social.netlify.app/email/confirm/${token}">Confirm registration</a>
+        <p>In order to verify email, please proceed to the following link:
+        <a href="https://project-social.netlify.app/email/confirm/${token}">Confirm email</a>
         </p>
       `,
     };
@@ -183,31 +183,30 @@ export const verifyAccount = async (req: Request, res: Response) => {
     password,
   });
 
-  token = jwt.sign({ id: user._id }, process.env.JWT_SECRET as string, {
-    expiresIn: process.env.JWT_EXPIRES_IN,
-  });
-
-  res.cookie('token', token, {
-    secure: true,
-    httpOnly: true,
-    maxAge: 3600 * 24 * 7,
-    sameSite: 'none',
-    path: '/',
-  });
-
-  res.set(
-    'Set-Cookie',
-    cookie.serialize('token', token, {
-      httpOnly: true,
-      sameSite: 'none',
-      secure: true,
-      maxAge: 3600 * 24 * 7,
-      path: '/',
-    })
-  );
-
   res.status(StatusCodes.OK).json({
-    // @ts-ignore
-    ...user._doc,
+    message: 'success',
   });
+
+  // token = jwt.sign({ id: user._id }, process.env.JWT_SECRET as string, {
+  //   expiresIn: process.env.JWT_EXPIRES_IN,
+  // });
+
+  // res.cookie('token', token, {
+  //   secure: true,
+  //   httpOnly: true,
+  //   maxAge: 3600 * 24 * 7,
+  //   sameSite: 'none',
+  //   path: '/',
+  // });
+
+  // res.set(
+  //   'Set-Cookie',
+  //   cookie.serialize('token', token, {
+  //     httpOnly: true,
+  //     sameSite: 'none',
+  //     secure: true,
+  //     maxAge: 3600 * 24 * 7,
+  //     path: '/',
+  //   })
+  // );
 };
