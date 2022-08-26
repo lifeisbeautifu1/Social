@@ -10,9 +10,6 @@ import cookie from 'cookie';
 import mailgun from 'mailgun-js';
 
 import User from '../models/user';
-// import MessageNotification from '../models/messageNotification';
-
-const DOMAIN = 'sandboxe00281d0f15242ba9d68e32cb9c7d9cc.mailgun.org';
 
 export const register = async (req: Request, res: Response) => {
   let { username, email, password, confirmPassword } = req.body;
@@ -51,7 +48,7 @@ export const register = async (req: Request, res: Response) => {
 
     const mg = mailgun({
       apiKey: process.env.MAILGUN_API_KEY as string,
-      domain: DOMAIN,
+      domain: process.env.MAILGUN_DOMAIN as string,
     });
 
     const data = {
@@ -60,7 +57,7 @@ export const register = async (req: Request, res: Response) => {
       subject: 'Email verification',
       html: `<h1>Thank you!</h1>
         <p>In order to create account, please proceed to the following link:
-        <a href="http:localhost:3000/email/confirm/${token}">Confirm registration</a>
+        <a href="https://project-social.netlify.app/email/confirm/${token}">Confirm registration</a>
         </p>
       `,
     };
@@ -75,39 +72,6 @@ export const register = async (req: Request, res: Response) => {
         .status(StatusCodes.OK)
         .json({ message: 'Please verify email' });
     });
-
-    // const user = await User.create({
-    //   ...req.body,
-    //   password,
-    // });
-
-    // const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET as string, {
-    //   expiresIn: process.env.JWT_EXPIRES_IN,
-    // });
-
-    // res.cookie('token', token, {
-    //   secure: true,
-    //   httpOnly: true,
-    //   maxAge: 3600 * 24 * 7,
-    //   sameSite: 'none',
-    //   path: '/',
-    // });
-
-    // res.set(
-    //   'Set-Cookie',
-    //   cookie.serialize('token', token, {
-    //     httpOnly: true,
-    //     sameSite: 'none',
-    //     secure: true,
-    //     maxAge: 1000 * 3600 * 24 * 7,
-    //     path: '/',
-    //   })
-    // );
-
-    // res.status(StatusCodes.OK).json({
-    //   // @ts-ignore
-    //   ...user._doc,
-    // });
   } else {
     res.status(StatusCodes.BAD_REQUEST).json({ errors });
   }
@@ -170,7 +134,7 @@ export const login = async (req: Request, res: Response) => {
         httpOnly: true,
         sameSite: 'none',
         secure: true,
-        maxAge: 1000 * 3600 * 24 * 7,
+        maxAge: 3600 * 24 * 7,
         path: '/',
       })
     );
@@ -203,4 +167,47 @@ export const logout = (req: Request, res: Response) => {
     })
   );
   res.json({ message: 'Logout' });
+};
+
+export const verifyAccount = async (req: Request, res: Response) => {
+  let { token } = req.body;
+
+  const { email, username, password }: any = jwt.verify(
+    token,
+    process.env.JWT_SECRET as string
+  );
+
+  const user = await User.create({
+    username,
+    email,
+    password,
+  });
+
+  token = jwt.sign({ id: user._id }, process.env.JWT_SECRET as string, {
+    expiresIn: process.env.JWT_EXPIRES_IN,
+  });
+
+  res.cookie('token', token, {
+    secure: true,
+    httpOnly: true,
+    maxAge: 3600 * 24 * 7,
+    sameSite: 'none',
+    path: '/',
+  });
+
+  res.set(
+    'Set-Cookie',
+    cookie.serialize('token', token, {
+      httpOnly: true,
+      sameSite: 'none',
+      secure: true,
+      maxAge: 3600 * 24 * 7,
+      path: '/',
+    })
+  );
+
+  res.status(StatusCodes.OK).json({
+    // @ts-ignore
+    ...user._doc,
+  });
 };
