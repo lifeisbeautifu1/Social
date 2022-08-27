@@ -177,7 +177,7 @@ const Login = () => {
                   Login
                 </button>
               </form>
-              <small>
+              <p className="text-sm">
                 Don't have an account?
                 <Link
                   to="/register"
@@ -185,7 +185,16 @@ const Login = () => {
                 >
                   Sign Up
                 </Link>
-              </small>
+              </p>
+              <p className="text-sm">
+                Forgot password?{' '}
+                <Link
+                  className=" text-blue-500 capitalize hover:underline"
+                  to="/password/reset"
+                >
+                  Reset
+                </Link>
+              </p>
             </div>
           </div>
         </div>
@@ -478,7 +487,7 @@ const Login = () => {
                 Already a redditor?
                 <Link
                   to="/login"
-                  className="ml-1 text-blue-500 capitalize hover:underline"
+                  className="ml-1 text-blue-500  capitalize hover:underline"
                 >
                   Login
                 </Link>

@@ -221,9 +221,7 @@ export const resetPassword = async (req: Request, res: Response) => {
 };
 
 export const updatePassword = async (req: Request, res: Response) => {
-  const { password, token } = req.body;
-
-  const { id }: any = jwt.verify(token, process.env.JWT_SECRET as string);
+  const { password, confirmPassword, token } = req.body;
 
   if (!password.trim())
     return res.status(StatusCodes.BAD_REQUEST).json({
@@ -237,6 +235,15 @@ export const updatePassword = async (req: Request, res: Response) => {
         password: 'New password must be at least 6 characters long.',
       },
     });
+  if (confirmPassword !== password)
+    return res.status(StatusCodes.BAD_REQUEST).json({
+      errors: {
+        confirmPassword: 'Passwords do not match',
+      },
+    });
+
+  const { id }: any = jwt.verify(token, process.env.JWT_SECRET as string);
+  
   const hashedPassword = await bcrypt.hash(password, 10);
 
   await User.findByIdAndUpdate(id, {

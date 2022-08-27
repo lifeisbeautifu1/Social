@@ -6,3 +6,5 @@ export { default as Verify } from './Verify';
 export { default as Confirm } from './Confirm';
 export { default as NotFound } from './NotFound';
 export { default as Messanger } from './Messanger';
+export { default as ResetPassword } from './ResetPassword';
+export { default as UpdatePassword } from './UpdatePassword';

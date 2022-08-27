@@ -7,6 +7,8 @@ import {
   Verify,
   Confirm,
   NotFound,
+  ResetPassword,
+  UpdatePassword,
 } from './pages';
 import { ProtectedRoute, SharedLayout } from './components';
 import { Routes, Route } from 'react-router-dom';
@@ -125,6 +127,8 @@ const App = () => {
       <Route path="/register" element={<Login />} />
       <Route path="/verify" element={<Verify />} />
       <Route path="/email/confirm/:token" element={<Confirm />} />
+      <Route path="/password/reset" element={<ResetPassword />} />
+      <Route path="/password/reset/:token" element={<UpdatePassword />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
