@@ -57,11 +57,8 @@ const Confirm = () => {
       <div className="h-screen w-full flex items-center justify-center">
         <div className="flex flex-col gap-2 items-center">
           <h1 className="text-xl text-red-500 font-semibold">
-            Something went wrong...
+            There was an error, please double check your verification link
           </h1>
-          <p className="text-lg text-gray-700 font-medium">
-            Please try again later.
-          </p>
         </div>
       </div>
     );

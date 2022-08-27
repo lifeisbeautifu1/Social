@@ -138,13 +138,6 @@ export const login = async (req: Request, res: Response) => {
         path: '/',
       })
     );
-    // res.cookie('token', token, {
-    //   secure: true,
-    //   httpOnly: true,
-    //   maxAge: 3600 * 24 * 7,
-    //   sameSite: 'none',
-    //   path: '/',
-    // });
 
     res.status(StatusCodes.OK).json({
       // @ts-ignore
@@ -177,7 +170,7 @@ export const verifyAccount = async (req: Request, res: Response) => {
     process.env.JWT_SECRET as string
   );
 
-  const user = await User.create({
+  await User.create({
     username,
     email,
     password,
@@ -186,27 +179,71 @@ export const verifyAccount = async (req: Request, res: Response) => {
   res.status(StatusCodes.OK).json({
     message: 'success',
   });
+};
 
-  // token = jwt.sign({ id: user._id }, process.env.JWT_SECRET as string, {
-  //   expiresIn: process.env.JWT_EXPIRES_IN,
-  // });
+export const resetPassword = async (req: Request, res: Response) => {
+  const { email } = req.body;
 
-  // res.cookie('token', token, {
-  //   secure: true,
-  //   httpOnly: true,
-  //   maxAge: 3600 * 24 * 7,
-  //   sameSite: 'none',
-  //   path: '/',
-  // });
+  const user = await User.findOne({ email });
 
-  // res.set(
-  //   'Set-Cookie',
-  //   cookie.serialize('token', token, {
-  //     httpOnly: true,
-  //     sameSite: 'none',
-  //     secure: true,
-  //     maxAge: 3600 * 24 * 7,
-  //     path: '/',
-  //   })
-  // );
+  if (!user)
+    return res.status(StatusCodes.BAD_REQUEST).json({
+      errors: {
+        email: `User with email ${email} not found.`,
+      },
+    });
+
+  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET as string, {
+    expiresIn: '20m',
+  });
+
+  const mg = mailgun({
+    apiKey: process.env.MAILGUN_API_KEY as string,
+    domain: process.env.MAILGUN_DOMAIN as string,
+  });
+
+  const data = {
+    from: 'noreply@hello.com',
+    to: email,
+    subject: 'Reset Password',
+    html: `
+        <p>To reset your password please visit the following page:
+        <a href="https://project-social.netlify.app/password/reset/${token}">Reset Password</a>
+        </p>
+      `,
+  };
+
+  const body = await mg.messages().send(data);
+
+  console.log(body);
+
+  res.status(StatusCodes.OK).json({ message: 'success' });
+};
+
+export const updatePassword = async (req: Request, res: Response) => {
+  const { password, token } = req.body;
+
+  const { id }: any = jwt.verify(token, process.env.JWT_SECRET as string);
+
+  if (!password.trim())
+    return res.status(StatusCodes.BAD_REQUEST).json({
+      errors: {
+        password: 'New password must not be empty',
+      },
+    });
+  if (password.length < 6)
+    return res.status(StatusCodes.BAD_REQUEST).json({
+      errors: {
+        password: 'New password must be at least 6 characters long.',
+      },
+    });
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  await User.findByIdAndUpdate(id, {
+    password: hashedPassword,
+  });
+
+  res.status(StatusCodes.OK).json({
+    message: 'Password successfully been updated',
+  });
 };
