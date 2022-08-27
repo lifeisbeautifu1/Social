@@ -6,6 +6,7 @@ import {
   SinglePost,
   Verify,
   Confirm,
+  NotFound,
 } from './pages';
 import { ProtectedRoute, SharedLayout } from './components';
 import { Routes, Route } from 'react-router-dom';
@@ -124,6 +125,7 @@ const App = () => {
       <Route path="/register" element={<Login />} />
       <Route path="/verify" element={<Verify />} />
       <Route path="/email/confirm/:token" element={<Confirm />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };
