@@ -33,7 +33,7 @@ import { ProfileInfoContextProvider } from './context';
 import sound from './sounds/notification.mp3';
 import axios from 'axios';
 
-axios.defaults.baseURL = 'https://social-api-backend.herokuapp.com/api';
+axios.defaults.baseURL = 'https://social-backend-production.up.railway.app/api';
 axios.defaults.withCredentials = true;
 
 const App = () => {
@@ -87,7 +87,7 @@ const App = () => {
 
   return (
     <Routes>
-      <Route path="/" element={<SharedLayout socket={socket} />}>
+      <Route path='/' element={<SharedLayout socket={socket} />}>
         <Route
           index
           element={
@@ -97,7 +97,7 @@ const App = () => {
           }
         />
         <Route
-          path="/post/:id"
+          path='/post/:id'
           element={
             <ProtectedRoute>
               <SinglePost socket={socket} />
@@ -105,7 +105,7 @@ const App = () => {
           }
         />
         <Route
-          path="/profile/:userId"
+          path='/profile/:userId'
           element={
             <ProtectedRoute>
               <ProfileInfoContextProvider>
@@ -115,7 +115,7 @@ const App = () => {
           }
         />
         <Route
-          path="/messanger"
+          path='/messanger'
           element={
             <ProtectedRoute>
               <Messanger socket={socket} />
@@ -123,13 +123,13 @@ const App = () => {
           }
         />
       </Route>
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Login />} />
-      <Route path="/verify" element={<Verify />} />
-      <Route path="/email/confirm/:token" element={<Confirm />} />
-      <Route path="/password/reset" element={<ResetPassword />} />
-      <Route path="/password/reset/:token" element={<UpdatePassword />} />
-      <Route path="*" element={<NotFound />} />
+      <Route path='/login' element={<Login />} />
+      <Route path='/register' element={<Login />} />
+      <Route path='/verify' element={<Verify />} />
+      <Route path='/email/confirm/:token' element={<Confirm />} />
+      <Route path='/password/reset' element={<ResetPassword />} />
+      <Route path='/password/reset/:token' element={<UpdatePassword />} />
+      <Route path='*' element={<NotFound />} />
     </Routes>
   );
 };

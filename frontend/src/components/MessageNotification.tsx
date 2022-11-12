@@ -27,7 +27,7 @@ const MessageNotification: React.FC<MessageNotificationProps> = ({
         src={
           notification.from.profilePicture
             ? notification.from.profilePicture
-            : 'https://res.cloudinary.com/dxf7urmsh/image/upload/v1659264459/noAvatar_lyqqt7.png'
+            : 'https://res.cloudinary.com/dxf7urmsh/image/upload/v1663824680/dquestion_app_widget_1_b_axtw5v.png'
         }
         alt={notification.from.username}
       />
