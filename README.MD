@@ -6,8 +6,8 @@ Social Media FullStack Applciation build with MERN
 ## Stack
 
 1. Frontend: React with Typescript + Tailwind CSS + ReduxToolkit as a state manager
-2. Backend: Node.js RESTful API with Typescript + MongoDB with Mongoose ODM
-3. Backend API hosted on Heroku [Link](https://social-api-backend.herokuapp.com/)
+2. Backend: Node.js REST api + MongoDB with Mongoose ODM
+3. Backend API hosted on Railway [Link](https://social-backend-production.up.railway.app)
 4. Frontend hosted on Netlify [Link](https://project-social.netlify.app/)
 
 ### Features
@@ -18,15 +18,14 @@ Social Media FullStack Applciation build with MERN
 4. Real time chat with other people, realtime notifications, friends requests and online friends.
 5. Reset password & confirm email.
 
-
 ### Screenshots
 
-![alt text](https://imgur.com/sqajNRq.png "App Photo")
-![alt text](https://imgur.com/eJZTz24.png "App Photo")
-![alt text](https://imgur.com/AdDH0pv.png "App Photo")
-![alt text](https://imgur.com/OICMSzt.png "App Photo")
-![alt text](https://imgur.com/kCosdUW.png "App Photo")
-![alt text](https://imgur.com/ewhDDc2.png "App Photo")
-![alt text](https://imgur.com/nmodIJz.png "App Photo")
-![alt text](https://imgur.com/svDlCXs.png "App Photo")
-![alt text](https://imgur.com/rpP37fC.png "App Photo")
+![alt text](https://imgur.com/sqajNRq.png 'App Photo')
+![alt text](https://imgur.com/eJZTz24.png 'App Photo')
+![alt text](https://imgur.com/AdDH0pv.png 'App Photo')
+![alt text](https://imgur.com/OICMSzt.png 'App Photo')
+![alt text](https://imgur.com/kCosdUW.png 'App Photo')
+![alt text](https://imgur.com/ewhDDc2.png 'App Photo')
+![alt text](https://imgur.com/nmodIJz.png 'App Photo')
+![alt text](https://imgur.com/svDlCXs.png 'App Photo')
+![alt text](https://imgur.com/rpP37fC.png 'App Photo')
