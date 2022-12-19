@@ -45,8 +45,21 @@ const App = () => {
   const { user, refetch } = useAppSelector((state) => state.user);
 
   useEffect(() => {
+    const updateUser = async () => {
+      try {
+        const { data } = await axios.get('/users/me');
+        dispatch(login({ ...data }));
+      } catch (error) {
+        dispatch(logout());
+        console.log(error);
+      }
+    };
+    updateUser();
+  }, [refetch, dispatch]);
+
+  useEffect(() => {
     if (user) {
-      socket.current = io('https://social-api-backend.herokuapp.com/');
+      socket.current = io('https://social-backend-production.up.railway.app');
       socket?.current?.emit('addUser', user?._id);
       socket?.current?.on('getUsers', (users) => {
         dispatch(setOnlineUsers(users));
@@ -68,22 +81,9 @@ const App = () => {
       socket?.current?.on('typing', () => dispatch(setIsTyping(true)));
       socket?.current?.on('stopTyping', () => dispatch(setIsTyping(false)));
     } else {
-      socket?.current?.disconnect();
+      // socket?.current?.disconnect();
     }
   }, [user, dispatch]);
-
-  useEffect(() => {
-    const updateUser = async () => {
-      try {
-        const { data } = await axios.get('/users/me');
-        dispatch(login({ ...data }));
-      } catch (error) {
-        dispatch(logout());
-        console.log(error);
-      }
-    };
-    updateUser();
-  }, [refetch, dispatch]);
 
   return (
     <Routes>
