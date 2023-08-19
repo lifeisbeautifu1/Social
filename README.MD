@@ -1,14 +1,13 @@
 # Social
 
 Social Media FullStack Applciation build with MERN
-[Live demo](https://project-social.netlify.app/)
 
 ## Stack
 
 1. Frontend: React with Typescript + Tailwind CSS + ReduxToolkit as a state manager
 2. Backend: Node.js REST api + MongoDB with Mongoose ODM
-3. Backend API hosted on Railway [Link](https://social-backend-production.up.railway.app)
-4. Frontend hosted on Netlify [Link](https://project-social.netlify.app/)
+3. Backend API hosted on Railway
+4. Frontend hosted on Netlify
 
 ### Features
 
